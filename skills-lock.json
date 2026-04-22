@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "skills": {
+    "frontend-design": {
+      "source": "smithery.ai",
+      "sourceType": "well-known",
+      "computedHash": "a96704c64a0f8850d44454f95ea1238a75ebac909cb055614c641f903e297f3a"
+    },
+    "frontend-developer": {
+      "source": "smithery.ai",
+      "sourceType": "well-known",
+      "computedHash": "11b1be7121aa1a5395a9838b34532d88025acb2853c306fd18de25065547699a"
+    },
+    "ui-ux-pro-max": {
+      "source": "smithery.ai",
+      "sourceType": "well-known",
+      "computedHash": "8cd1b83a60e8d0a95c332d2baeffad9053617b286beb96bbe13e818507343f47"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+    }
+  }
+}
