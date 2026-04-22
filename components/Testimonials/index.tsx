@@ -38,19 +38,19 @@ export default function Testimonials() {
       className="mx-auto w-full max-w-[1480px] px-6 py-16 md:px-10 md:py-24"
       aria-label="Отзывы клиентов"
     >
-      <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-[#D6D0C0] pb-6 md:mb-12 md:flex-row md:items-end">
+      <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-[#C9D1DC] pb-6 md:mb-12 md:flex-row md:items-end">
         <div>
-          <p className="flex items-center gap-3 text-[11px] font-medium tracking-[0.28em] text-[#78746D] uppercase">
-            <span aria-hidden className="h-px w-8 bg-[#D6D0C0]" />
+          <p className="flex items-center gap-3 text-[11px] font-medium tracking-[0.28em] text-[#6B7280] uppercase">
+            <span aria-hidden className="h-px w-8 bg-[#C9D1DC]" />
             Отзывы · {REVIEWS.length} сообщений
           </p>
-          <h2 className="mt-4 max-w-xl font-[family-name:var(--font-editorial)] text-4xl font-medium leading-[0.98] tracking-[-0.01em] text-[#141416] md:text-6xl">
+          <h2 className="mt-4 max-w-xl font-[family-name:var(--font-editorial)] text-4xl font-medium leading-[0.98] tracking-[-0.01em] text-[#151922] md:text-6xl">
             Что говорят
             <br />
             <span className="italic text-[#0A62D0]">клиенты.</span>
           </h2>
         </div>
-        <p className="max-w-sm text-base leading-relaxed text-[#6C6861]">
+        <p className="max-w-sm text-base leading-relaxed text-[#6B7280]">
           Скриншоты из мессенджеров и почты — без редактирования.
           Именно так они и пришли.
         </p>
@@ -59,11 +59,11 @@ export default function Testimonials() {
       <div className="relative h-[620px] overflow-hidden md:h-[760px]">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-[#F2EFE9] via-[#F2EFE9]/85 to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-[#F4F6F9] via-[#F4F6F9]/85 to-transparent"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-[#F2EFE9] via-[#F2EFE9]/85 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-[#F4F6F9] via-[#F4F6F9]/85 to-transparent"
         />
 
         <div className="grid h-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -118,7 +118,7 @@ function ScrollColumn({
 
 function ReviewTile({ review }: { review: Review }) {
   return (
-    <figure className="group relative block overflow-hidden rounded-xl border border-[#D6D0C0] bg-[#EBE6DC]">
+    <figure className="group relative block overflow-hidden rounded-xl border border-[#C9D1DC] bg-[#E8ECF2]">
       <div
         className="relative w-full"
         style={{ aspectRatio: review.ratio }}
@@ -133,7 +133,7 @@ function ReviewTile({ review }: { review: Review }) {
 
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#141416]/45 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#151922]/45 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         />
       </div>
     </figure>

@@ -41,7 +41,7 @@ export default function RootLayout({
       <head>
         <link rel="preload" as="video" href="/intro.mp4" type="video/mp4" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#F2EFE9] text-[#141416]">
+      <body className="min-h-full flex flex-col bg-[#F4F6F9] text-[#151922]">
         {children}
       </body>
     </html>

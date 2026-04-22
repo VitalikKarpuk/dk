@@ -9,73 +9,53 @@ type Product = {
   description: string;
   cta: string;
   tone: Tone;
-  tag: string;
   span: string;
   count: string;
-  attrs: string[];
   decor: React.ReactNode;
+  href?: string;
 };
 
 const PRODUCTS: Product[] = [
   {
-    title: "Индивидуальная терапия",
+    title: "Я ЛИДЕР",
     description:
-      "Личная работа в безопасном пространстве — с тревогой, отношениями, самооценкой и сложными чувствами.",
+      "Место профессиональных и личностных перемен. Шесть модулей и четыре дополнительных блока — от постановки целей и самооценки до финансов, уникальности и продаж.",
     cta: "Подробнее",
     tone: "canvas",
-    tag: "Формат",
     span: "md:col-span-2 md:row-span-2",
-    count: "1200+ сессий",
-    attrs: ["Тревога", "Отношения", "Самооценка", "Травма"],
+    count: "10 модулей",
     decor: <DecorOrbit />,
   },
   {
-    title: "Пары и отношения",
+    title: "Индивидуальные консультации",
     description:
-      "Диалог, который снова возможен. Помогаю партнёрам услышать друг друга и говорить о трудном.",
-    cta: "Записаться",
+      "Личная работа один на один — в безопасном пространстве, в своём темпе, под ваш запрос. Записаться и задать вопрос можно в Instagram.",
+    cta: "Записаться в Instagram",
     tone: "accent",
-    tag: "Формат",
     span: "md:col-span-2",
-    count: "180+ пар",
-    attrs: ["Контакт", "Конфликты", "Близость"],
-    decor: <DecorGrid />,
+    count: "1:1",
+    decor: <DecorDual />,
+    href: "https://www.instagram.com/daria_karpuk.psy",
   },
   {
-    title: "Тревога и стресс",
+    title: "Интенсив «Новая я»",
     description:
-      "Распаковываем напряжение и возвращаем устойчивость в повседневной жизни.",
-    cta: "Узнать",
+      "Короткий интенсивный формат для перезапуска: концентрированная работа над состоянием, опорой и новыми решениями за сжатый срок.",
+    cta: "Узнать подробнее",
     tone: "light",
-    tag: "Запрос",
-    span: "md:col-span-1",
-    count: "частый запрос",
-    attrs: ["Паника", "Сон"],
-    decor: <DecorWave />,
+    span: "md:col-span-2",
+    count: "интенсив",
+    decor: <DecorSunrise />,
   },
   {
-    title: "Кризис и потеря",
+    title: "Базовые законы жизни",
     description:
-      "Рядом в самых тяжёлых периодах: горе, утрата, выгорание, разрыв.",
-    cta: "Связаться",
+      "Четырёхнедельный курс для тех, кто хочет навести порядок в жизни: убрать ограничивающие установки, обрести опору и начать двигаться к своим целям без хаоса и перегрузки.",
+    cta: "Записаться",
     tone: "light",
-    tag: "Поддержка",
-    span: "md:col-span-1",
-    count: "оперативно",
-    attrs: ["Горе", "Выгорание"],
-    decor: <DecorPulse />,
-  },
-  {
-    title: "Группы и лекции",
-    description:
-      "Открытые группы поддержки и образовательные встречи о ментальном здоровье и психологической грамотности.",
-    cta: "Расписание",
-    tone: "light",
-    tag: "Сообщество",
     span: "md:col-span-4",
-    count: "12 потоков",
-    attrs: ["Группы", "Лекции", "Воркшопы", "Супервизии"],
-    decor: <DecorLines />,
+    count: "Старт 30 апреля · 4 недели",
+    decor: <DecorFoundation />,
   },
 ];
 
@@ -92,7 +72,7 @@ export default function BentoGrid() {
         <span className="ml-auto hidden items-center gap-3 md:flex">
           <span>Всего направлений</span>
           <span className="font-[family-name:var(--font-display)] text-sm font-semibold tabular-nums text-foreground">
-            05
+            04
           </span>
         </span>
       </div>
@@ -109,7 +89,7 @@ export default function BentoGrid() {
             </p>
           </div>
           <h2 className="max-w-xl font-[family-name:var(--font-display)] text-4xl leading-[1.05] font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
-            Пять направлений —<br />
+            Четыре направления —<br />
             одно безопасное{" "}
             <span className="text-accent italic font-[family-name:var(--font-editorial)] font-medium">
               пространство.
@@ -147,14 +127,16 @@ export default function BentoGrid() {
       <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-surface-strong pt-6 text-sm md:flex-row md:items-center">
         <p className="font-[family-name:var(--font-display)] text-[11px] tracking-[0.3em] text-muted uppercase">
           Не уверены, какой формат подходит?
-          <span className="ml-3 text-foreground">Подскажу.</span>
+          <span className="ml-3 text-foreground">Заполните анкету — подберу вместе.</span>
         </p>
         <a
-          href="#contact"
+          href="https://docs.google.com/forms/d/1IGPKJW1L88uJpZK8hkIiJwrn3VvRQv60zWTKneoW9aM/viewform"
+          target="_blank"
+          rel="noopener noreferrer"
           className="group inline-flex min-h-[44px] items-center gap-3 font-[family-name:var(--font-display)] text-[11px] font-medium tracking-[0.28em] text-foreground uppercase focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background focus-visible:outline-none"
         >
           <span className="relative">
-            Записаться на встречу
+            Заполнить анкету
             <span
               aria-hidden
               className="absolute -bottom-1 left-0 h-px w-full origin-left bg-foreground transition-transform duration-500 group-hover:scale-x-0 motion-reduce:transform-none"
@@ -195,13 +177,7 @@ function BentoCard({
       : "bg-card text-foreground border-surface-strong shadow-[0_1px_2px_rgba(20,20,22,0.04),0_8px_24px_-12px_rgba(20,20,22,0.08)]";
 
   const mutedTextClass = isAccent ? "text-white/70" : "text-muted";
-  const tagClass = isAccent
-    ? "bg-white/10 text-white/80 ring-white/15"
-    : "bg-background/60 text-muted ring-surface-strong";
   const indexColorClass = isAccent ? "text-white/50" : "text-muted";
-  const attrClass = isAccent
-    ? "border-white/15 text-white/80"
-    : "border-surface-strong text-muted group-hover:border-accent-soft/60 group-hover:text-foreground";
   const dividerClass = isAccent ? "bg-white/15" : "bg-surface-strong";
   const countClass = isAccent ? "text-white/70" : "text-foreground/80";
 
@@ -249,30 +225,17 @@ function BentoCard({
 
       <div className="relative z-10 flex items-start justify-between gap-3">
         <span
-          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-medium tracking-[0.2em] uppercase ring-1 ring-inset ${tagClass}`}
+          className={`font-[family-name:var(--font-display)] text-[10px] tracking-[0.3em] uppercase ${countClass}`}
         >
-          <span
-            aria-hidden
-            className={`h-1 w-1 rounded-full ${
-              isAccent ? "bg-accent-soft" : "bg-accent"
-            }`}
-          />
-          {product.tag}
+          {product.count}
         </span>
-        <div className="flex flex-col items-end gap-1 text-right">
-          <span
-            className={`font-[family-name:var(--font-display)] text-xs tabular-nums ${indexColorClass}`}
-          >
-            0{index + 1}
-            <span className="mx-1 opacity-50">/</span>
-            <span className="opacity-50">0{total}</span>
-          </span>
-          <span
-            className={`font-[family-name:var(--font-display)] text-[9px] tracking-[0.2em] uppercase ${countClass}`}
-          >
-            {product.count}
-          </span>
-        </div>
+        <span
+          className={`font-[family-name:var(--font-display)] text-xs tabular-nums ${indexColorClass}`}
+        >
+          0{index + 1}
+          <span className="mx-1 opacity-50">/</span>
+          <span className="opacity-50">0{total}</span>
+        </span>
       </div>
 
       <div className="relative z-10 flex flex-col gap-4">
@@ -291,37 +254,46 @@ function BentoCard({
           {product.description}
         </p>
 
-        <ul className="flex flex-wrap gap-1.5">
-          {product.attrs.map((a) => (
-            <li
-              key={a}
-              className={`rounded-full border px-2.5 py-1 font-[family-name:var(--font-display)] text-[10px] tracking-[0.1em] transition-colors duration-300 ${attrClass}`}
-            >
-              {a}
-            </li>
-          ))}
-        </ul>
-
         <div className={`mt-1 h-px w-full ${dividerClass}`} />
 
         <div className="flex items-center justify-between gap-3">
-          <button
-            type="button"
-            aria-label={`${product.cta} — ${product.title}`}
-            className={`inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-accent-soft focus-visible:ring-offset-2 focus-visible:outline-none ${
+          {(() => {
+            const ctaClass = `inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-accent-soft focus-visible:ring-offset-2 focus-visible:outline-none ${
               isAccent
                 ? "bg-white text-foreground hover:bg-accent-soft hover:text-white focus-visible:ring-offset-foreground"
                 : "border border-surface-strong bg-card text-foreground group-hover:border-accent-soft group-hover:text-accent focus-visible:ring-offset-background"
-            }`}
-          >
-            {product.cta}
-            <span
-              aria-hidden
-              className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
-            >
-              →
-            </span>
-          </button>
+            }`;
+            const ctaInner = (
+              <>
+                {product.cta}
+                <span
+                  aria-hidden
+                  className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
+                >
+                  →
+                </span>
+              </>
+            );
+            return product.href ? (
+              <a
+                href={product.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${product.cta} — ${product.title}`}
+                className={ctaClass}
+              >
+                {ctaInner}
+              </a>
+            ) : (
+              <button
+                type="button"
+                aria-label={`${product.cta} — ${product.title}`}
+                className={ctaClass}
+              >
+                {ctaInner}
+              </button>
+            );
+          })()}
 
           <span
             className={`font-[family-name:var(--font-display)] text-[10px] tracking-[0.3em] uppercase ${mutedTextClass}`}
@@ -341,93 +313,90 @@ function DecorOrbit() {
       className="h-56 w-56 text-surface-strong transition-colors duration-500 group-hover:text-accent-soft md:h-72 md:w-72"
       fill="none"
       stroke="currentColor"
+      strokeWidth="1"
       aria-hidden
     >
-      <circle cx="120" cy="120" r="50" strokeWidth="1" />
-      <circle cx="120" cy="120" r="80" strokeWidth="1" />
-      <circle cx="120" cy="120" r="110" strokeWidth="1" />
+      <circle cx="120" cy="170" r="30" />
+      <circle cx="120" cy="170" r="60" opacity="0.7" />
+      <circle cx="120" cy="170" r="90" opacity="0.45" />
+      <circle cx="120" cy="170" r="120" opacity="0.25" />
       <circle
-        cx="170"
-        cy="120"
-        r="4"
+        cx="120"
+        cy="170"
+        r="5"
         fill="currentColor"
         stroke="none"
         className="text-accent"
       />
-      <circle cx="120" cy="40" r="3" fill="currentColor" stroke="none" />
     </svg>
   );
 }
 
-function DecorGrid() {
+function DecorDual() {
   return (
     <svg
-      viewBox="0 0 200 200"
-      className="h-40 w-40 text-white/10 transition-colors duration-500 group-hover:text-white/25"
-      fill="currentColor"
+      viewBox="0 0 200 120"
+      className="h-28 w-44 text-white/25 transition-colors duration-500 group-hover:text-white/45"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.2"
       aria-hidden
     >
-      {Array.from({ length: 25 }).map((_, i) => {
-        const x = (i % 5) * 40 + 10;
-        const y = Math.floor(i / 5) * 40 + 10;
-        return <circle key={i} cx={x} cy={y} r="2" />;
-      })}
+      <circle cx="70" cy="60" r="30" />
+      <circle cx="130" cy="60" r="30" />
+      <path d="M70 60 Q100 30 130 60" opacity="0.7" strokeDasharray="2 4" />
+      <circle cx="70" cy="60" r="3" fill="currentColor" stroke="none" />
+      <circle cx="130" cy="60" r="3" fill="currentColor" stroke="none" />
     </svg>
   );
 }
 
-function DecorWave() {
+function DecorSunrise() {
   return (
     <svg
-      viewBox="0 0 160 80"
+      viewBox="0 0 180 100"
       className="h-24 w-40 text-surface-strong transition-colors duration-500 group-hover:text-accent-soft"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.2"
       aria-hidden
     >
-      <path d="M0 40 Q20 10 40 40 T80 40 T120 40 T160 40" />
-      <path d="M0 50 Q20 20 40 50 T80 50 T120 50 T160 50" opacity=".6" />
-      <path d="M0 60 Q20 30 40 60 T80 60 T120 60 T160 60" opacity=".3" />
+      <path d="M10 85 Q90 15 170 85" />
+      <path d="M10 85 Q90 35 170 85" opacity="0.5" />
+      <line x1="10" y1="88" x2="170" y2="88" opacity="0.6" />
+      <circle
+        cx="90"
+        cy="25"
+        r="5"
+        fill="currentColor"
+        stroke="none"
+        className="text-accent"
+      />
     </svg>
   );
 }
 
-function DecorPulse() {
+function DecorFoundation() {
   return (
     <svg
-      viewBox="0 0 120 80"
-      className="h-20 w-32 text-surface-strong transition-colors duration-500 group-hover:text-accent-soft"
+      viewBox="0 0 240 120"
+      className="h-24 w-48 text-surface-strong transition-colors duration-500 group-hover:text-accent-soft md:h-28 md:w-64"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.4"
       aria-hidden
     >
-      <path d="M0 40 L30 40 L40 20 L55 60 L70 30 L85 50 L95 40 L120 40" />
-    </svg>
-  );
-}
-
-function DecorLines() {
-  return (
-    <svg
-      viewBox="0 0 200 120"
-      className="h-28 w-48 text-surface-strong transition-colors duration-500 group-hover:text-accent-soft md:h-32 md:w-64"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1"
-      aria-hidden
-    >
-      {Array.from({ length: 9 }).map((_, i) => (
-        <line
-          key={i}
-          x1={0}
-          x2={200}
-          y1={i * 14 + 6}
-          y2={i * 14 + 6}
-          opacity={1 - i * 0.1}
-        />
-      ))}
+      <line x1="0" y1="20" x2="240" y2="20" strokeWidth="1" opacity="0.25" />
+      <line x1="0" y1="40" x2="240" y2="40" strokeWidth="1" opacity="0.4" />
+      <line x1="0" y1="60" x2="240" y2="60" strokeWidth="1" opacity="0.6" />
+      <line x1="0" y1="80" x2="240" y2="80" strokeWidth="1" opacity="0.8" />
+      <line
+        x1="0"
+        y1="100"
+        x2="240"
+        y2="100"
+        strokeWidth="2"
+        className="text-accent"
+      />
     </svg>
   );
 }

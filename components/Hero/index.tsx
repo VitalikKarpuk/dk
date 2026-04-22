@@ -5,15 +5,6 @@ import Image from "next/image";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const PALETTE: { hex: string; name: string }[] = [
-  { hex: "#141416", name: "Graphite" },
-  { hex: "#0A62D0", name: "Electric" },
-  { hex: "#5491E0", name: "Azure" },
-  { hex: "#F2EFE9", name: "Paper" },
-  { hex: "#D6D0C0", name: "Sand" },
-  { hex: "#78746D", name: "Ash" },
-];
-
 const FOCUS_TICKER = [
   "Тревога",
   "Отношения",
@@ -26,12 +17,29 @@ const FOCUS_TICKER = [
 export default function Hero() {
   return (
     <section
-      className="relative w-full overflow-hidden bg-background"
+      className="relative w-full overflow-hidden"
       aria-label="Обложка практики"
     >
+      <div className="pointer-events-none absolute inset-0 z-0 bg-background" />
+
+      <video
+        aria-hidden
+        autoPlay
+        muted
+        playsInline
+        preload="metadata"
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-70 motion-reduce:hidden"
+        src="/intro.mp4"
+      />
+
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-60 mix-blend-multiply"
+        className="pointer-events-none absolute inset-0 z-0 bg-background/35"
+      />
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 opacity-50 mix-blend-multiply"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
@@ -40,10 +48,10 @@ export default function Hero() {
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[50vh]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-48"
         style={{
           background:
-            "linear-gradient(180deg, #F7F3EB 0%, rgba(247,243,235,0) 100%)",
+            "linear-gradient(0deg, var(--background) 0%, rgba(244,246,249,0) 100%)",
         }}
       />
 
@@ -224,7 +232,7 @@ export default function Hero() {
               <span className="font-semibold text-foreground">
                 Клинический психолог и психотерапевт.
               </span>{" "}
-              <span className="text-[#6C6861]">
+              <span className="text-[#6B7280]">
                 Помогаю проходить через тревогу, кризис и сложные периоды в
                 отношениях — без оценок, бережно и в своём темпе.
               </span>
@@ -283,51 +291,9 @@ export default function Hero() {
           >
             <Stat value="1200+" label="Сессий" trend="+120/год" />
             <Stat value="12 лет" label="Практики" trend="2014" />
-            <Stat value="5" label="Направлений" trend="РФ · EU" />
+            <Stat value="4" label="Направления" trend="РФ · EU" />
           </motion.dl>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.8 }}
-            className="relative z-10 order-5 md:col-span-12"
-          >
-            <div className="flex flex-col gap-5 border-t border-surface-strong pt-6 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-center gap-3">
-                <span className="font-[family-name:var(--font-display)] text-[10px] tracking-[0.3em] text-muted uppercase">
-                  Палитра пространства
-                </span>
-                <span className="hidden h-px w-8 bg-surface-strong md:inline-block" />
-              </div>
-
-              <ul className="flex flex-wrap items-center gap-4 md:gap-6">
-                {PALETTE.map((c) => (
-                  <li key={c.hex} className="group flex items-center gap-2.5">
-                    <span
-                      aria-hidden
-                      className="h-5 w-5 rounded-full ring-1 ring-inset ring-black/5 transition-transform duration-300 group-hover:scale-110 motion-reduce:transform-none"
-                      style={{ backgroundColor: c.hex }}
-                    />
-                    <span className="flex flex-col leading-tight">
-                      <span className="font-[family-name:var(--font-display)] text-[11px] font-medium tracking-[0.1em] text-foreground">
-                        {c.name}
-                      </span>
-                      <span className="font-[family-name:var(--font-display)] text-[9px] tracking-[0.2em] text-muted uppercase tabular-nums">
-                        {c.hex}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="hidden items-center gap-3 md:flex">
-                <span className="font-[family-name:var(--font-display)] text-[10px] tracking-[0.3em] text-muted uppercase">
-                  Кабинет · 2026
-                </span>
-                <span className="h-1 w-1 rounded-full bg-accent" />
-              </div>
-            </div>
-          </motion.div>
         </div>
 
         <motion.div
