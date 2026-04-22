@@ -205,7 +205,7 @@ function BentoCard({
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 flex items-center justify-end pr-4 opacity-70 transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transform-none md:pr-6"
+        className="pointer-events-none absolute inset-0 hidden items-center justify-end pr-4 opacity-70 transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transform-none sm:flex md:pr-6"
       >
         {product.decor}
       </div>
@@ -213,7 +213,7 @@ function BentoCard({
       {isCanvas && (
         <span
           aria-hidden
-          className="pointer-events-none absolute right-6 -bottom-6 font-[family-name:var(--font-editorial)] text-[220px] leading-none font-medium tracking-tighter select-none md:text-[260px]"
+          className="pointer-events-none absolute right-4 -bottom-6 font-[family-name:var(--font-editorial)] text-[140px] leading-none font-medium tracking-tighter select-none sm:text-[220px] md:text-[260px]"
           style={{
             color: "transparent",
             WebkitTextStroke: "1px rgba(120, 116, 109, 0.14)",

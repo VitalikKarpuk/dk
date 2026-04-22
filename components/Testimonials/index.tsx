@@ -66,14 +66,13 @@ export default function Testimonials() {
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-[#F4F6F9] via-[#F4F6F9]/85 to-transparent"
         />
 
-        <div className="grid h-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid h-full grid-cols-1 gap-4 sm:hidden">
+          <ScrollColumn items={REVIEWS} speed={60} reverse={false} />
+        </div>
+
+        <div className="hidden h-full gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3">
           <ScrollColumn items={COLUMNS[0]} speed={46} reverse={false} />
-          <ScrollColumn
-            items={COLUMNS[1]}
-            speed={54}
-            reverse
-            className="hidden sm:block"
-          />
+          <ScrollColumn items={COLUMNS[1]} speed={54} reverse />
           <ScrollColumn
             items={COLUMNS[2]}
             speed={40}

@@ -28,7 +28,7 @@ export default function Hero() {
         muted
         playsInline
         preload="metadata"
-        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-70 motion-reduce:hidden"
+        className="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover opacity-70 sm:block motion-reduce:hidden"
         src="/intro.mp4"
       />
 
@@ -196,9 +196,9 @@ export default function Hero() {
               </div>
             </div>
 
-            <figcaption className="mt-4 grid grid-cols-3 items-center gap-4 border-t border-surface-strong pt-3 font-[family-name:var(--font-display)] text-[10px] tracking-[0.28em] text-muted uppercase">
+            <figcaption className="mt-4 flex items-center justify-between gap-4 border-t border-surface-strong pt-3 font-[family-name:var(--font-display)] text-[10px] tracking-[0.28em] text-muted uppercase md:grid md:grid-cols-3">
               <span>Кабинет · Москва</span>
-              <span className="text-center tabular-nums">
+              <span className="hidden text-center tabular-nums md:inline">
                 55.75° N / 37.61° E
               </span>
               <span className="flex items-center justify-end gap-2 text-foreground">
@@ -294,6 +294,26 @@ export default function Hero() {
             <Stat value="4" label="Направления" trend="РФ · EU" />
           </motion.dl>
 
+        </div>
+
+        <div className="mt-10 sm:hidden">
+          <div className="mb-3 flex items-center justify-between font-[family-name:var(--font-display)] text-[10px] tracking-[0.3em] text-muted uppercase">
+            <span className="flex items-center gap-2 text-foreground">
+              <span className="h-px w-6 bg-foreground" />
+              Короткое видео
+            </span>
+            <span>Нажмите, чтобы посмотреть</span>
+          </div>
+          <div className="relative mx-auto aspect-[832/1104] w-full max-w-[420px] overflow-hidden rounded-lg border border-surface-strong bg-surface-strong/40">
+            <video
+              controls
+              playsInline
+              preload="none"
+              poster="/DariaImg.jpg"
+              className="h-full w-full object-cover"
+              src="/intro.mp4"
+            />
+          </div>
         </div>
 
         <motion.div

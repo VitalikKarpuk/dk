@@ -23,9 +23,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Студия — креатив, дизайн, брендинг",
+  title: "Дарья Карпук — клинический психолог, психотерапевт",
   description:
-    "Премиальная креативная студия: брендинг, дизайн, digital. Минимализм и внимание к деталям.",
+    "Индивидуальные консультации, курсы и интенсивы. Бережно и без оценок — о тревоге, отношениях, опоре и росте.",
 };
 
 export default function RootLayout({
@@ -38,9 +38,6 @@ export default function RootLayout({
       lang="ru"
       className={`${inter.variable} ${manrope.variable} ${playfair.variable} h-full antialiased`}
     >
-      <head>
-        <link rel="preload" as="video" href="/intro.mp4" type="video/mp4" />
-      </head>
       <body className="min-h-full flex flex-col bg-[#F4F6F9] text-[#151922]">
         {children}
       </body>
