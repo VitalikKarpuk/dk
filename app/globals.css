@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f6f9;
-  --surface: #e8ecf2;
-  --surface-strong: #c9d1dc;
-  --foreground: #151922;
-  --muted: #6b7280;
-  --accent: #0a62d0;
-  --accent-soft: #5491e0;
-  --card: #ffffff;
+  --background: #d7e3f0;
+  --surface: #b5c9df;
+  --surface-strong: #7c9bbe;
+  --foreground: #0e1f42;
+  --muted: #4d6080;
+  --accent: #1e78f0;
+  --accent-soft: #d9b36e;
+  --card: #ebf2fa;
 }
 
 @theme inline {
@@ -19,6 +19,7 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+  --color-card: var(--card);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", sans-serif;
   --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif,

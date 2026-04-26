@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 type Tone = "light" | "accent" | "canvas";
 
@@ -13,18 +14,25 @@ type Product = {
   count: string;
   decor: React.ReactNode;
   href?: string;
+  photo?: { src: string; alt: string };
+  photoLayout?: "top" | "side";
 };
 
 const PRODUCTS: Product[] = [
   {
     title: "Я ЛИДЕР",
     description:
-      "Место профессиональных и личностных перемен. Шесть модулей и четыре дополнительных блока — от постановки целей и самооценки до финансов, уникальности и продаж.",
+      "7-недельная программа для экспертов, желающих вырасти профессионально и финансово",
     cta: "Подробнее",
     tone: "canvas",
     span: "md:col-span-2 md:row-span-2",
-    count: "10 модулей",
+    count: "",
     decor: <DecorOrbit />,
+    photo: {
+      src: "/groupPeople.JPG",
+      alt: "Группа участников программы «Я Лидер»",
+    },
+    href: 'https://group-7-2025.netlify.app/'
   },
   {
     title: "Индивидуальные консультации",
@@ -37,46 +45,39 @@ const PRODUCTS: Product[] = [
     decor: <DecorDual />,
     href: "https://www.instagram.com/daria_karpuk.psy",
   },
-  {
-    title: "Интенсив «Новая я»",
-    description:
-      "Короткий интенсивный формат для перезапуска: концентрированная работа над состоянием, опорой и новыми решениями за сжатый срок.",
-    cta: "Узнать подробнее",
-    tone: "light",
-    span: "md:col-span-2",
-    count: "интенсив",
-    decor: <DecorSunrise />,
-  },
+  // {
+  //   title: "Интенсив «Новая я»",
+  //   description:
+  //     "Короткий интенсивный формат для перезапуска: концентрированная работа над состоянием, опорой и новыми решениями за сжатый срок.",
+  //   cta: "Узнать подробнее",
+  //   tone: "light",
+  //   span: "md:col-span-2",
+  //   count: "интенсив",
+  //   decor: <DecorSunrise />,
+  // },
   {
     title: "Базовые законы жизни",
-    description:
-      "Четырёхнедельный курс для тех, кто хочет навести порядок в жизни: убрать ограничивающие установки, обрести опору и начать двигаться к своим целям без хаоса и перегрузки.",
-    cta: "Записаться",
+    description: "Курс для тех, кто хочет навести порядок в своей жизни, обрести ясность и начать двигаться по пути своего предназначения.",
+    cta: "Подробнее",
     tone: "light",
-    span: "md:col-span-4",
-    count: "Старт 30 апреля · 4 недели",
+    span: "md:col-span-2",
+    count: "",
     decor: <DecorFoundation />,
+    href: 'https://fate-dewberry-189.notion.site/12d3e4311d7380b5accad405b0592875',
+    photo: {
+      src: "/baseLife.JPG",
+      alt: "Иллюстрация курса «Базовые законы жизни»",
+    },
+    photoLayout: "side",
   },
 ];
 
 export default function BentoGrid() {
   return (
     <section
-      className="mx-auto w-full max-w-[1400px] px-6 py-28 md:px-12 md:py-36"
+      className="mx-auto w-full max-w-[1400px] px-6 py-20 md:px-12 md:py-28"
       aria-label="Направления практики"
     >
-      <div className="mb-10 flex items-center gap-3 border-b border-surface-strong pb-4 font-[family-name:var(--font-display)] text-[10px] tracking-[0.35em] text-muted uppercase md:mb-14">
-        <span className="text-foreground">§02</span>
-        <span className="h-px w-8 bg-surface-strong" />
-        <span>Practice Index</span>
-        <span className="ml-auto hidden items-center gap-3 md:flex">
-          <span>Всего направлений</span>
-          <span className="font-[family-name:var(--font-display)] text-sm font-semibold tabular-nums text-foreground">
-            04
-          </span>
-        </span>
-      </div>
-
       <div className="mb-14 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <div>
           <div className="mb-5 inline-flex items-center gap-2.5">
@@ -88,32 +89,17 @@ export default function BentoGrid() {
               Как я работаю
             </p>
           </div>
-          <h2 className="max-w-xl font-[family-name:var(--font-display)] text-4xl leading-[1.05] font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
-            Четыре направления —<br />
+          <h2 className="font-[family-name:var(--font-display)] text-4xl leading-[1.05] font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
+            Три направления —<br />
             одно безопасное{" "}
             <span className="text-accent italic font-[family-name:var(--font-editorial)] font-medium">
               пространство.
             </span>
           </h2>
         </div>
-
-        <div className="flex max-w-md flex-col gap-5">
-          <p className="text-base leading-relaxed text-muted">
-            Подбираю формат под запрос: индивидуально, в паре или в группе —
-            в одном этичном подходе и без оценок.
-          </p>
-          <div className="flex items-center gap-4 border-t border-surface-strong pt-4 font-[family-name:var(--font-display)] text-[10px] tracking-[0.28em] text-muted uppercase">
-            <span className="flex items-center gap-2">
-              <span className="h-1 w-1 rounded-full bg-accent" />
-              Опыт 12 лет
-            </span>
-            <span className="h-px w-4 bg-surface-strong" />
-            <span>Сессия 50 минут</span>
-          </div>
-        </div>
       </div>
 
-      <div className="grid auto-rows-[minmax(220px,1fr)] grid-cols-1 gap-4 md:grid-cols-4">
+      <div className="grid auto-rows-[minmax(220px,1fr)] grid-cols-1 gap-4 md:grid-cols-4 md:gap-5">
         {PRODUCTS.map((p, i) => (
           <BentoCard
             key={p.title}
@@ -124,36 +110,6 @@ export default function BentoGrid() {
         ))}
       </div>
 
-      <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-surface-strong pt-6 text-sm md:flex-row md:items-center">
-        <p className="font-[family-name:var(--font-display)] text-[11px] tracking-[0.3em] text-muted uppercase">
-          Не уверены, какой формат подходит?
-          <span className="ml-3 text-foreground">Заполните анкету — подберу вместе.</span>
-        </p>
-        <a
-          href="https://docs.google.com/forms/d/1IGPKJW1L88uJpZK8hkIiJwrn3VvRQv60zWTKneoW9aM/viewform"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex min-h-[44px] items-center gap-3 font-[family-name:var(--font-display)] text-[11px] font-medium tracking-[0.28em] text-foreground uppercase focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background focus-visible:outline-none"
-        >
-          <span className="relative">
-            Заполнить анкету
-            <span
-              aria-hidden
-              className="absolute -bottom-1 left-0 h-px w-full origin-left bg-foreground transition-transform duration-500 group-hover:scale-x-0 motion-reduce:transform-none"
-            />
-            <span
-              aria-hidden
-              className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform delay-150 duration-500 group-hover:origin-left group-hover:scale-x-100 motion-reduce:transform-none"
-            />
-          </span>
-          <span
-            aria-hidden
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-surface-strong transition-all duration-500 group-hover:border-accent group-hover:bg-accent group-hover:text-white motion-reduce:transform-none"
-          >
-            →
-          </span>
-        </a>
-      </div>
     </section>
   );
 }
@@ -174,16 +130,31 @@ function BentoCard({
     ? "bg-foreground text-white border-foreground"
     : isCanvas
       ? "bg-surface text-foreground border-surface-strong"
-      : "bg-card text-foreground border-surface-strong shadow-[0_1px_2px_rgba(20,20,22,0.04),0_8px_24px_-12px_rgba(20,20,22,0.08)]";
+      : "bg-card text-foreground border-surface-strong shadow-[0_1px_2px_rgba(14,31,66,0.05),0_8px_24px_-12px_rgba(14,31,66,0.14)]";
 
   const mutedTextClass = isAccent ? "text-white/70" : "text-muted";
   const indexColorClass = isAccent ? "text-white/50" : "text-muted";
   const dividerClass = isAccent ? "bg-white/15" : "bg-surface-strong";
   const countClass = isAccent ? "text-white/70" : "text-foreground/80";
 
+  const photoLayout = product.photo ? (product.photoLayout ?? "top") : null;
+  const isTopPhoto = photoLayout === "top";
+  const isSidePhoto = photoLayout === "side";
+
+  const fadeBgClass = isAccent
+    ? "from-foreground via-foreground/70"
+    : isCanvas
+      ? "from-surface via-surface/70"
+      : "from-card via-card/70";
+  const fadeBgFromClass = isAccent
+    ? "from-foreground"
+    : isCanvas
+      ? "from-surface"
+      : "from-card";
+
   return (
     <motion.article
-      className={`group relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-2xl border p-6 md:p-8 ${product.span} ${surfaceClass} transition-all duration-500 hover:-translate-y-1 hover:border-accent-soft hover:shadow-[0_20px_60px_-20px_rgba(10,98,208,0.35)] focus-within:ring-2 focus-within:ring-accent-soft/40 focus-within:ring-offset-2 focus-within:ring-offset-background motion-reduce:transform-none`}
+      className={`group relative flex min-h-[240px] flex-col overflow-hidden rounded-2xl border p-6 md:p-8 ${isTopPhoto ? "gap-5" : "justify-between"} ${product.span} ${surfaceClass} transition-all duration-500 hover:-translate-y-1 hover:border-accent-soft hover:shadow-[0_20px_60px_-20px_rgba(217,179,110,0.35)] focus-within:ring-2 focus-within:ring-accent-soft/40 focus-within:ring-offset-2 focus-within:ring-offset-background motion-reduce:transform-none`}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -198,32 +169,75 @@ function BentoCard({
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
           background: isAccent
-            ? "radial-gradient(80% 60% at 80% 20%, rgba(84,145,224,0.35) 0%, transparent 70%)"
-            : "radial-gradient(60% 50% at 100% 0%, rgba(84,145,224,0.18) 0%, transparent 70%)",
+            ? "radial-gradient(80% 60% at 80% 20%, rgba(217,179,110,0.32) 0%, transparent 70%)"
+            : "radial-gradient(60% 50% at 100% 0%, rgba(217,179,110,0.22) 0%, transparent 70%)",
         }}
       />
 
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 hidden items-center justify-end pr-4 opacity-70 transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transform-none sm:flex md:pr-6"
-      >
-        {product.decor}
-      </div>
+      {!product.photo && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 hidden items-center justify-end pr-4 opacity-70 transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transform-none sm:flex md:pr-6"
+        >
+          {product.decor}
+        </div>
+      )}
 
-      {isCanvas && (
+      {isTopPhoto && product.photo && (
+        <div className="relative -mx-6 -mt-6 overflow-hidden md:-mx-8 md:-mt-8">
+          <Image
+            src={product.photo.src}
+            alt={product.photo.alt}
+            width={5875}
+            height={3917}
+            sizes="(min-width: 1280px) 720px, (min-width: 768px) 50vw, 100vw"
+            className="block h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.02] motion-reduce:transform-none"
+          />
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t ${fadeBgClass} to-transparent`}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-10 backdrop-blur-md [mask-image:linear-gradient(to_top,black,transparent)]"
+          />
+        </div>
+      )}
+
+      {isSidePhoto && product.photo && (
+        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] overflow-hidden md:block lg:w-[40%]">
+          <Image
+            src={product.photo.src}
+            alt={product.photo.alt}
+            fill
+            sizes="(min-width: 1280px) 320px, (min-width: 768px) 28vw, 0px"
+            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02] motion-reduce:transform-none"
+          />
+          <div
+            aria-hidden
+            className={`absolute inset-y-0 left-0 w-16 bg-gradient-to-r ${fadeBgFromClass} to-transparent`}
+          />
+        </div>
+      )}
+
+      {isCanvas && !product.photo && (
         <span
           aria-hidden
           className="pointer-events-none absolute right-4 -bottom-6 font-[family-name:var(--font-editorial)] text-[140px] leading-none font-medium tracking-tighter select-none sm:text-[220px] md:text-[260px]"
           style={{
             color: "transparent",
-            WebkitTextStroke: "1px rgba(120, 116, 109, 0.14)",
+            WebkitTextStroke: "1px rgba(77, 96, 128, 0.28)",
           }}
         >
           0{index + 1}
         </span>
       )}
 
-      <div className="relative z-10 flex items-start justify-between gap-3">
+      <div
+        className={`relative z-10 flex items-start justify-between gap-3 ${
+          isSidePhoto ? "md:max-w-[55%] lg:max-w-[58%]" : ""
+        }`}
+      >
         <span
           className={`font-[family-name:var(--font-display)] text-[10px] tracking-[0.3em] uppercase ${countClass}`}
         >
@@ -238,7 +252,11 @@ function BentoCard({
         </span>
       </div>
 
-      <div className="relative z-10 flex flex-col gap-4">
+      <div
+        className={`relative z-10 flex flex-col gap-4 ${
+          isSidePhoto ? "md:max-w-[55%] lg:max-w-[58%]" : ""
+        }`}
+      >
         <h3
           className={`font-[family-name:var(--font-display)] font-semibold tracking-tight ${
             isCanvas
@@ -294,12 +312,6 @@ function BentoCard({
               </button>
             );
           })()}
-
-          <span
-            className={`font-[family-name:var(--font-display)] text-[10px] tracking-[0.3em] uppercase ${mutedTextClass}`}
-          >
-            →&nbsp;&nbsp;Истории
-          </span>
         </div>
       </div>
     </motion.article>

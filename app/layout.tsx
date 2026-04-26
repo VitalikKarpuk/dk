@@ -38,7 +38,7 @@ export default function RootLayout({
       lang="ru"
       className={`${inter.variable} ${manrope.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#F4F6F9] text-[#151922]">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
       </body>
     </html>

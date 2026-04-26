@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "content-creation": {
+      "source": "smithery.ai",
+      "sourceType": "well-known",
+      "computedHash": "012ed09d491de22ef3d2697e7f268597353711b8c17d72ce013c4a6e396df970"
+    },
     "frontend-design": {
       "source": "smithery.ai",
       "sourceType": "well-known",
@@ -10,6 +15,11 @@
       "source": "smithery.ai",
       "sourceType": "well-known",
       "computedHash": "11b1be7121aa1a5395a9838b34532d88025acb2853c306fd18de25065547699a"
+    },
+    "theme-factory": {
+      "source": "smithery.ai",
+      "sourceType": "well-known",
+      "computedHash": "fd307c53a5ce04d6238324ff5fc315ad7e84c960f48d81cf50410da97905d6ef"
     },
     "ui-ux-pro-max": {
       "source": "smithery.ai",
