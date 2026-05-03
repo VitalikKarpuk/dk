@@ -54,7 +54,7 @@ export default function Diagnostic() {
           </h2>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75 md:text-lg">
-            Короткий разговор, чтобы понять ваш запрос и предложить подходящий формат — программу, индивидуальные сессии или курс.
+            Короткий разговор, чтобы понять ваш запрос и определить подходящий формат — программу, индивидуальные сессии или курс.
           </p>
 
           <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">

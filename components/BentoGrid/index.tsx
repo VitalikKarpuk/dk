@@ -42,7 +42,7 @@ const PRODUCTS: Product[] = [
     cta: "Подробнее",
     tone: "accent",
     span: "md:col-span-2",
-    count: "1:1",
+    count: "",
     decor: <DecorDual />,
     href: "/individual",
     photo: {

@@ -20,24 +20,26 @@ export default function Footer() {
           </div>
 
           <nav
-            aria-label="Контакты и формы"
-            className="flex flex-wrap items-center gap-8 text-sm text-muted"
+            aria-label="Контакты"
+            className="flex flex-wrap items-center gap-0.5 text-muted"
           >
             <a
               href="https://www.instagram.com/daria_karpuk.psy"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[44px] items-center transition-colors duration-300 hover:text-accent"
+              aria-label="Instagram"
+              className="inline-flex h-11 w-11 items-center justify-center transition-colors duration-300 hover:text-accent"
             >
-              Instagram
+              <InstagramIcon />
             </a>
             <a
-              href="https://docs.google.com/forms/d/1IGPKJW1L88uJpZK8hkIiJwrn3VvRQv60zWTKneoW9aM/viewform"
+              href="https://www.youtube.com/@daria_karpuk.psy1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[44px] items-center transition-colors duration-300 hover:text-accent"
+              aria-label="YouTube"
+              className="inline-flex h-11 w-11 items-center justify-center transition-colors duration-300 hover:text-accent"
             >
-              Анкета
+              <YoutubeIcon />
             </a>
           </nav>
         </div>
@@ -58,5 +60,39 @@ export default function Footer() {
         </p>
       </div>
     </footer>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="22"
+      height="22"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function YoutubeIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.6 4.6 12 4.6 12 4.6s-7.6 0-9.4.5A3 3 0 0 0 .5 7.2C0 9 0 12 0 12s0 3 .5 4.8a3 3 0 0 0 2.1 2.1c1.8.5 9.4.5 9.4.5s7.6 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.8.5-4.8.5-4.8s0-3-.5-4.8zM9.6 15.6V8.4l6.4 3.6-6.4 3.6z" />
+    </svg>
   );
 }
