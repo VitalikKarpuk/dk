@@ -3,6 +3,7 @@ import Marquee from "@/components/Marquee";
 import BentoGrid from "@/components/BentoGrid";
 import Testimonials from "@/components/Testimonials";
 import Diagnostic from "@/components/Diagnostic";
+import Video from "@/components/Video";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <BentoGrid />
       <Diagnostic />
       <Testimonials />
+      <Video />
       <Footer />
     </main>
   );
