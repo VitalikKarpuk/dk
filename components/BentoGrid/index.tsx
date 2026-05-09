@@ -68,7 +68,7 @@ const PRODUCTS: Product[] = [
     span: "md:col-span-2",
     count: "",
     decor: <DecorFoundation />,
-    href: 'https://fate-dewberry-189.notion.site/12d3e4311d7380b5accad405b0592875',
+    href: '/basic-laws',
     photo: {
       src: "/baseLife.JPG",
       alt: "Иллюстрация курса «Базовые законы жизни»",
