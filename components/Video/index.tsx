@@ -20,7 +20,7 @@ const FONT_BODY = "var(--font-inter), system-ui, sans-serif";
 
 const VIDEO_SRC = "/videoFinal.mp4";
 // TODO: replace with the real questionnaire URL
-const FORM_URL = "https://example.com/anketa";
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfRdfLMjzVz8-JkYcIDimeecOXU0Gnlr80m8T5VsfBZZP9u0Q/viewform?usp=publish-editor";
 
 export default function Video() {
   const videoRef = useRef<HTMLVideoElement>(null);

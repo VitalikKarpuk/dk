@@ -20,15 +20,15 @@ const FONT_ACCENT = "var(--font-editorial), cursive";
 const FONT_BODY = "var(--font-inter), system-ui, sans-serif";
 
 // TODO: replace with the real questionnaire URL
-const FORM_URL = "https://example.com/anketa";
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfRdfLMjzVz8-JkYcIDimeecOXU0Gnlr80m8T5VsfBZZP9u0Q/viewform?usp=publish-editor";
 
 const LOYALTY = [
-  "Доступ к библиотеке, где собрано более 100 книг по психологии",
-  "Доступ к моим закрытым мастер-классам и вебинарам по вашей проблематике",
+  "На весть период совместной работы вы получается полное мое соправождение и погружение в вашу проблематику",
   "В течение периода работы есть возможность писать текстовые и аудио сообщения для получения обратной связи",
   "Персональные рекомендации для самостоятельной работы — литература, фильмы, упражнения",
   "Делюсь при необходимости контактами сторонних проверенных специалистов по вашему запросу",
   "На участие в любом из моих обучений действуют специальные бонусные условия",
+  "При покупке любого пакета консультаций в МАЕ вы получаете бесплатно доступ к прохождению мастер-класс «ТРАНСФОРМАЦИЯ САМООЦЕНКИ»."
 ];
 
 type Pkg = {
@@ -314,63 +314,130 @@ function SectionHeader({
 }
 
 function LoyaltySection() {
+  const lastIndex = LOYALTY.length - 1;
+
   return (
     <section className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
       <SectionHeader number="01 — Условия" title="Что входит в" italic="лояльность" />
 
-      <ul className="mt-12 grid gap-4 md:grid-cols-2 md:gap-5">
-        {LOYALTY.map((item, i) => (
-          <li
-            key={item}
-            className="relative overflow-hidden p-7 md:p-8"
-            style={{
-              backgroundColor: COLORS.pureWhite,
-              border: `1px solid ${COLORS.lilacAccent}`,
-              borderRadius: "16px",
-            }}
-          >
-            <span
-              aria-hidden
-              className="absolute right-6 top-4 italic"
+      <ul className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+        {LOYALTY.map((item, i) => {
+          const isLast = i === lastIndex;
+
+          if (isLast) {
+            return (
+              <li
+                key={item}
+                className="relative overflow-hidden p-7 md:p-8"
+                style={{
+                  backgroundColor: COLORS.boardroomNavy,
+                  borderRadius: "16px",
+                  color: COLORS.pureWhite,
+                }}
+              >
+                <span
+                  aria-hidden
+                  className="absolute right-6 top-4 italic"
+                  style={{
+                    fontFamily: FONT_ACCENT,
+                    fontWeight: 400,
+                    fontSize: "clamp(64px, 7vw, 96px)",
+                    lineHeight: 1,
+                    letterSpacing: "-0.04em",
+                    color: "transparent",
+                    WebkitTextStroke: `1px ${COLORS.brandElectric}`,
+                  }}
+                >
+                  0{i + 1}
+                </span>
+
+                <div className="relative max-w-[88%]">
+                  <span
+                    className="inline-flex items-center px-3 py-1.5"
+                    style={{
+                      backgroundColor: COLORS.feedbackYellow,
+                      color: COLORS.pitchBlack,
+                      borderRadius: "999px",
+                      fontFamily: FONT_BODY,
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Бонус
+                  </span>
+
+                  <p
+                    className="mt-4"
+                    style={{
+                      fontFamily: FONT_BODY,
+                      fontSize: "16px",
+                      lineHeight: 1.6,
+                      color: COLORS.pureWhite,
+                    }}
+                  >
+                    При покупке любого пакета консультаций в МАЕ вы получаете
+                    бесплатный доступ к прохождению мастер-класса{" "}
+                    <em
+                      className="italic"
+                      style={{
+                        fontFamily: FONT_ACCENT,
+                        fontWeight: 400,
+                        color: COLORS.feedbackYellow,
+                      }}
+                    >
+                      «Трансформация самооценки»
+                    </em>
+                    .
+                  </p>
+                </div>
+              </li>
+            );
+          }
+
+          return (
+            <li
+              key={item}
+              className="relative overflow-hidden p-7 md:p-8"
               style={{
-                fontFamily: FONT_ACCENT,
-                fontWeight: 400,
-                fontSize: "clamp(64px, 7vw, 96px)",
-                lineHeight: 1,
-                letterSpacing: "-0.04em",
-                color: "transparent",
-                WebkitTextStroke: `1px ${COLORS.lilacAccent}`,
+                backgroundColor: COLORS.pureWhite,
+                border: `1px solid ${COLORS.lilacAccent}`,
+                borderRadius: "16px",
               }}
             >
-              0{i + 1}
-            </span>
-
-            <div className="relative max-w-[88%]">
-              <div
+              <span
+                aria-hidden
+                className="absolute right-6 top-4 italic"
                 style={{
-                  fontFamily: FONT_BODY,
-                  fontSize: "12px",
-                  letterSpacing: "0.28em",
-                  textTransform: "uppercase",
-                  color: COLORS.mediumGray,
+                  fontFamily: FONT_ACCENT,
+                  fontWeight: 400,
+                  fontSize: "clamp(64px, 7vw, 96px)",
+                  lineHeight: 1,
+                  letterSpacing: "-0.04em",
+                  color: "transparent",
+                  WebkitTextStroke: `1px ${COLORS.lilacAccent}`,
                 }}
               >
                 0{i + 1}
+              </span>
+
+              <div className="relative max-w-[88%]">
+                <p
+                  className="mt-4"
+                  style={{
+                    fontFamily: FONT_BODY,
+                    fontSize: "16px",
+                    lineHeight: 1.6,
+                    color: COLORS.pitchBlack,
+                  }}
+                >
+                  {item}
+                </p>
               </div>
-              <p
-                className="mt-4"
-                style={{
-                  fontFamily: FONT_BODY,
-                  fontSize: "16px",
-                  lineHeight: 1.6,
-                  color: COLORS.pitchBlack,
-                }}
-              >
-                {item}
-              </p>
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
@@ -686,21 +753,89 @@ function BonusSection() {
       >
         <DecorDots />
 
-        <div className="relative grid gap-6 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-3">
+        <div className="relative grid gap-8 md:grid-cols-12 md:items-center md:gap-10">
+          <div className="md:col-span-4">
             <div
+              className="relative flex flex-col items-start gap-4 p-6 md:p-7"
               style={{
-                fontFamily: FONT_BODY,
-                fontSize: "12px",
-                letterSpacing: "0.28em",
-                textTransform: "uppercase",
+                backgroundColor: COLORS.boardroomNavy,
+                color: COLORS.pureWhite,
+                borderRadius: "16px",
               }}
             >
-              <span aria-hidden>❤️</span> Бонус
+              <span
+                aria-hidden
+                className="absolute right-5 top-5"
+                style={{ color: COLORS.feedbackYellow }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-7 w-7"
+                >
+                  <path d="M20 12v9H4v-9" />
+                  <path d="M2 7h20v5H2z" />
+                  <path d="M12 22V7" />
+                  <path d="M12 7H7.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7z" />
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                </svg>
+              </span>
+
+              <span
+                style={{
+                  fontFamily: FONT_BODY,
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  color: COLORS.feedbackYellow,
+                }}
+              >
+                В подарок
+              </span>
+
+              <div
+                style={{
+                  fontFamily: FONT_HEADING,
+                  fontWeight: 500,
+                  fontSize: "clamp(40px, 5vw, 64px)",
+                  lineHeight: 0.95,
+                  letterSpacing: "-0.04em",
+                  color: COLORS.pureWhite,
+                }}
+              >
+                Бо
+                <em
+                  className="italic"
+                  style={{
+                    fontFamily: FONT_ACCENT,
+                    fontWeight: 400,
+                    color: COLORS.feedbackYellow,
+                  }}
+                >
+                  нус
+                </em>
+              </div>
+
+              <div
+                className="mt-1"
+                style={{
+                  fontFamily: FONT_BODY,
+                  fontSize: "13px",
+                  lineHeight: 1.5,
+                  color: "rgba(255,255,255,0.72)",
+                }}
+              >
+                Только при покупке пакета в МАЕ
+              </div>
             </div>
           </div>
           <p
-            className="md:col-span-9"
+            className="md:col-span-8"
             style={{
               fontFamily: FONT_HEADING,
               fontWeight: 500,
@@ -709,8 +844,8 @@ function BonusSection() {
               letterSpacing: "-0.03em",
             }}
           >
-            При покупке любого пакета консультаций в&nbsp;сентябре вы
-            получаете бесплатно доступ к&nbsp;прохождению интенсива{" "}
+            При покупке любого пакета консультаций в&nbsp;МАЕ вы
+            получаете бесплатно доступ к&nbsp;прохождению мастер-класс.{" "}
             <em
               className="italic"
               style={{
@@ -719,8 +854,7 @@ function BonusSection() {
                 letterSpacing: "-0.02em",
               }}
             >
-              «Новая Я»
-            </em>
+«ТРАНСФОРМАЦИЯ САМООЦЕНКИ»            </em>
             .
           </p>
         </div>

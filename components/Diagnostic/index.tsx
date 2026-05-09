@@ -54,8 +54,7 @@ export default function Diagnostic() {
           </h2>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75 md:text-lg">
-            Короткий разговор, чтобы понять ваш запрос и определить подходящий формат — программу, индивидуальные сессии или курс.
-          </p>
+Короткий разговор, чтобы понять ваш запрос и определить подходящий формат роста для вас          </p>
 
           <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             {POINTS.map((point, i) => (
@@ -84,7 +83,7 @@ export default function Diagnostic() {
           className="flex w-full flex-col items-start gap-5 lg:w-auto lg:items-end"
         >
           <a
-            href={FORM_URL}
+            href={'https://docs.google.com/forms/d/e/1FAIpQLSeifCxZg3TOYUceGHvoYSTDsk3ItvOZG5Ll-TJWFEEQynBu-w/viewform'}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Записаться на бесплатную диагностическую встречу"
