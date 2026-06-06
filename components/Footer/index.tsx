@@ -1,3 +1,5 @@
+import { LogoLockup } from "../Logo/variants";
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -5,19 +7,7 @@ export default function Footer() {
     <footer className="border-t border-surface-strong bg-background">
       <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-10 px-6 py-14 md:px-12">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground font-[family-name:var(--font-display)] text-sm font-bold text-white">
-              Д
-            </span>
-            <div>
-              <p className="font-[family-name:var(--font-display)] text-base font-semibold text-foreground">
-                Дарья Карпук
-              </p>
-              <p className="text-xs text-muted">
-                Психолог · Практика 2026
-              </p>
-            </div>
-          </div>
+          <LogoLockup className="h-10 w-auto text-foreground" />
 
           <nav
             aria-label="Контакты"

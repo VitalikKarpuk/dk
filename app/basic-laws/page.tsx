@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+import { LogoLockup } from "@/components/Logo/variants";
 
 const COLORS = {
   softOffWhite: "#f9f8f6",
@@ -436,31 +437,7 @@ function TopBar() {
             ["--tw-ring-offset-color" as string]: COLORS.softOffWhite,
           }}
         >
-          <span
-            className="flex h-9 w-9 items-center justify-center"
-            style={{
-              backgroundColor: COLORS.boardroomNavy,
-              color: COLORS.pureWhite,
-              borderRadius: "100px",
-              fontFamily: FONT_HEADING,
-              fontWeight: 500,
-              fontSize: "14px",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Д
-          </span>
-          <span
-            style={{
-              fontFamily: FONT_HEADING,
-              fontWeight: 500,
-              fontSize: "16px",
-              letterSpacing: "-0.02em",
-              color: COLORS.pitchBlack,
-            }}
-          >
-            Дарья Карпук
-          </span>
+          <LogoLockup className="h-9 w-auto" />
         </Link>
 
         <Link
