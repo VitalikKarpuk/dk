@@ -20,6 +20,8 @@ const FONT_BODY = "var(--font-inter), system-ui, sans-serif";
 
 const FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSeifCxZg3TOYUceGHvoYSTDsk3ItvOZG5Ll-TJWFEEQynBu-w/viewform";
+
+const COURSE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd9F2Ok_39QOcEJRmBajkkNhtPEs5zbTAhU6xbSxg8guSDOAA/viewform?usp=sharing&ouid=116070228497920182644";
 const INSTAGRAM_URL = "https://www.instagram.com/daria_karpuk.psy";
 
 type IconKey =
@@ -387,7 +389,7 @@ function VideoSection() {
 
         <div className="mt-12 flex flex-col items-center gap-3 text-center">
           <a
-            href={FORM_URL}
+            href={COURSE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-16px_rgba(37,69,255,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
@@ -404,7 +406,7 @@ function VideoSection() {
               ["--tw-ring-offset-color" as string]: COLORS.lightCoolGray,
             }}
           >
-            Пройти бесплатный диагностический разбор
+Записаться на курс
             <span
               aria-hidden
               className="transition-transform duration-300 group-hover:translate-x-0.5"
@@ -574,7 +576,7 @@ function Hero() {
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <a
-              href={FORM_URL}
+              href={COURSE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-16px_rgba(37,69,255,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
