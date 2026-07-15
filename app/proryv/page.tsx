@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import HeroVideo from "./HeroVideo";
+import ScrollReveal from "./ScrollReveal";
 import { LogoLockup } from "@/components/Logo/variants";
 
 const COLORS = {
@@ -430,6 +431,7 @@ export default function ProryvPage() {
       <ResultSection />
       <WhySection />
       <PricingSection />
+      <ScrollReveal />
       <Footer />
       <style>{`
         @keyframes icon-spin {
@@ -457,7 +459,6 @@ export default function ProryvPage() {
           50% { transform: translateY(-8px); }
         }
         .card-rise {
-          animation: card-rise 0.6s ease-out both;
           transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
         }
         .card-rise:hover {
@@ -465,14 +466,37 @@ export default function ProryvPage() {
           box-shadow: 0 18px 40px -24px rgba(12, 23, 84, 0.35);
           border-color: ${COLORS.brandElectric};
         }
+        [data-reveal] {
+          opacity: 0;
+          transform: translateY(22px);
+          transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+            transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+          transition-delay: var(--rd, 0ms);
+          will-change: opacity, transform;
+        }
+        [data-reveal].is-visible {
+          opacity: 1;
+          transform: none;
+        }
+        .zoom-img {
+          transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .group:hover .zoom-img {
+          transform: scale(1.05);
+        }
         @media (prefers-reduced-motion: reduce) {
           .card-rise,
           .card-rise:hover,
+          .zoom-img,
+          .group:hover .zoom-img,
+          [data-reveal],
+          [data-reveal].is-visible,
           .icon-bubble *,
           .icon-bubble {
             animation: none !important;
             transition: none !important;
             transform: none !important;
+            opacity: 1 !important;
           }
         }
       `}</style>
@@ -730,6 +754,7 @@ function SectionHeader({
 }) {
   return (
     <h2
+      data-reveal
       style={{
         fontFamily: FONT_HEADING,
         fontWeight: 500,
@@ -774,18 +799,19 @@ function PainSection() {
             return (
               <li
                 key={item.text}
-                className={`card-rise flex overflow-hidden ${
+                data-reveal
+                className={`card-rise group flex overflow-hidden ${
                   wide ? "flex-col lg:col-span-2 lg:flex-row" : "flex-col"
                 }`}
                 style={{
                   backgroundColor: COLORS.pureWhite,
                   border: `1px solid ${COLORS.lilacAccent}`,
                   borderRadius: "16px",
-                  animationDelay: `${i * 60}ms`,
+                  ["--rd" as string]: `${i * 60}ms`,
                 }}
               >
                 <div
-                  className={`relative w-full ${
+                  className={`relative w-full overflow-hidden ${
                     wide
                       ? "aspect-[16/10] lg:aspect-auto lg:w-[44%] lg:self-stretch"
                       : "aspect-[16/10]"
@@ -797,7 +823,7 @@ function PainSection() {
                     alt=""
                     fill
                     sizes="(min-width: 1024px) 26vw, (min-width: 640px) 46vw, 90vw"
-                    className="object-cover"
+                    className="zoom-img object-cover"
                   />
                 </div>
                 <div
@@ -847,13 +873,15 @@ function DesireSection() {
         />
 
         <ul className="mt-10 grid gap-3 md:grid-cols-2 md:gap-4">
-          {DESIRES.map((item) => (
+          {DESIRES.map((item, i) => (
             <li
               key={item.text}
+              data-reveal
               className="relative flex items-start gap-3 overflow-hidden p-4 md:p-5"
               style={{
                 backgroundColor: COLORS.lightCoolGray,
                 borderRadius: "14px",
+                ["--rd" as string]: `${i * 45}ms`,
               }}
             >
               <span
@@ -907,6 +935,7 @@ function RevealSection() {
     <section className="w-full">
       <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
         <article
+          data-reveal
           className="relative overflow-hidden p-8 md:p-14"
           style={{
             backgroundColor: COLORS.boardroomNavy,
@@ -1041,6 +1070,7 @@ function IncludedSection() {
           {INCLUDED.map((item, i) => (
             <li
               key={item.text}
+              data-reveal
               className="card-rise group flex flex-row items-start gap-4 p-6 md:flex-col md:p-7"
               style={{
                 backgroundColor: "rgba(255,255,255,0.9)",
@@ -1048,7 +1078,7 @@ function IncludedSection() {
                 borderRadius: "16px",
                 boxShadow: "0 18px 40px -26px rgba(12, 23, 84, 0.4)",
                 backdropFilter: "blur(4px)",
-                animationDelay: `${i * 60}ms`,
+                ["--rd" as string]: `${i * 60}ms`,
               }}
             >
               <span
@@ -1094,6 +1124,7 @@ function ResultSection() {
 
         <div className="mt-10 grid gap-4 md:grid-cols-2 md:gap-5">
           <article
+            data-reveal
             className="flex flex-col gap-4 p-8 md:p-10"
             style={{
               backgroundColor: COLORS.pureWhite,
@@ -1139,11 +1170,13 @@ function ResultSection() {
           </article>
 
           <article
+            data-reveal
             className="relative flex flex-col justify-center gap-4 overflow-hidden p-8 md:p-10"
             style={{
               backgroundColor: COLORS.brandElectric,
               color: COLORS.pureWhite,
               borderRadius: "16px",
+              ["--rd" as string]: "120ms",
             }}
           >
             <span
@@ -1206,21 +1239,22 @@ function WhySection() {
           {WHY.map((item, i) => (
             <li
               key={item.title}
-              className="card-rise flex flex-col overflow-hidden"
+              data-reveal
+              className="card-rise group flex flex-col overflow-hidden"
               style={{
                 backgroundColor: COLORS.pureWhite,
                 border: `1px solid ${COLORS.lilacAccent}`,
                 borderRadius: "16px",
-                animationDelay: `${i * 70}ms`,
+                ["--rd" as string]: `${i * 70}ms`,
               }}
             >
-              <div className="relative aspect-[16/10] w-full" style={{ backgroundColor: COLORS.softOffWhite }}>
+              <div className="relative aspect-[16/10] w-full overflow-hidden" style={{ backgroundColor: COLORS.softOffWhite }}>
                 <Image
                   src={item.image}
                   alt=""
                   fill
                   sizes="(min-width: 1024px) 32vw, (min-width: 768px) 46vw, 90vw"
-                  className="object-cover"
+                  className="zoom-img object-cover"
                 />
                 <div
                   aria-hidden
@@ -1293,6 +1327,7 @@ function PricingSection() {
   return (
     <section className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
       <article
+        data-reveal
         className="relative overflow-hidden p-8 md:p-14"
         style={{
           backgroundColor: COLORS.boardroomNavy,
