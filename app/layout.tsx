@@ -22,10 +22,33 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const SITE_TITLE = "Дарья Карпук — психолог и коуч";
+const SITE_DESCRIPTION =
+  "Дарья Карпук — дипломированный психолог и коуч, создатель и автор программ по профессиональному и финансовому росту, спикер республиканских проектов.";
+
 export const metadata: Metadata = {
-  title: "Дарья Карпук — психолог и коуч",
-  description:
-    "Дарья Карпук — дипломированный психолог и коуч, создатель и автор программ по профессиональному и финансовому росту, спикер республиканских проектов.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    type: "website",
+    locale: "ru_RU",
+    images: [
+      {
+        url: "/og-home.png",
+        width: 1200,
+        height: 630,
+        alt: "Дарья Карпук — психолог и коуч",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/og-home.png"],
+  },
 };
 
 export default function RootLayout({
