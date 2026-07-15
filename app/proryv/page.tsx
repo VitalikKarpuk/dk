@@ -1015,7 +1015,22 @@ function RevealSection() {
 
 function IncludedSection() {
   return (
-    <section id="included" className="w-full scroll-mt-20">
+    <section
+      id="included"
+      className="relative isolate w-full scroll-mt-20 overflow-hidden"
+    >
+      <Image
+        src="/included-bg.png"
+        alt=""
+        fill
+        sizes="100vw"
+        className="-z-10 object-cover"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10"
+        style={{ backgroundColor: "rgba(249,248,246,0.55)" }}
+      />
       <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
         <SectionHeader
           title="Что вас ждёт"
@@ -1028,9 +1043,11 @@ function IncludedSection() {
               key={item.text}
               className="card-rise group flex flex-row items-start gap-4 p-6 md:flex-col md:p-7"
               style={{
-                backgroundColor: COLORS.pureWhite,
+                backgroundColor: "rgba(255,255,255,0.9)",
                 border: `1px solid ${COLORS.lilacAccent}`,
                 borderRadius: "16px",
+                boxShadow: "0 18px 40px -26px rgba(12, 23, 84, 0.4)",
+                backdropFilter: "blur(4px)",
                 animationDelay: `${i * 60}ms`,
               }}
             >
