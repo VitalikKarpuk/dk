@@ -405,10 +405,33 @@ const WHY: Stat[] = [
   },
 ];
 
+const OG_TITLE = "ПРОРЫВ — проект для экспертов · Дарья Карпук";
+const OG_DESCRIPTION =
+  "«ПРОРЫВ» — проект для экспертов: понятная стратегия, поддержка, окружение сильных единомышленников и обратная связь, чтобы увеличить доход, привлекать клиентов и уверенно развивать свой проект.";
+
 export const metadata: Metadata = {
-  title: "ПРОРЫВ — проект для экспертов · Дарья Карпук",
-  description:
-    "«ПРОРЫВ» — проект для экспертов: понятная стратегия, поддержка, окружение сильных единомышленников и обратная связь, чтобы увеличить доход, привлекать клиентов и уверенно развивать свой проект.",
+  title: OG_TITLE,
+  description: OG_DESCRIPTION,
+  openGraph: {
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    type: "website",
+    locale: "ru_RU",
+    images: [
+      {
+        url: "/og-proryv2.png",
+        width: 1200,
+        height: 630,
+        alt: "ПРОРЫВ — проект для экспертов",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    images: ["/og-proryv2.png"],
+  },
 };
 
 export default function ProryvPage() {
