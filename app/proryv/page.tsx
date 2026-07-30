@@ -706,7 +706,7 @@ const QUICK_FACTS: { icon: IconKey; value: string; label: string }[] = [
   { icon: "clock", value: "6 недель", label: "глубокой работы" },
   { icon: "people", value: "7 мест", label: "камерная группа" },
   { icon: "flame", value: "1 поток", label: "повтора не будет" },
-  { icon: "growth", value: "175 $", label: "цена до старта" },
+  // { icon: "growth", value: "175 $", label: "цена до старта" },
 ];
 
 function QuickFacts() {
@@ -1389,7 +1389,7 @@ function PricingSection() {
               Раннее бронирование
             </span>
 
-            <div className="flex items-baseline gap-4">
+            {/* <div className="flex items-baseline gap-4">
               <span
                 style={{
                   fontFamily: FONT_HEADING,
@@ -1412,7 +1412,7 @@ function PricingSection() {
               >
                 350&nbsp;$
               </span>
-            </div>
+            </div> */}
 
             <p
               style={{
