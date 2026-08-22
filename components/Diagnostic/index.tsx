@@ -1,11 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-const FORM_URL =
-  "https://docs.google.com/forms/d/1IGPKJW1L88uJpZK8hkIiJwrn3VvRQv60zWTKneoW9aM/viewform";
+import { Badge, Button, Reveal } from "@/components/ui";
+import { COLORS, CONTAINER, SECTION_PADDING, TYPE } from "@/lib/design";
+import { DIAGNOSTIC_FORM_URL } from "@/lib/site";
 
 const POINTS = [
   "Поговорим о вашем запросе и ситуации",
@@ -16,7 +13,17 @@ const POINTS = [
 export default function Diagnostic() {
   return (
     <section
-      className="relative w-full overflow-hidden bg-foreground text-white"
+      id="diagnostic"
+      /* Цель кнопки в шапке — `DIAGNOSTIC_CTA` ведёт сюда с любой
+         страницы. `scroll-mt` того же размера, что у `ui/Section`:
+         без него липкая шапка накрывает заголовок секции.
+
+         `overflow-clip`, а не `hidden`, и это обязательное условие:
+         `scroll-margin-top` не действует, если сама цель — контейнер
+         прокрутки. С `hidden` секция приезжала под шапку впритык (все
+         96px отступа пропадали), с `clip` обрезка та же, а контейнера
+         прокрутки нет. */
+      className="relative w-full scroll-mt-24 overflow-clip bg-navy text-on-accent"
       aria-label="Бесплатная диагностическая встреча"
     >
       <div
@@ -28,90 +35,88 @@ export default function Diagnostic() {
         }}
       />
 
-      <div className="relative mx-auto flex w-full max-w-[1400px] flex-col items-start gap-12 px-6 py-20 md:px-12 md:py-28 lg:flex-row lg:items-end lg:justify-between">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="max-w-2xl"
-        >
+      <div className={`relative flex flex-col items-start gap-12 lg:flex-row lg:items-end lg:justify-between ${CONTAINER} ${SECTION_PADDING}`}>
+        {/* Тот же `Reveal`, что и на /leader: 0.6s, 24px, общая кривая.
+            Своя пара `motion.div` держала здесь 0.8s и поле -80px —
+            секция въезжала медленнее и раньше соседних. */}
+        <Reveal className="max-w-2xl">
           <div className="mb-6 flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent-soft/40 bg-accent-soft/15 px-3 py-1 font-[family-name:var(--font-display)] text-[11px] font-semibold tracking-[0.28em] text-accent-soft uppercase">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inset-0 animate-ping rounded-full bg-accent-soft opacity-70" />
-                <span className="relative h-1.5 w-1.5 rounded-full bg-accent-soft" />
-              </span>
+            <Badge
+              tone="soft"
+              icon={
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inset-0 animate-ping rounded-full bg-on-accent-soft opacity-70" />
+                  <span className="relative h-1.5 w-1.5 rounded-full bg-on-accent-soft" />
+                </span>
+              }
+            >
               Бесплатно
-            </span>
+            </Badge>
           </div>
 
-          <h2 className="font-[family-name:var(--font-display)] text-4xl leading-[1.05] font-bold tracking-tight md:text-5xl lg:text-6xl">
-            <span className="font-[family-name:var(--font-editorial)] font-medium italic text-accent-soft">
+          {/* Заголовок набран общей ступенью `section`, а не собственными
+              text-4xl/5xl/6xl с `font-bold`: на остальном сайте заголовки
+              идут Manrope 500, и жирное начертание здесь читалось чужим. */}
+          <h2 style={TYPE.section}>
+            <em className="italic text-accent-soft" style={TYPE.italic}>
               Бесплатная
-            </span>{" "}
+            </em>{" "}
             диагностическая встреча
           </h2>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75 md:text-lg">
-Короткий разговор, чтобы понять ваш запрос и определить подходящий формат роста для вас          </p>
+          <p
+            className="mt-6 max-w-xl"
+            style={{ ...TYPE.lead, color: COLORS.onAccentMuted }}
+          >
+            Короткий разговор, чтобы понять ваш запрос и определить подходящий
+            формат роста для вас
+          </p>
 
           <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             {POINTS.map((point, i) => (
               <li
                 key={point}
-                className="flex items-start gap-3 text-sm text-white/80 md:text-base"
+                className="flex items-start gap-3"
+                style={{ ...TYPE.body, color: COLORS.onAccentMuted }}
               >
                 <span
                   aria-hidden
                   className="mt-2 h-px w-6 shrink-0 bg-accent-soft"
                 />
-                <span className="font-[family-name:var(--font-display)] tabular-nums text-[10px] tracking-[0.3em] text-white/40 uppercase">
+                {/* Не /40: на 10px это давало 3.81 — ниже AA. Иерархию
+                    относительно соседнего текста (/80) держит кегль. */}
+                <span
+                  className="tabular-nums"
+                  style={{ ...TYPE.eyebrow, color: COLORS.onAccentMuted }}
+                >
                   0{i + 1}
                 </span>
                 <span>{point}</span>
               </li>
             ))}
           </ul>
-        </motion.div>
+        </Reveal>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
+        <Reveal
+          delay={0.08}
           className="flex w-full flex-col items-start gap-5 lg:w-auto lg:items-end"
         >
-          <a
-            href={'https://docs.google.com/forms/d/e/1FAIpQLSeifCxZg3TOYUceGHvoYSTDsk3ItvOZG5Ll-TJWFEEQynBu-w/viewform'}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Button
+            href={DIAGNOSTIC_FORM_URL}
+            variant="onDark"
+            size="lg"
             aria-label="Записаться на бесплатную диагностическую встречу"
-            className="group relative inline-flex min-h-[56px] items-center gap-3 overflow-hidden rounded-sm bg-white px-8 py-4 text-sm font-medium tracking-wide text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground focus-visible:outline-none"
           >
-            <span className="relative z-10 flex items-center gap-3 transition-colors duration-500 group-hover:text-white">
-              <span className="h-1 w-1 rounded-full bg-foreground/70 transition-colors duration-500 group-hover:bg-white/80" />
-              Записаться бесплатно
-            </span>
-            <span
-              aria-hidden
-              className="relative z-10 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1.5 group-hover:text-white motion-reduce:transform-none"
-            >
-              →
-            </span>
-            <span
-              aria-hidden
-              className="absolute inset-0 origin-bottom scale-y-0 bg-accent transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-y-100 motion-reduce:transform-none"
-            />
-          </a>
+            Записаться бесплатно
+          </Button>
 
           <div className="flex flex-col gap-1.5 lg:items-end">
-            <p className="font-[family-name:var(--font-display)] text-[11px] tracking-[0.3em] text-white/60 uppercase">
- онлайн
+            <p style={{ ...TYPE.eyebrow, color: COLORS.onAccentMuted }}>
+              онлайн
             </p>
 
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

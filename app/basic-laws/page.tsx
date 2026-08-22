@@ -1,26 +1,18 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Footer from "@/components/Footer";
-import { LogoLockup } from "@/components/Logo/variants";
+import { AmbientBackdrop } from "@/components/AmbientBackdrop";
+import { COLORS, CONTAINER, FONT_BODY, GUTTER, HERO_Y, SECTION_INNER, TYPE } from "@/lib/design";
+import {
+  Badge,
+  Button,
+  IconBubble,
+  QuietLink,
+  ScrollReveal,
+  SectionHeading,
+  SiteHeader,
+} from "@/components/ui";
 
-const COLORS = {
-  softOffWhite: "#f9f8f6",
-  pureWhite: "#ffffff",
-  pitchBlack: "#171417",
-  boardroomNavy: "#0c1754",
-  brandElectric: "#2545ff",
-  lilacAccent: "#d9d4ff",
-  feedbackYellow: "#ffc13a",
-  lightCoolGray: "#eaebf8",
-  mediumGray: "#222222",
-} as const;
-
-const FONT_HEADING = "var(--font-manrope), Arial, sans-serif";
-const FONT_ACCENT = "var(--font-editorial), cursive";
-const FONT_BODY = "var(--font-inter), system-ui, sans-serif";
-
-const FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSeifCxZg3TOYUceGHvoYSTDsk3ItvOZG5Ll-TJWFEEQynBu-w/viewform";
 
 const COURSE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd9F2Ok_39QOcEJRmBajkkNhtPEs5zbTAhU6xbSxg8guSDOAA/viewform?usp=sharing&ouid=116070228497920182644";
 const INSTAGRAM_URL = "https://www.instagram.com/daria_karpuk.psy";
@@ -279,67 +271,29 @@ export const metadata: Metadata = {
 export default function BasicLawsPage() {
   return (
     <main
-      className="flex w-full flex-1 flex-col"
+      className="relative flex w-full flex-1 flex-col"
       style={{
-        backgroundColor: COLORS.softOffWhite,
-        color: COLORS.pitchBlack,
+        backgroundColor: COLORS.paper,
+        color: COLORS.ink,
         fontFamily: FONT_BODY,
       }}
     >
-      <TopBar />
-      <Hero />
-      <PainSection />
-      <BridgeSection />
-      <BenefitsSection />
-      <FormatSection />
-      <AfterSection />
-      <VideoSection />
-      <Footer />
-      <style>{`
-        @keyframes icon-spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes icon-pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.12); }
-        }
-        @keyframes card-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes orbit-rotate {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes orbit-rotate-rev {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
-        }
-        @keyframes float-y {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
-        }
-        .card-rise {
-          animation: card-rise 0.6s ease-out both;
-          transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-        }
-        .card-rise:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 18px 40px -24px rgba(12, 23, 84, 0.35);
-          border-color: ${COLORS.brandElectric};
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .card-rise,
-          .card-rise:hover,
-          .icon-bubble *,
-          .icon-bubble {
-            animation: none !important;
-            transition: none !important;
-            transform: none !important;
-          }
-        }
-      `}</style>
+      {/* Тот же каркас, что у /leader: подложка лежит `fixed` под всей
+          страницей, содержимое едет отдельным слоем поверх неё. */}
+      <AmbientBackdrop />
+
+      <div className="relative z-10 flex flex-1 flex-col">
+        <SiteHeader />
+        <Hero />
+        <PainSection />
+        <BridgeSection />
+        <BenefitsSection />
+        <FormatSection />
+        <AfterSection />
+        <VideoSection />
+        <ScrollReveal />
+        <Footer />
+      </div>
     </main>
   );
 }
@@ -348,31 +302,26 @@ function VideoSection() {
   return (
     <section
       className="w-full"
-      style={{ backgroundColor: COLORS.lightCoolGray }}
+      style={{ backgroundColor: COLORS.coolWash }}
     >
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
-          number="05 — Видео"
+      <div className={SECTION_INNER}>
+        <SectionHeading
+          data-reveal
           title="Подробнее"
           italic="о курсе"
         />
-        <div className="relative mx-auto mt-12 w-full max-w-[760px]">
+        <div data-reveal className="relative mx-auto mt-12 w-full max-w-[760px]">
           <div
             aria-hidden
-            className="pointer-events-none absolute -inset-4 md:-inset-6"
-            style={{
-              border: `1px dashed ${COLORS.lilacAccent}`,
-              borderRadius: "24px",
-            }}
+            /* Радиус = радиус карточки (16) + отступ рамки: только тогда
+               пунктир идёт параллельно её контуру. Классами, а не inline —
+               отступ меняется на md, радиус обязан меняться вместе с ним. */
+            className="pointer-events-none absolute -inset-4 rounded-[32px] md:-inset-6 md:rounded-[40px]"
+            style={{ border: `1px dashed ${COLORS.lilac}` }}
           />
           <div
-            className="relative overflow-hidden"
-            style={{
-              border: `1px solid ${COLORS.lilacAccent}`,
-              borderRadius: "16px",
-              backgroundColor: COLORS.softOffWhite,
-              boxShadow: `0 24px 60px -32px rgba(12, 23, 84, 0.35)`,
-            }}
+            className="card-frame overflow-hidden"
+            style={{ backgroundColor: COLORS.paper }}
           >
             <div className="relative aspect-video w-full">
               <iframe
@@ -389,148 +338,115 @@ function VideoSection() {
         </div>
 
         <div className="mt-12 flex flex-col items-center gap-3 text-center">
-          <a
-            href={COURSE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-16px_rgba(37,69,255,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-            style={{
-              backgroundColor: COLORS.brandElectric,
-              color: COLORS.pureWhite,
-              borderRadius: "100px",
-              padding: "16px 32px",
-              fontFamily: FONT_BODY,
-              fontWeight: 500,
-              fontSize: "16px",
-              lineHeight: 1.4,
-              ["--tw-ring-color" as string]: COLORS.brandElectric,
-              ["--tw-ring-offset-color" as string]: COLORS.lightCoolGray,
-            }}
-          >
-Записаться на курс
-            <span
-              aria-hidden
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
-            >
-              →
-            </span>
-          </a>
+          <Button href={COURSE_URL} size="lg">
+            Записаться на курс
+          </Button>
         </div>
       </div>
     </section>
   );
 }
 
-function TopBar() {
-  return (
-    <header
-      className="w-full"
-      style={{ borderBottom: `1px solid ${COLORS.lilacAccent}` }}
-    >
-      <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-6 py-5 md:px-12 md:py-6">
-        <Link
-          href="/"
-          className="group inline-flex items-center gap-3 rounded-full px-1 py-1 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-          aria-label="Дарья Карпук — на главную"
-          style={{
-            ["--tw-ring-color" as string]: COLORS.boardroomNavy,
-            ["--tw-ring-offset-color" as string]: COLORS.softOffWhite,
-          }}
-        >
-          <LogoLockup className="h-9 w-auto" />
-        </Link>
-
-        <Link
-          href="/"
-          className="group inline-flex items-center gap-2 rounded-full px-1 py-1 transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-          style={{
-            fontFamily: FONT_BODY,
-            fontSize: "14px",
-            color: COLORS.mediumGray,
-            ["--tw-ring-color" as string]: COLORS.boardroomNavy,
-            ["--tw-ring-offset-color" as string]: COLORS.softOffWhite,
-          }}
-        >
-          <span
-            aria-hidden
-            className="transition-transform duration-300 group-hover:-translate-x-0.5"
-          >
-            ←
-          </span>
-          <span className="hidden sm:inline">На главную</span>
-          <span className="sm:hidden">Назад</span>
-        </Link>
-      </div>
-    </header>
-  );
-}
-
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-32 -left-40 h-[480px] w-[480px] rounded-full blur-3xl"
-        style={{ backgroundColor: COLORS.lilacAccent, opacity: 0.55 }}
+    <section
+      className="relative w-full min-h-[560px] overflow-hidden md:min-h-[680px] lg:min-h-[760px]"
+      style={{ backgroundColor: COLORS.paper }}
+    >
+      {/* Баннер — единственное место на сайте, где вёрстка знает про тему.
+          Обычно её не знает никто: компонент ссылается на роль («фон»,
+          «акцент»), а значение подставляется из `globals.css`. Но здесь
+          различаются не цвета, а сам материал в кадре: хлопковая бумага
+          при мягком дневном свете против чёрного бархата под контровым
+          лучом. Одной картинкой это не выражается, переменной — тоже,
+          поэтому файлов два, и выбирает между ними CSS по `data-theme`.
+
+          Именно CSS, а не React: тему на <html> проставляет синхронный
+          скрипт в <head> до первого кадра, и если бы выбор картинки жил
+          в состоянии, он случился бы только после гидрации — на тёмной
+          теме первым кадром мигнула бы светлая бумага.
+
+          `loading` и `preload` здесь трогать нельзя: оба заставят
+          браузер тянуть обе картинки. Скрытая `display:none` при
+          ленивой загрузке не грузится вообще, а приоритет видимой
+          поднимается через `fetchPriority` — так это и описано в
+          документации next/image для пары тем. */}
+      <Image
+        src="/basic-laws/hero-light.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        quality={90}
+        fetchPriority="high"
+        className="z-0 object-cover object-[58%_center] md:object-center [[data-theme=dark]_&]:hidden"
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute right-[-10%] top-[10%] h-[260px] w-[260px] rounded-full blur-3xl"
-        style={{ backgroundColor: COLORS.lightCoolGray, opacity: 0.6 }}
+      <Image
+        src="/basic-laws/hero-dark.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        quality={90}
+        fetchPriority="high"
+        className="z-0 hidden object-cover object-[58%_center] md:object-center [[data-theme=dark]_&]:block"
       />
 
-      <div className="relative mx-auto w-full max-w-[1400px] grid grid-cols-1 items-center gap-12 px-6 pt-10 pb-14 md:grid-cols-12 md:gap-16 md:px-12 md:pt-16 md:pb-20">
-        <div className="md:col-span-7 flex flex-col gap-7">
-          <div className="flex flex-wrap items-center gap-3">
-            <span
-              className="inline-flex w-fit items-center"
-              style={{
-                backgroundColor: COLORS.lightCoolGray,
-                color: COLORS.boardroomNavy,
-                borderRadius: "16px",
-                padding: "4px 12px",
-                fontSize: "14px",
-                lineHeight: 1.43,
-              }}
-            >
-              Курс · 4 недели + 1
-            </span>
-            <span
-              className="inline-flex w-fit items-center gap-2"
-              style={{
-                backgroundColor: COLORS.feedbackYellow,
-                color: COLORS.boardroomNavy,
-                borderRadius: "16px",
-                padding: "4px 12px",
-                fontSize: "14px",
-                fontWeight: 500,
-                lineHeight: 1.43,
-              }}
-            >
-              <Icon name="calendar" />
+      {/* Шторка слева — общий токен, тот же, что держит текст на первом
+          экране главной. Она глухая до 26% и растворяется к 72%: узел
+          волокон остаётся под словами про «топчетесь на месте», а чистый
+          веер выходит в свободную правую часть, где стоит кнопка. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{ background: "var(--hero-curtain)" }}
+      />
+
+      {/* Мобильная шторка. `--hero-curtain` растворяется к 72% ширины —
+          это расчёт на десктоп, где текст занимает 58% и в прозрачную
+          часть не заходит. На узком экране текст идёт во всю ширину и
+          правым краем ложится на светлый веер волокон, где заголовку не
+          хватает контраста (на тёмной теме особенно: #ededef поверх
+          подсвеченных нитей). `--text-scrim` — готовый токен ровно для
+          текста поверх фото, эллипсом по центру и с растворением к краям. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 md:hidden"
+        style={{ background: "var(--text-scrim)" }}
+      />
+
+      {/* Нижний фейд в фон страницы. Картинка непрозрачная, а под всей
+          страницей лежит `fixed` AmbientBackdrop — без этого градиента
+          баннер вырезал бы в нём прямоугольник, и на тёмной теме «лужи
+          света» обрывались бы резкой полосой по границе секции. На
+          бархате перепад заметнее, чем на бумаге, поэтому фейд выше. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32 [[data-theme=dark]_&]:h-48"
+        style={{
+          backgroundImage: `linear-gradient(to top, ${COLORS.paper}, transparent)`,
+        }}
+      />
+
+      <div
+        className={`relative z-10 flex min-h-[inherit] flex-col justify-center ${CONTAINER} ${GUTTER} ${HERO_Y}`}
+      >
+        {/* Первый экран въезжает тем же каскадом, что и на /leader:
+            бейджи, заголовок, лид, кнопки — по 80ms друг за другом. */}
+        <div className="flex flex-col gap-7 md:max-w-[58%] lg:max-w-[54%]">
+          <div data-reveal className="flex flex-wrap items-center gap-3">
+            <Badge>Курс · 4 недели + 1</Badge>
+            <Badge tone="soft" icon={<Icon name="calendar" />}>
               Старт: дата уточняется
-            </span>
+            </Badge>
           </div>
 
           <h1
-            style={{
-              fontFamily: FONT_HEADING,
-              fontWeight: 500,
-              fontSize: "clamp(40px, 7vw, 88px)",
-              lineHeight: 0.98,
-              letterSpacing: "-0.05em",
-              color: COLORS.pitchBlack,
-            }}
+            data-reveal
+            style={{ ...TYPE.hero, color: COLORS.ink, ["--rd" as string]: "80ms" }}
           >
             Базовые{" "}
             <em
               className="italic"
-              style={{
-                fontFamily: FONT_ACCENT,
-                fontWeight: 400,
-                letterSpacing: "-0.04em",
-                color: COLORS.brandElectric,
-              }}
+              style={{ ...TYPE.italic, color: COLORS.electric }}
             >
               законы
             </em>
@@ -539,281 +455,66 @@ function Hero() {
           </h1>
 
           <p
+            data-reveal
             className="max-w-xl"
-            style={{
-              fontFamily: FONT_BODY,
-              fontSize: "18px",
-              lineHeight: 1.6,
-              color: COLORS.pitchBlack,
-            }}
+            style={{ ...TYPE.lead, color: COLORS.ink, ["--rd" as string]: "160ms" }}
           >
             Курс для тех, кто хочет навести порядок в своей жизни, обрести
             ясность и начать двигаться по пути своего предназначения.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <a
-              href={COURSE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-16px_rgba(37,69,255,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                backgroundColor: COLORS.brandElectric,
-                color: COLORS.pureWhite,
-                borderRadius: "100px",
-                padding: "16px 32px",
-                fontFamily: FONT_BODY,
-                fontWeight: 500,
-                fontSize: "16px",
-                lineHeight: 1.4,
-                ["--tw-ring-color" as string]: COLORS.brandElectric,
-                ["--tw-ring-offset-color" as string]: COLORS.softOffWhite,
-              }}
-            >
+          <div
+            data-reveal
+            className="flex flex-wrap items-center gap-4 pt-2"
+            style={{ ["--rd" as string]: "240ms" }}
+          >
+            <Button href={COURSE_URL} size="lg">
               Записаться на курс
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-0.5"
-              >
-                →
-              </span>
-            </a>
-            <a
-              href="#format"
-              className="group inline-flex items-center gap-2 rounded-full px-1 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                color: COLORS.boardroomNavy,
-                fontFamily: FONT_BODY,
-                fontSize: "15px",
-                fontWeight: 500,
-                ["--tw-ring-color" as string]: COLORS.boardroomNavy,
-                ["--tw-ring-offset-color" as string]: COLORS.softOffWhite,
-              }}
-            >
-              <span
-                className="border-b transition-colors group-hover:border-current"
-                style={{ borderColor: "rgba(12,23,84,0.25)" }}
-              >
-                Узнать формат
-              </span>
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-y-0.5"
-              >
-                ↓
-              </span>
-            </a>
+            </Button>
+            <QuietLink href="#format" direction="down">
+              Узнать формат
+            </QuietLink>
           </div>
-        </div>
-
-        <div className="md:col-span-5 relative">
-          <HeroDecor />
         </div>
       </div>
     </section>
   );
 }
 
-function HeroDecor() {
-  return (
-    <div className="relative mx-auto aspect-square w-full max-w-[440px]">
-      <div
-        aria-hidden
-        className="absolute inset-0 animate-[orbit-rotate_42s_linear_infinite]"
-      >
-        <svg viewBox="0 0 400 400" className="h-full w-full" fill="none">
-          <circle
-            cx="200"
-            cy="200"
-            r="190"
-            stroke={COLORS.lilacAccent}
-            strokeWidth="1"
-            strokeDasharray="2 6"
-          />
-          <circle
-            cx="200"
-            cy="200"
-            r="150"
-            stroke={COLORS.brandElectric}
-            strokeWidth="1"
-            opacity="0.4"
-          />
-        </svg>
-      </div>
-
-      <div
-        aria-hidden
-        className="absolute inset-0 animate-[orbit-rotate-rev_28s_linear_infinite]"
-      >
-        <svg viewBox="0 0 400 400" className="h-full w-full" fill="none">
-          <circle cx="200" cy="200" r="110" stroke={COLORS.brandElectric} strokeWidth="1" opacity="0.3" />
-          <circle cx="200" cy="10" r="6" fill={COLORS.feedbackYellow} />
-          <circle cx="200" cy="50" r="4" fill={COLORS.brandElectric} opacity="0.7" />
-          <circle cx="395" cy="200" r="3" fill={COLORS.brandElectric} opacity="0.5" />
-        </svg>
-      </div>
-
-      <div
-        aria-hidden
-        className="absolute inset-0 flex items-center justify-center"
-      >
-        <div
-          className="relative flex h-[58%] w-[58%] items-center justify-center rounded-full"
-          style={{
-            background: `radial-gradient(circle at 30% 25%, ${COLORS.lilacAccent}, ${COLORS.lightCoolGray} 70%)`,
-            boxShadow: `inset 0 0 0 1px ${COLORS.lilacAccent}`,
-          }}
-        >
-          <div
-            className="flex h-[68%] w-[68%] items-center justify-center rounded-full"
-            style={{
-              backgroundColor: COLORS.boardroomNavy,
-              boxShadow: `0 24px 60px -28px ${COLORS.brandElectric}`,
-              color: COLORS.feedbackYellow,
-            }}
-          >
-            <span className="animate-[icon-pulse_3.6s_ease-in-out_infinite]">
-              <Icon name="sparkle" />
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <span
-        aria-hidden
-        className="absolute left-[6%] top-[12%] flex h-12 w-12 items-center justify-center rounded-full animate-[float-y_5s_ease-in-out_infinite]"
-        style={{
-          backgroundColor: COLORS.pureWhite,
-          boxShadow: `0 12px 24px -12px rgba(12,23,84,0.25)`,
-          color: COLORS.brandElectric,
-        }}
-      >
-        <Icon name="target" />
-      </span>
-      <span
-        aria-hidden
-        className="absolute right-[4%] top-[34%] flex h-12 w-12 items-center justify-center rounded-full animate-[float-y_4.4s_ease-in-out_infinite] [animation-delay:0.7s]"
-        style={{
-          backgroundColor: COLORS.pureWhite,
-          boxShadow: `0 12px 24px -12px rgba(12,23,84,0.25)`,
-          color: COLORS.brandElectric,
-        }}
-      >
-        <Icon name="balance" />
-      </span>
-      <span
-        aria-hidden
-        className="absolute bottom-[10%] left-[14%] flex h-12 w-12 items-center justify-center rounded-full animate-[float-y_5.4s_ease-in-out_infinite] [animation-delay:1.2s]"
-        style={{
-          backgroundColor: COLORS.pureWhite,
-          boxShadow: `0 12px 24px -12px rgba(12,23,84,0.25)`,
-          color: COLORS.brandElectric,
-        }}
-      >
-        <Icon name="rocket" />
-      </span>
-    </div>
-  );
-}
-
-function SectionHeader({
-  number,
-  title,
-  italic,
-}: {
-  number: string;
-  title: string;
-  italic: string;
-}) {
-  return (
-    <div className="flex flex-col gap-4">
-      <div
-        className="flex items-center gap-3"
-        style={{
-          fontFamily: FONT_BODY,
-          fontSize: "12px",
-          letterSpacing: "0.28em",
-          textTransform: "uppercase",
-          color: COLORS.brandElectric,
-        }}
-      >
-        <span
-          aria-hidden
-          className="inline-block h-px w-8"
-          style={{ backgroundColor: COLORS.brandElectric }}
-        />
-        <span>{number}</span>
-      </div>
-      <h2
-        style={{
-          fontFamily: FONT_HEADING,
-          fontWeight: 500,
-          fontSize: "clamp(32px, 5vw, 56px)",
-          lineHeight: 1.05,
-          letterSpacing: "-0.04em",
-          color: COLORS.pitchBlack,
-        }}
-      >
-        {title}{" "}
-        <em
-          className="italic"
-          style={{
-            fontFamily: FONT_ACCENT,
-            fontWeight: 400,
-            letterSpacing: "-0.03em",
-            color: COLORS.brandElectric,
-          }}
-        >
-          {italic}
-        </em>
-      </h2>
-    </div>
-  );
-}
 
 function PainSection() {
   return (
     <section
       className="w-full"
-      style={{ backgroundColor: COLORS.lightCoolGray }}
+      style={{ backgroundColor: COLORS.coolWash }}
     >
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader number="01 — Знакомо?" title="Вам это" italic="знакомо?" />
+      <div className={SECTION_INNER}>
+        <SectionHeading
+          data-reveal
+          title="Вам это"
+          italic="знакомо?"
+        />
 
         <ul className="mt-10 grid gap-3 md:grid-cols-2 md:gap-4">
           {PAINS.map((item, i) => (
             <li
               key={item}
-              className="card-rise group flex items-start gap-4 p-6 md:p-7"
+              data-reveal
+              className="card-frame group flex items-start gap-4 p-6 md:p-7"
               style={{
-                backgroundColor: COLORS.pureWhite,
-                border: `1px solid ${COLORS.lilacAccent}`,
-                borderRadius: "16px",
-                animationDelay: `${i * 60}ms`,
+                backgroundColor: COLORS.white,
+                ["--rd" as string]: `${i * 80}ms`,
               }}
             >
               <span
                 aria-hidden
                 className="shrink-0 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-110"
-                style={{
-                  fontFamily: FONT_ACCENT,
-                  fontWeight: 400,
-                  fontSize: "32px",
-                  lineHeight: 1,
-                  letterSpacing: "-0.03em",
-                  color: COLORS.brandElectric,
-                  fontStyle: "italic",
-                }}
+                style={{ ...TYPE.italic, color: COLORS.electric }}
               >
                 0{i + 1}
               </span>
               <p
-                style={{
-                  fontFamily: FONT_BODY,
-                  fontSize: "16px",
-                  lineHeight: 1.6,
-                  color: COLORS.pitchBlack,
-                }}
+                style={{ ...TYPE.body, color: COLORS.ink }}
               >
                 {item}
               </p>
@@ -828,45 +529,26 @@ function PainSection() {
 function BridgeSection() {
   return (
     <section className="w-full">
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-12 md:px-12 md:py-20">
-        <div className="relative grid items-start gap-5 md:grid-cols-[auto_1fr] md:gap-10 max-w-[980px]">
+      <div className={SECTION_INNER}>
+        <div
+          data-reveal
+          className="relative grid items-start gap-5 md:grid-cols-[auto_1fr] md:gap-10 max-w-[980px]"
+        >
           <span
             aria-hidden
             className="hidden md:block leading-none"
-            style={{
-              fontFamily: FONT_ACCENT,
-              fontStyle: "italic",
-              fontWeight: 400,
-              fontSize: "clamp(96px, 11vw, 144px)",
-              color: COLORS.brandElectric,
-              letterSpacing: "-0.06em",
-              marginTop: "-0.22em",
-            }}
+            style={{ ...TYPE.italic, color: COLORS.electric, marginTop: "-0.22em" }}
           >
             “
           </span>
           <p
             className="pl-5 md:pl-0"
-            style={{
-              fontFamily: FONT_HEADING,
-              fontWeight: 500,
-              fontSize: "clamp(24px, 3.5vw, 42px)",
-              lineHeight: 1.2,
-              letterSpacing: "-0.03em",
-              color: COLORS.pitchBlack,
-              borderLeft: `3px solid ${COLORS.brandElectric}`,
-              paddingLeft: "20px",
-            }}
+            style={{ ...TYPE.quote, color: COLORS.ink, borderLeft: `3px solid ${COLORS.electric}`, paddingLeft: "20px" }}
           >
             Настало время{" "}
             <em
               className="italic"
-              style={{
-                fontFamily: FONT_ACCENT,
-                fontWeight: 400,
-                letterSpacing: "-0.03em",
-                color: COLORS.brandElectric,
-              }}
+              style={{ ...TYPE.italic, color: COLORS.electric }}
             >
               изменить это
             </em>
@@ -882,9 +564,9 @@ function BridgeSection() {
 function BenefitsSection() {
   return (
     <section className="w-full">
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
-          number="02 — Что внутри"
+      <div className={SECTION_INNER}>
+        <SectionHeading
+          data-reveal
           title="Благодаря курсу"
           italic="вы…"
         />
@@ -893,32 +575,18 @@ function BenefitsSection() {
           {BENEFITS.map((item, i) => (
             <li
               key={item.text}
-              className="card-rise group flex flex-col gap-4 p-6 md:p-7"
+              data-reveal
+              className="card-frame group flex flex-col gap-4 p-6 md:p-7"
               style={{
-                backgroundColor: COLORS.pureWhite,
-                border: `1px solid ${COLORS.lilacAccent}`,
-                borderRadius: "16px",
-                animationDelay: `${i * 70}ms`,
+                backgroundColor: COLORS.white,
+                ["--rd" as string]: `${i * 80}ms`,
               }}
             >
-              <span
-                aria-hidden
-                className="icon-bubble flex h-12 w-12 items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                style={{
-                  backgroundColor: COLORS.lilacAccent,
-                  color: COLORS.brandElectric,
-                  borderRadius: "100px",
-                }}
-              >
+              <IconBubble>
                 <Icon name={item.icon} />
-              </span>
+              </IconBubble>
               <p
-                style={{
-                  fontFamily: FONT_BODY,
-                  fontSize: "16px",
-                  lineHeight: 1.6,
-                  color: COLORS.pitchBlack,
-                }}
+                style={{ ...TYPE.body, color: COLORS.ink }}
               >
                 {item.text}
               </p>
@@ -935,99 +603,60 @@ function FormatSection() {
     <section
       id="format"
       className="w-full scroll-mt-20"
-      style={{ backgroundColor: COLORS.lightCoolGray }}
+      style={{ backgroundColor: COLORS.coolWash }}
     >
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
-          number="03 — Формат"
+      <div className={SECTION_INNER}>
+        <SectionHeading
+          data-reveal
           title="Когда и как"
           italic="проходит курс"
         />
 
         <div className="mt-10 grid gap-4 md:grid-cols-2 md:gap-5">
           <article
-            className="flex flex-col gap-3 p-7 md:p-9"
+            data-reveal
+            className="card-frame flex flex-col gap-3 p-7 md:p-9"
             style={{
-              backgroundColor: COLORS.boardroomNavy,
-              color: COLORS.pureWhite,
-              borderRadius: "16px",
+              backgroundColor: COLORS.navy,
+              color: COLORS.onAccent,
             }}
           >
             <div
               className="flex items-center gap-2"
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "12px",
-                letterSpacing: "0.28em",
-                textTransform: "uppercase",
-                color: COLORS.feedbackYellow,
-              }}
+              style={{ ...TYPE.eyebrow, color: COLORS.yellow }}
             >
               <Icon name="calendar" />
               Старт
             </div>
             <div
-              style={{
-                fontFamily: FONT_HEADING,
-                fontWeight: 500,
-                fontSize: "clamp(40px, 5vw, 64px)",
-                lineHeight: 1,
-                letterSpacing: "-0.04em",
-                color: COLORS.pureWhite,
-              }}
+              style={{ ...TYPE.display, color: COLORS.onAccent }}
             >
               Дата уточняется
             </div>
             <p
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "16px",
-                lineHeight: 1.6,
-                color: "rgba(255,255,255,0.78)",
-              }}
+              style={{ ...TYPE.body, color: COLORS.onAccentMuted }}
             >
               Оставьте заявку — сообщу о старте потока первым.
             </p>
           </article>
 
           <article
-            className="flex flex-col gap-3 p-7 md:p-9"
-            style={{
-              backgroundColor: COLORS.pureWhite,
-              border: `1px solid ${COLORS.lilacAccent}`,
-              borderRadius: "16px",
-            }}
+            data-reveal
+            className="card-frame flex flex-col gap-3 p-7 md:p-9"
+            style={{ backgroundColor: COLORS.white, ["--rd" as string]: "80ms" }}
           >
             <div
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "12px",
-                letterSpacing: "0.28em",
-                textTransform: "uppercase",
-                color: COLORS.mediumGray,
-              }}
+              style={{ ...TYPE.eyebrow, color: COLORS.inkStrong }}
             >
               Длительность
             </div>
             <div
-              style={{
-                fontFamily: FONT_HEADING,
-                fontWeight: 500,
-                fontSize: "clamp(40px, 5vw, 64px)",
-                lineHeight: 1,
-                letterSpacing: "-0.04em",
-                color: COLORS.boardroomNavy,
-              }}
+              style={{ ...TYPE.display, color: COLORS.ink }}
             >
               4 недели
             </div>
             <p
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "16px",
-                lineHeight: 1.6,
-                color: COLORS.mediumGray,
-              }}
+              style={{ ...TYPE.body, color: COLORS.inkStrong }}
             >
               Плюс одна дополнительная неделя сопровождения.
             </p>
@@ -1036,24 +665,12 @@ function FormatSection() {
 
         <div className="mt-10">
           <h3
-            style={{
-              fontFamily: FONT_HEADING,
-              fontWeight: 500,
-              fontSize: "clamp(24px, 3vw, 32px)",
-              lineHeight: 1.15,
-              letterSpacing: "-0.03em",
-              color: COLORS.pitchBlack,
-            }}
+            style={{ ...TYPE.subsection, color: COLORS.ink }}
           >
             На курсе вас{" "}
             <em
               className="italic"
-              style={{
-                fontFamily: FONT_ACCENT,
-                fontWeight: 400,
-                letterSpacing: "-0.03em",
-                color: COLORS.brandElectric,
-              }}
+              style={{ ...TYPE.italic, color: COLORS.electric }}
             >
               ждёт
             </em>
@@ -1063,32 +680,18 @@ function FormatSection() {
             {FEATURES.map((item, i) => (
               <li
                 key={item.text}
-                className="card-rise group flex items-start gap-4 p-5 md:p-6"
+                data-reveal
+              className="card-frame group flex items-start gap-4 p-5 md:p-6"
                 style={{
-                  backgroundColor: COLORS.pureWhite,
-                  border: `1px solid ${COLORS.lilacAccent}`,
-                  borderRadius: "16px",
-                  animationDelay: `${i * 70}ms`,
+                  backgroundColor: COLORS.white,
+                  ["--rd" as string]: `${i * 80}ms`,
                 }}
               >
-                <span
-                  aria-hidden
-                  className="icon-bubble flex h-10 w-10 shrink-0 items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                  style={{
-                    backgroundColor: COLORS.lilacAccent,
-                    color: COLORS.brandElectric,
-                    borderRadius: "100px",
-                  }}
-                >
+                <IconBubble>
                   <Icon name={item.icon} />
-                </span>
+                </IconBubble>
                 <p
-                  style={{
-                    fontFamily: FONT_BODY,
-                    fontSize: "16px",
-                    lineHeight: 1.6,
-                    color: COLORS.pitchBlack,
-                  }}
+                  style={{ ...TYPE.body, color: COLORS.ink }}
                 >
                   {item.text}
                 </p>
@@ -1104,9 +707,9 @@ function FormatSection() {
 function AfterSection() {
   return (
     <section className="w-full">
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
-          number="04 — После"
+      <div className={SECTION_INNER}>
+        <SectionHeading
+          data-reveal
           title="После курса вы"
           italic="сможете"
         />
@@ -1117,41 +720,26 @@ function AfterSection() {
             return (
             <li
               key={item.text}
-              className="card-rise group relative flex flex-col gap-4 overflow-hidden p-6 md:p-7"
+              data-reveal
+              className="card-frame group flex flex-col gap-4 overflow-hidden p-6 md:p-7"
               style={{
-                backgroundColor: isHighlight ? COLORS.boardroomNavy : COLORS.pureWhite,
-                color: isHighlight ? COLORS.pureWhite : COLORS.pitchBlack,
-                border: `1px solid ${isHighlight ? COLORS.boardroomNavy : COLORS.lilacAccent}`,
-                borderRadius: "16px",
-                animationDelay: `${i * 70}ms`,
+                backgroundColor: isHighlight ? COLORS.navy : COLORS.white,
+                color: isHighlight ? COLORS.onAccent : COLORS.ink,
+                ["--rd" as string]: `${i * 80}ms`,
               }}
             >
               {isHighlight && (
                 <span
                   aria-hidden
                   className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full"
-                  style={{ border: `1px solid rgba(255,255,255,0.08)` }}
+                  style={{ border: `1px solid ${COLORS.onAccentLine}` }}
                 />
               )}
-              <span
-                aria-hidden
-                className="icon-bubble flex h-12 w-12 items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                style={{
-                  backgroundColor: isHighlight ? "rgba(255,255,255,0.08)" : COLORS.lilacAccent,
-                  color: isHighlight ? COLORS.feedbackYellow : COLORS.brandElectric,
-                  borderRadius: "100px",
-                  border: isHighlight ? `1px solid rgba(255,193,58,0.3)` : "none",
-                }}
-              >
+              <IconBubble tone={isHighlight ? "glass" : "cool"}>
                 <Icon name={item.icon} />
-              </span>
+              </IconBubble>
               <p
-                style={{
-                  fontFamily: FONT_BODY,
-                  fontSize: "16px",
-                  lineHeight: 1.6,
-                  color: isHighlight ? "rgba(255,255,255,0.88)" : COLORS.pitchBlack,
-                }}
+                style={{ ...TYPE.body, color: isHighlight ? COLORS.onAccent : COLORS.ink }}
               >
                 {item.text}
               </p>
@@ -1161,39 +749,16 @@ function AfterSection() {
         </ul>
 
         <div className="mt-12 flex flex-col items-center gap-3 text-center">
-          <a
+          <Button
             href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-3 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-16px_rgba(255,193,58,0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-            style={{
-              backgroundColor: COLORS.feedbackYellow,
-              color: COLORS.boardroomNavy,
-              borderRadius: "100px",
-              padding: "16px 32px",
-              fontFamily: FONT_BODY,
-              fontWeight: 500,
-              fontSize: "16px",
-              lineHeight: 1.4,
-              ["--tw-ring-color" as string]: COLORS.feedbackYellow,
-              ["--tw-ring-offset-color" as string]: COLORS.softOffWhite,
-            }}
+            variant="soft"
+            size="lg"
+            icon={<Icon name="instagram" />}
           >
-            <Icon name="instagram" />
             Пишите «Хочу на базовые законы жизни»
-            <span
-              aria-hidden
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
-            >
-              →
-            </span>
-          </a>
+          </Button>
           <span
-            style={{
-              fontFamily: FONT_BODY,
-              fontSize: "12px",
-              color: COLORS.mediumGray,
-            }}
+            style={{ ...TYPE.caption, color: COLORS.inkStrong }}
           >
             В директ Instagram — отвечу лично
           </span>

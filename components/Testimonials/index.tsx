@@ -1,3 +1,6 @@
+import { Reveal } from "@/components/ui";
+import { SECTION_INNER } from "@/lib/design";
+
 type Review = {
   src: string;
   alt: string;
@@ -35,10 +38,13 @@ const COLUMNS = splitCols(REVIEWS, 3);
 export default function Testimonials() {
   return (
     <section
-      className="mx-auto w-full max-w-[1400px] px-6 py-20 md:px-12 md:py-28"
+      className={SECTION_INNER}
       aria-label="Отзывы клиентов"
     >
-      <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-surface-strong pb-6 md:mb-12 md:flex-row md:items-end">
+      {/* Заголовок секции появляется тем же жестом, что и на остальных
+          страницах: до этого блок отзывов был единственным на главной,
+          который просто стоял на месте. */}
+      <Reveal className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-surface-strong pb-6 md:mb-12 md:flex-row md:items-end">
         <div>
           <p className="flex items-center gap-3 text-[11px] font-medium tracking-[0.28em] text-muted uppercase">
             <span aria-hidden className="h-px w-8 bg-surface-strong" />
@@ -49,7 +55,7 @@ export default function Testimonials() {
             <span className="italic text-accent"> клиенты</span>
           </h2>
         </div>
-      </div>
+      </Reveal>
 
       <div className="relative h-[620px] overflow-hidden md:h-[760px]">
         <div
@@ -112,7 +118,9 @@ function ScrollColumn({
 
 function ReviewTile({ review }: { review: Review }) {
   return (
-    <figure className="group relative block overflow-hidden rounded-xl border border-surface-strong bg-surface">
+    /* rounded-2xl, а не -xl: 12px здесь были единственным исключением на
+       весь сайт — все остальные карточки скруглены на 16. */
+    <figure className="card-frame group block overflow-hidden bg-surface">
       <div
         className="relative w-full"
         style={{ aspectRatio: review.ratio }}
@@ -122,7 +130,7 @@ function ReviewTile({ review }: { review: Review }) {
           src={review.src}
           alt={review.alt}
           loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+          className="zoom-img absolute inset-0 h-full w-full object-cover"
         />
 
         <div

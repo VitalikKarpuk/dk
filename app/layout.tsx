@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { themeInitScript } from "@/components/ThemeToggle";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -60,7 +61,13 @@ export default function RootLayout({
     <html
       lang="ru"
       className={`${inter.variable} ${manrope.variable} ${playfair.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* Проставляет тему до первого кадра — иначе при выбранной тёмной
+            странице браузер успевает мигнуть светлым фоном. */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
       </body>

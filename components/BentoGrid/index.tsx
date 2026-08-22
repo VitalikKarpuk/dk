@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { Button, Reveal, Stagger, StaggerItem } from "@/components/ui";
+import { COLORS, MEASURE, SECTION_INNER, TYPE } from "@/lib/design";
 
 type Tone = "light" | "accent" | "canvas";
 
@@ -15,7 +15,16 @@ type Product = {
   count: string;
   decor: React.ReactNode;
   href?: string;
-  photo?: { src: string; alt: string };
+  photo?: {
+    src: string;
+    alt: string;
+    /**
+     * Точка кропа, если середина кадра — не то, что нужно показать.
+     * Класс целиком, а не число: Tailwind ищет готовые имена классов в
+     * исходниках и собранной из кусков строки не увидит.
+     */
+    position?: string;
+  };
   photoLayout?: "top" | "side";
 };
 
@@ -29,11 +38,21 @@ const PRODUCTS: Product[] = [
     span: "md:col-span-4",
     count: "",
     decor: <DecorOrbit />,
+    /* Тот же кадр, что на самой /leader (`OutcomesSection`): плитка и
+       страница, куда она ведёт, показывают одну фотографию. Берётся
+       webp из `public/leader/photos/`, а не исходный `groupPeople.JPG`:
+       тот же снимок, но 1535×1024 и 114 КБ против 5875×3917 и 5,5 МБ. */
     photo: {
-      src: "/groupPeople.JPG",
+      src: "/leader/photos/group.webp",
       alt: "Группа участников программы «Я Лидер»",
+      /* Кадр 3:2, люди стоят в верхней трети, а плитка режет его полосой
+         21:9 — по центру в неё попадали ноги, а головы уходили за верхний
+         край. 12% отсчитываются не от снимка, а от того, насколько окно
+         кропа может по нему ездить, поэтому на десктопе видно 7–50%
+         высоты кадра, на мобильной 16:9 — 5–62%: лица целиком в обоих. */
+      position: "object-[center_12%]",
     },
-    href: 'https://group-7-2025.netlify.app/'
+    href: "/leader",
   },
   {
     title: "Индивидуальные консультации",
@@ -79,39 +98,27 @@ const PRODUCTS: Product[] = [
 export default function BentoGrid() {
   return (
     <section
-      className="mx-auto w-full max-w-[1400px] px-6 py-20 md:px-12 md:py-28"
+      className={SECTION_INNER}
       aria-label="Направления практики"
     >
-      <div className="mb-14 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
+      <Reveal className="mb-14 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <div>
-          <h2
-            style={{
-              fontFamily: "var(--font-manrope), Arial, sans-serif",
-              fontWeight: 500,
-              fontSize: "clamp(40px, 6vw, 64px)",
-              lineHeight: 1.05,
-              letterSpacing: "-0.05em",
-              color: "#171417",
-            }}
-          >
+          <h2 style={{ ...TYPE.display, color: COLORS.ink }}>
             Три программы —<br />
             три пути к{" "}
-            <span
-              className="italic"
-              style={{
-                fontFamily: "var(--font-editorial), cursive",
-                fontWeight: 400,
-                letterSpacing: "-0.04em",
-                color: "#2545ff",
-              }}
-            >
+            <span className="text-accent italic" style={TYPE.italic}>
               результату.
             </span>
           </h2>
         </div>
-      </div>
+      </Reveal>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-5">
+      {/* Каскад тот же, что у карточек /leader: заголовок появляется
+          первым, плитки — следом с общим шагом. Раньше каждая плитка
+          несла собственный `whileInView` со своей кривой, длительностью
+          0.7s и полем -80px, и ряд въезжал иначе, чем такой же ряд на
+          соседней странице. */}
+      <Stagger className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-5">
         {PRODUCTS.map((p, i) => (
           <BentoCard
             key={p.title}
@@ -120,7 +127,7 @@ export default function BentoGrid() {
             total={PRODUCTS.length}
           />
         ))}
-      </div>
+      </Stagger>
 
     </section>
   );
@@ -138,19 +145,23 @@ function BentoCard({
   const isAccent = product.tone === "accent";
   const isCanvas = product.tone === "canvas";
 
+  /* Контур и тень сняты в `.card-frame` — общий для всего сайта. Здесь
+     остаётся только заливка: тёмная плитка красила рамку в свой же navy,
+     а на ховере вся сетка уходила в жёлтый, хотя на /leader тот же жест
+     сделан акцентом. */
   const surfaceClass = isAccent
-    ? "bg-foreground text-white border-foreground"
+    ? "bg-navy text-on-accent"
     : isCanvas
-      ? "bg-surface text-foreground border-surface-strong"
-      : "bg-card text-foreground border-surface-strong shadow-[0_1px_2px_rgba(14,31,66,0.05),0_8px_24px_-12px_rgba(14,31,66,0.14)]";
+      ? "bg-surface text-foreground"
+      : "bg-card text-foreground";
 
-  const mutedTextClass = isAccent ? "text-white/70" : "text-muted";
-  const indexColorClass = isAccent ? "text-white/50" : "text-muted";
-  const dividerClass = isAccent ? "bg-white/15" : "bg-surface-strong";
-  const countClass = isAccent ? "text-white/70" : "text-foreground/80";
+  const mutedTextClass = isAccent ? "text-on-accent-muted" : "text-muted";
+  const indexColorClass = isAccent ? "text-on-accent-muted" : "text-muted";
+  const dividerClass = isAccent ? "bg-on-accent-line" : "bg-surface-strong";
+  const countClass = isAccent ? "text-on-accent-muted" : "text-foreground/80";
 
   const fadeBgClass = isAccent
-    ? "from-foreground via-foreground/70"
+    ? "from-navy via-navy/70"
     : isCanvas
       ? "from-surface via-surface/70"
       : "from-card via-card/70";
@@ -160,24 +171,21 @@ function BentoCard({
     : "aspect-[16/9] md:aspect-[4/3]";
 
   return (
-    <motion.article
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border ${product.span} ${surfaceClass} transition-all duration-500 hover:-translate-y-1 hover:border-accent-soft focus-within:ring-2 focus-within:ring-accent-soft/40 focus-within:ring-offset-2 focus-within:ring-offset-background motion-reduce:transform-none`}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{
-        duration: 0.7,
-        delay: index * 0.08,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+    /* Плитка под курсором не двигается: отклик дают рамка, тень и
+       жёлтая подсветка ниже, а сдвиг на 4px в плотной сетке читался
+       как рассыпающийся ряд. Появление — общий каскад
+       `Stagger`/`StaggerItem`, поэтому своего `whileInView` здесь нет. */
+    <StaggerItem
+      as="article"
+      className={`card-frame group flex flex-col overflow-hidden ${product.span} ${surfaceClass} focus-within:ring-2 focus-within:ring-accent/40 focus-within:ring-offset-2 focus-within:ring-offset-background`}
     >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
           background: isAccent
-            ? "radial-gradient(80% 60% at 80% 20%, rgba(217,179,110,0.32) 0%, transparent 70%)"
-            : "radial-gradient(60% 50% at 100% 0%, rgba(217,179,110,0.22) 0%, transparent 70%)",
+            ? `radial-gradient(80% 60% at 80% 20%, color-mix(in srgb, ${COLORS.yellow} 32%, transparent) 0%, transparent 70%)`
+            : `radial-gradient(60% 50% at 100% 0%, color-mix(in srgb, ${COLORS.yellow} 22%, transparent) 0%, transparent 70%)`,
         }}
       />
 
@@ -194,7 +202,9 @@ function BentoCard({
                 ? "(min-width: 1280px) 1280px, 100vw"
                 : "(min-width: 1280px) 640px, (min-width: 768px) 50vw, 100vw"
             }
-            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02] motion-reduce:transform-none"
+            className={`zoom-img object-cover ${
+              product.photo.position ?? "object-center"
+            }`}
           />
           <div
             aria-hidden
@@ -204,7 +214,7 @@ function BentoCard({
       ) : (
         <div
           aria-hidden
-          className="pointer-events-none relative hidden h-40 items-center justify-end pr-4 opacity-70 transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transform-none sm:flex md:pr-6"
+          className="zoom-img pointer-events-none relative hidden h-40 items-center justify-end pr-4 opacity-70 sm:flex md:pr-6"
         >
           {product.decor}
         </div>
@@ -226,75 +236,31 @@ function BentoCard({
           </span>
         </div>
 
-        <h3
-          className={`font-[family-name:var(--font-display)] font-semibold tracking-tight ${
-            isCanvas
-              ? "text-3xl md:text-4xl lg:text-5xl"
-              : "text-2xl md:text-3xl"
-          }`}
-        >
+        {/* Крупная плитка идёт ступенью `section`, обычная — `subsection`:
+            обе из общей шкалы, а не собственными text-2xl…text-5xl. */}
+        <h3 style={isCanvas ? TYPE.section : TYPE.subsection}>
           {product.title}
         </h3>
-        <p
-          className={`max-w-prose text-sm leading-relaxed md:text-base ${mutedTextClass}`}
-        >
+        <p className={`${MEASURE} ${mutedTextClass}`} style={TYPE.body}>
           {product.description}
         </p>
 
         <div className={`mt-auto h-px w-full ${dividerClass}`} />
 
         <div className="flex items-center justify-between gap-3">
-          {(() => {
-            const ctaClass = `inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-accent-soft focus-visible:ring-offset-2 focus-visible:outline-none ${
-              isAccent
-                ? "bg-white text-foreground hover:bg-accent-soft hover:text-white focus-visible:ring-offset-foreground"
-                : "border border-surface-strong bg-card text-foreground group-hover:border-accent-soft group-hover:text-accent focus-visible:ring-offset-background"
-            }`;
-            const ctaInner = (
-              <>
-                {product.cta}
-                <span
-                  aria-hidden
-                  className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
-                >
-                  →
-                </span>
-              </>
-            );
-            const isInternal = product.href?.startsWith("/");
-            return product.href ? (
-              isInternal ? (
-                <Link
-                  href={product.href}
-                  aria-label={`${product.cta} — ${product.title}`}
-                  className={ctaClass}
-                >
-                  {ctaInner}
-                </Link>
-              ) : (
-                <a
-                  href={product.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${product.cta} — ${product.title}`}
-                  className={ctaClass}
-                >
-                  {ctaInner}
-                </a>
-              )
-            ) : (
-              <button
-                type="button"
-                aria-label={`${product.cta} — ${product.title}`}
-                className={ctaClass}
-              >
-                {ctaInner}
-              </button>
-            );
-          })()}
+          {/* Кнопка та же, что и на остальном сайте: капсула, Inter 500,
+              уезжающая стрелка. Своя копия жила здесь ровно потому, что
+              общей кнопки никто не использовал. */}
+          <Button
+            href={product.href}
+            variant={isAccent ? "onDark" : "secondary"}
+            aria-label={`${product.cta} — ${product.title}`}
+          >
+            {product.cta}
+          </Button>
         </div>
       </div>
-    </motion.article>
+    </StaggerItem>
   );
 }
 

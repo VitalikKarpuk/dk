@@ -1,26 +1,26 @@
-import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+import { AmbientBackdrop } from "@/components/AmbientBackdrop";
 import HeroVideo from "./HeroVideo";
-import ScrollReveal from "./ScrollReveal";
-import { LogoLockup } from "@/components/Logo/variants";
-
-const COLORS = {
-  softOffWhite: "#f9f8f6",
-  pureWhite: "#ffffff",
-  pitchBlack: "#171417",
-  boardroomNavy: "#0c1754",
-  brandElectric: "#2545ff",
-  lilacAccent: "#d9d4ff",
-  feedbackYellow: "#ffc13a",
-  lightCoolGray: "#eaebf8",
-  mediumGray: "#222222",
-} as const;
-
-const FONT_HEADING = "var(--font-manrope), Arial, sans-serif";
-const FONT_ACCENT = "var(--font-editorial), cursive";
-const FONT_BODY = "var(--font-inter), system-ui, sans-serif";
+import {
+  COLORS,
+  CONTAINER,
+  FONT_BODY,
+  GUTTER,
+  HERO_Y,
+  SECTION_INNER,
+  TYPE,
+} from "@/lib/design";
+import {
+  Badge,
+  Button,
+  IconBubble,
+  QuietLink,
+  ScrollReveal,
+  SectionHeading,
+  SiteHeader,
+} from "@/components/ui";
 
 const FORM_URL = "https://forms.gle/4iHzX8ZwvCpiS62h8";
 
@@ -63,7 +63,10 @@ function Icon({ name }: { name: IconKey }) {
   switch (name) {
     case "growth":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:-translate-y-1">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:-translate-y-1"
+        >
           <path d="M4 19h16" />
           <path d="M4 15l4-4 3 3 5-6" />
           <path d="M16 8h4v4" />
@@ -71,7 +74,10 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "loop":
       return (
-        <svg {...common} className="h-6 w-6 [.icon-bubble:hover_&]:animate-[icon-spin_0.9s_ease-in-out]">
+        <svg
+          {...common}
+          className="h-6 w-6 [.icon-bubble:hover_&]:animate-[icon-spin_0.9s_ease-in-out]"
+        >
           <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
           <path d="M21 3v5h-5" />
           <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
@@ -80,7 +86,10 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "compass":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[18deg]">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[18deg]"
+        >
           <circle cx="12" cy="12" r="9" />
           <path d="M15.5 8.5l-2 5-5 2 2-5z" />
           <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
@@ -88,21 +97,30 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "camera":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-110">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-110"
+        >
           <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
           <circle cx="12" cy="13" r="3.4" />
         </svg>
       );
     case "spark":
       return (
-        <svg {...common} className="h-6 w-6 [.icon-bubble:hover_&]:animate-[icon-pulse_1.2s_ease-in-out_infinite]">
+        <svg
+          {...common}
+          className="h-6 w-6 [.icon-bubble:hover_&]:animate-[icon-pulse_1.2s_ease-in-out_infinite]"
+        >
           <path d="M12 3l1.6 5.2L19 10l-5.4 1.8L12 17l-1.6-5.2L5 10l5.4-1.8z" />
           <path d="M19 4l.5 1.6L21 6l-1.5.4L19 8l-.5-1.6L17 6l1.5-.4z" />
         </svg>
       );
     case "people":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-105">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-105"
+        >
           <circle cx="9" cy="8" r="3" />
           <path d="M3 20v-1a6 6 0 0 1 12 0v1" />
           <path d="M16 6.5a3 3 0 0 1 0 6" opacity="0.7" />
@@ -111,14 +129,20 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "magnet":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-110">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-110"
+        >
           <path d="M6 3v8a6 6 0 0 0 12 0V3" />
           <path d="M6 3h4v8a2 2 0 0 0 4 0V3h4" />
         </svg>
       );
     case "rocket":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:-translate-y-1 [.icon-bubble:hover_&]:rotate-[-12deg]">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:-translate-y-1 [.icon-bubble:hover_&]:rotate-[-12deg]"
+        >
           <path d="M9 14l-2.5 2.5a2 2 0 1 0 1 1L10 15" />
           <path d="M13 16l-3-3a16 16 0 0 1 1.7-4A12 12 0 0 1 21 3c0 2.4-.7 6.7-5 9.7A16 16 0 0 1 13 16z" />
           <circle cx="15.5" cy="8.5" r="1.4" />
@@ -127,27 +151,46 @@ function Icon({ name }: { name: IconKey }) {
     case "target":
       return (
         <svg {...common} className="h-6 w-6">
-          <circle cx="12" cy="12" r="9" className="origin-center transition-transform duration-500 [.icon-bubble:hover_&]:scale-105" />
-          <circle cx="12" cy="12" r="5.5" className="origin-center transition-transform duration-500 [.icon-bubble:hover_&]:scale-90" />
+          <circle
+            cx="12"
+            cy="12"
+            r="9"
+            className="origin-center transition-transform duration-500 [.icon-bubble:hover_&]:scale-105"
+          />
+          <circle
+            cx="12"
+            cy="12"
+            r="5.5"
+            className="origin-center transition-transform duration-500 [.icon-bubble:hover_&]:scale-90"
+          />
           <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
         </svg>
       );
     case "star":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[12deg]">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[12deg]"
+        >
           <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 17l-5.2 2.6 1-5.8L3.5 9.7l5.9-.9z" />
         </svg>
       );
     case "shield":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-105">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-105"
+        >
           <path d="M12 3l7 3v5c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z" />
           <path d="M9 12l2 2 4-4" />
         </svg>
       );
     case "balance":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[6deg]">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[6deg]"
+        >
           <path d="M12 4v16" />
           <path d="M6 8h12" />
           <path d="M6 8l-3 6h6z" />
@@ -157,7 +200,10 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "trophy":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:-translate-y-0.5">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:-translate-y-0.5"
+        >
           <path d="M7 4h10v4a5 5 0 0 1-10 0z" />
           <path d="M17 4h3v2.5a3 3 0 0 1-3 3" />
           <path d="M7 4H4v2.5a3 3 0 0 0 3 3" />
@@ -167,7 +213,10 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "chat":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-110">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-110"
+        >
           <path d="M21 12a8 8 0 0 1-11.5 7.2L4 21l1.4-4.6A8 8 0 1 1 21 12z" />
           <circle cx="9" cy="12" r="0.9" fill="currentColor" stroke="none" />
           <circle cx="13" cy="12" r="0.9" fill="currentColor" stroke="none" />
@@ -176,7 +225,10 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "doc":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[-4deg]">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[-4deg]"
+        >
           <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
           <path d="M14 3v6h6" />
           <path d="M8 13h8M8 17h5" />
@@ -184,7 +236,10 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "handshake":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-105">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-105"
+        >
           <path d="M3 12l4-4 3 3 2-2 4 4-2 2-4-4z" />
           <path d="M11 9l3-3 6 6-3 3" />
           <path d="M14 14l-3 3-2-2" />
@@ -192,27 +247,39 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "map":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-105">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:scale-105"
+        >
           <path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z" />
           <path d="M9 4v14M15 6v14" />
         </svg>
       );
     case "clock":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[18deg]">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:rotate-[18deg]"
+        >
           <circle cx="12" cy="12" r="9" />
           <path d="M12 7v5l3.5 2" />
         </svg>
       );
     case "heart":
       return (
-        <svg {...common} className="h-6 w-6 [.icon-bubble:hover_&]:animate-[icon-pulse_1.2s_ease-in-out_infinite]">
+        <svg
+          {...common}
+          className="h-6 w-6 [.icon-bubble:hover_&]:animate-[icon-pulse_1.2s_ease-in-out_infinite]"
+        >
           <path d="M12 20s-7-4.4-9.2-9A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 9.2 5c-2.2 4.6-9.2 9-9.2 9z" />
         </svg>
       );
     case "medal":
       return (
-        <svg {...common} className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:-translate-y-0.5">
+        <svg
+          {...common}
+          className="h-6 w-6 transition-transform duration-500 [.icon-bubble:hover_&]:-translate-y-0.5"
+        >
           <path d="M8 3l4 6 4-6" />
           <circle cx="12" cy="15" r="6" />
           <path d="M12 12.5l1 2 2 .2-1.5 1.4.4 2-1.9-1-1.9 1 .4-2L9 14.7l2-.2z" />
@@ -220,16 +287,28 @@ function Icon({ name }: { name: IconKey }) {
       );
     case "flame":
       return (
-        <svg {...common} className="h-6 w-6 [.icon-bubble:hover_&]:animate-[icon-pulse_1.2s_ease-in-out_infinite]">
+        <svg
+          {...common}
+          className="h-6 w-6 [.icon-bubble:hover_&]:animate-[icon-pulse_1.2s_ease-in-out_infinite]"
+        >
           <path d="M12 3s5 4 5 9a5 5 0 0 1-10 0c0-1.6.8-3 1.5-3.8C9 10 9 11.5 10 12c0-2 1-4.5 2-9z" />
         </svg>
       );
     case "instagram":
       return (
-        <svg {...common} className="h-5 w-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-[-6deg]">
+        <svg
+          {...common}
+          className="h-5 w-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-[-6deg]"
+        >
           <rect x="3" y="3" width="18" height="18" rx="5" />
           <circle cx="12" cy="12" r="4" />
-          <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+          <circle
+            cx="17.5"
+            cy="6.5"
+            r="0.9"
+            fill="currentColor"
+            stroke="none"
+          />
         </svg>
       );
   }
@@ -366,7 +445,13 @@ const INCLUDED: Item[] = [
   },
 ];
 
-type Stat = { image: string; stat: string; unit?: string; title: string; text: string };
+type Stat = {
+  image: string;
+  stat: string;
+  unit?: string;
+  title: string;
+  text: string;
+};
 
 const WHY: Stat[] = [
   {
@@ -437,264 +522,144 @@ export const metadata: Metadata = {
 export default function ProryvPage() {
   return (
     <main
-      className="flex w-full flex-1 flex-col"
+      className="relative flex w-full flex-1 flex-col"
       style={{
-        backgroundColor: COLORS.softOffWhite,
-        color: COLORS.pitchBlack,
+        backgroundColor: COLORS.paper,
+        color: COLORS.ink,
         fontFamily: FONT_BODY,
       }}
     >
-      <TopBar />
-      <Hero />
-      <QuickFacts />
-      <PainSection />
-      <DesireSection />
-      <RevealSection />
-      <IncludedSection />
-      <ResultSection />
-      <WhySection />
-      <PricingSection />
-      <ScrollReveal />
-      <Footer />
-      <style>{`
-        @keyframes icon-spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes icon-pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.12); }
-        }
-        @keyframes card-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes orbit-rotate {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes orbit-rotate-rev {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
-        }
-        @keyframes float-y {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
-        }
-        .card-rise {
-          transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-        }
-        .card-rise:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 18px 40px -24px rgba(12, 23, 84, 0.35);
-          border-color: ${COLORS.brandElectric};
-        }
-        [data-reveal] {
-          opacity: 0;
-          transform: translateY(22px);
-          transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
-            transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
-          transition-delay: var(--rd, 0ms);
-          will-change: opacity, transform;
-        }
-        [data-reveal].is-visible {
-          opacity: 1;
-          transform: none;
-        }
-        .zoom-img {
-          transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-        }
-        .group:hover .zoom-img {
-          transform: scale(1.05);
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .card-rise,
-          .card-rise:hover,
-          .zoom-img,
-          .group:hover .zoom-img,
-          [data-reveal],
-          [data-reveal].is-visible,
-          .icon-bubble *,
-          .icon-bubble {
-            animation: none !important;
-            transition: none !important;
-            transform: none !important;
-            opacity: 1 !important;
-          }
-        }
-      `}</style>
-    </main>
-  );
-}
+      {/* Тот же каркас, что у /leader: подложка лежит `fixed` под всей
+          страницей, содержимое едет отдельным слоем поверх неё. */}
+      <AmbientBackdrop />
 
-function TopBar() {
-  return (
-    <header
-      className="w-full"
-      style={{ borderBottom: `1px solid ${COLORS.lilacAccent}` }}
-    >
-      <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-6 py-5 md:px-12 md:py-6">
-        <Link
-          href="/"
-          className="group inline-flex items-center gap-3 rounded-full px-1 py-1 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-          aria-label="Дарья Карпук — на главную"
-          style={{
-            ["--tw-ring-color" as string]: COLORS.boardroomNavy,
-            ["--tw-ring-offset-color" as string]: COLORS.softOffWhite,
-          }}
-        >
-          <LogoLockup className="h-9 w-auto" />
-        </Link>
-
-        <Link
-          href="/"
-          className="group inline-flex items-center gap-2 rounded-full px-1 py-1 transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-          style={{
-            fontFamily: FONT_BODY,
-            fontSize: "14px",
-            color: COLORS.mediumGray,
-            ["--tw-ring-color" as string]: COLORS.boardroomNavy,
-            ["--tw-ring-offset-color" as string]: COLORS.softOffWhite,
-          }}
-        >
-          <span
-            aria-hidden
-            className="transition-transform duration-300 group-hover:-translate-x-0.5"
-          >
-            ←
-          </span>
-          <span className="hidden sm:inline">На главную</span>
-          <span className="sm:hidden">Назад</span>
-        </Link>
+      <div className="relative z-10 flex flex-1 flex-col">
+        <SiteHeader />
+        <Hero />
+        <QuickFacts />
+        <PainSection />
+        <DesireSection />
+        <RevealSection />
+        <IncludedSection />
+        <ResultSection />
+        <WhySection />
+        <PricingSection />
+        <ScrollReveal />
+        <Footer />
       </div>
-    </header>
+    </main>
   );
 }
 
 function Hero() {
   return (
     <section
-      className="relative isolate overflow-hidden"
-      style={{ backgroundColor: COLORS.boardroomNavy }}
+      className="relative w-full min-h-[560px] overflow-hidden md:min-h-[640px]"
+      style={{ backgroundColor: COLORS.paper }}
     >
+      {/* Первый экран собран по тому же рецепту, что на /basic-laws — и по
+          той же причине: кадр здесь не портрет, а абстракция, и держать её
+          нужно так же, как веер волокон там.
+
+          До этого секция была залита `navy`, текст шёл белым с тенью, а
+          курсив в заголовке — золотом. Это был единственный тёмный первый
+          экран на сайте: на главной, /leader, /basic-laws и /individual он
+          светлый, текст набран чернилами, а курсив — электриком. Кадр
+          остался, поменялась его роль: не тёмная подложка во всю секцию, а
+          фон справа под бумажной шторкой. */}
       <HeroVideo />
+
+      {/* Шторка слева — общий токен, тот же, что держит текст на первом
+          экране главной и /basic-laws. Глухая до 26% ширины и растворяется
+          к 72%: под словами остаётся бумага, а золотая воронка выходит в
+          свободную правую часть. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{ background: "var(--hero-curtain)" }}
+      />
+
+      {/* Мобильная шторка. `--hero-curtain` растворяется к 72% ширины —
+          это расчёт на десктоп, где текст занимает половину и в прозрачную
+          часть не заходит. На узком экране текст идёт во всю ширину и
+          правым краем ложится на воронку, где чернилам не хватает
+          контраста. `--text-scrim` — готовый токен ровно для текста поверх
+          фото: эллипс по центру с растворением к краям. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 md:hidden"
+        style={{ background: "var(--text-scrim)" }}
+      />
+
+      {/* Нижний фейд в фон страницы. Кадр непрозрачный, а под всей
+          страницей лежит `fixed` AmbientBackdrop — без градиента баннер
+          вырезал бы в нём прямоугольник, и на тёмной теме «лужи света»
+          обрывались бы резкой полосой по границе секции. На тёмной перепад
+          заметнее, поэтому фейд выше. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32 [[data-theme=dark]_&]:h-48"
         style={{
-          background: `linear-gradient(90deg, rgba(12,23,84,0.62) 0%, rgba(12,23,84,0.34) 42%, rgba(12,23,84,0.08) 72%, rgba(12,23,84,0) 100%)`,
+          backgroundImage: `linear-gradient(to top, ${COLORS.paper}, transparent)`,
         }}
       />
 
-      <div className="relative mx-auto flex w-full max-w-[1400px] flex-col justify-center px-6 pt-14 pb-16 md:min-h-[600px] md:px-12 md:pt-20 md:pb-24">
+      <div
+        className={`relative z-10 flex min-h-[inherit] flex-col justify-center ${CONTAINER} ${GUTTER} ${HERO_Y}`}
+      >
+        {/* Первый экран въезжает тем же каскадом, что и на /leader:
+            бейдж, заголовок, лид, кнопки — по 80ms друг за другом. */}
         <div className="flex max-w-2xl flex-col gap-7">
-          <span
-            className="inline-flex w-fit items-center"
-            style={{
-              backgroundColor: "rgba(255,255,255,0.12)",
-              color: COLORS.pureWhite,
-              border: "1px solid rgba(255,255,255,0.18)",
-              borderRadius: "16px",
-              padding: "4px 12px",
-              fontSize: "14px",
-              lineHeight: 1.43,
-            }}
-          >
-            Новый проект для экспертов
-          </span>
+          <div data-reveal>
+            <Badge>Новый проект для экспертов</Badge>
+          </div>
 
+          {/* Кегль и начертание — общая ступень `hero`: заголовок первого
+              экрана на всех страницах сайта один. Тени под текстом больше
+              нет — она была нужна, пока набор лежал поверх видео. */}
           <h1
+            data-reveal
             style={{
-              fontFamily: FONT_HEADING,
-              fontWeight: 500,
-              fontSize: "clamp(56px, 12vw, 148px)",
-              lineHeight: 0.9,
-              letterSpacing: "-0.05em",
-              color: COLORS.pureWhite,
-              textShadow: "0 2px 24px rgba(12,23,84,0.45)",
+              ...TYPE.hero,
+              color: COLORS.ink,
+              ["--rd" as string]: "80ms",
             }}
           >
             ПРО
             <em
               className="italic"
-              style={{
-                fontFamily: FONT_ACCENT,
-                fontWeight: 400,
-                letterSpacing: "-0.04em",
-                color: COLORS.feedbackYellow,
-              }}
+              style={{ ...TYPE.italic, color: COLORS.electric }}
             >
               РЫВ
             </em>
           </h1>
 
           <p
+            data-reveal
             className="max-w-xl"
             style={{
-              fontFamily: FONT_BODY,
-              fontSize: "18px",
-              lineHeight: 1.6,
-              color: "rgba(255,255,255,0.92)",
-              textShadow: "0 1px 12px rgba(12,23,84,0.5)",
+              ...TYPE.lead,
+              color: COLORS.ink,
+              ["--rd" as string]: "160ms",
             }}
           >
             Пространство, где вам больше не придётся идти к своим целям в
             одиночку. Понятная стратегия, поддержка и сильное окружение, чтобы
-            расти в доходе, клиентах и своём проекте — уверенно и с удовольствием.
+            расти в доходе, клиентах и своём проекте — уверенно и с
+            удовольствием.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <a
-              href={FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-16px_rgba(37,69,255,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                backgroundColor: COLORS.brandElectric,
-                color: COLORS.pureWhite,
-                borderRadius: "100px",
-                padding: "16px 32px",
-                fontFamily: FONT_BODY,
-                fontWeight: 500,
-                fontSize: "16px",
-                lineHeight: 1.4,
-                ["--tw-ring-color" as string]: COLORS.brandElectric,
-                ["--tw-ring-offset-color" as string]: COLORS.boardroomNavy,
-              }}
-            >
+          <div
+            data-reveal
+            className="flex flex-wrap items-center gap-4 pt-2"
+            style={{ ["--rd" as string]: "240ms" }}
+          >
+            <Button href={FORM_URL} size="lg">
               Хочу в «ПРОРЫВ»
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-0.5"
-              >
-                →
-              </span>
-            </a>
-            <a
-              href="#included"
-              className="group inline-flex items-center gap-2 rounded-full px-1 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                color: COLORS.pureWhite,
-                fontFamily: FONT_BODY,
-                fontSize: "15px",
-                fontWeight: 500,
-                ["--tw-ring-color" as string]: COLORS.pureWhite,
-                ["--tw-ring-offset-color" as string]: COLORS.boardroomNavy,
-              }}
-            >
-              <span
-                className="border-b transition-colors group-hover:border-current"
-                style={{ borderColor: "rgba(255,255,255,0.4)" }}
-              >
-                Что внутри
-              </span>
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-y-0.5"
-              >
-                ↓
-              </span>
-            </a>
+            </Button>
+            <QuietLink href="#included" direction="down">
+              Что внутри
+            </QuietLink>
           </div>
         </div>
       </div>
@@ -712,51 +677,26 @@ const QUICK_FACTS: { icon: IconKey; value: string; label: string }[] = [
 function QuickFacts() {
   return (
     <section className="relative z-20 -mt-10 w-full md:-mt-12">
-      <div className="mx-auto w-full max-w-[1400px] px-6 pb-10 md:px-12 md:pb-14">
+      <div className={`${CONTAINER} ${GUTTER} pb-16 md:pb-24`}>
         <ul className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-          {QUICK_FACTS.map((f) => (
+          {QUICK_FACTS.map((f, i) => (
             <li
               key={f.value}
-              className="card-rise group flex items-center gap-3 p-5 md:p-6"
+              data-reveal
+              className="card-frame group flex items-center gap-3 p-5 md:p-6"
               style={{
-                backgroundColor: COLORS.pureWhite,
-                border: `1px solid ${COLORS.lilacAccent}`,
-                borderRadius: "16px",
-                boxShadow: "0 20px 50px -24px rgba(12, 23, 84, 0.55)",
+                backgroundColor: COLORS.white,
+                ["--rd" as string]: `${i * 80}ms`,
               }}
             >
-              <span
-                aria-hidden
-                className="flex h-10 w-10 shrink-0 items-center justify-center transition-transform duration-500 group-hover:scale-110"
-                style={{
-                  backgroundColor: COLORS.lilacAccent,
-                  color: COLORS.brandElectric,
-                  borderRadius: "100px",
-                }}
-              >
+              <IconBubble>
                 <Icon name={f.icon} />
-              </span>
+              </IconBubble>
               <div className="flex flex-col">
-                <span
-                  style={{
-                    fontFamily: FONT_HEADING,
-                    fontWeight: 500,
-                    fontSize: "clamp(20px, 2.4vw, 26px)",
-                    lineHeight: 1.1,
-                    letterSpacing: "-0.03em",
-                    color: COLORS.boardroomNavy,
-                  }}
-                >
+                <span style={{ ...TYPE.cardTitle, color: COLORS.ink }}>
                   {f.value}
                 </span>
-                <span
-                  style={{
-                    fontFamily: FONT_BODY,
-                    fontSize: "13px",
-                    lineHeight: 1.4,
-                    color: COLORS.mediumGray,
-                  }}
-                >
+                <span style={{ ...TYPE.caption, color: COLORS.inkStrong }}>
                   {f.label}
                 </span>
               </div>
@@ -768,50 +708,16 @@ function QuickFacts() {
   );
 }
 
-function SectionHeader({
-  title,
-  italic,
-}: {
-  title: string;
-  italic: string;
-}) {
-  return (
-    <h2
-      data-reveal
-      style={{
-        fontFamily: FONT_HEADING,
-        fontWeight: 500,
-        fontSize: "clamp(32px, 5vw, 56px)",
-        lineHeight: 1.05,
-        letterSpacing: "-0.04em",
-        color: COLORS.pitchBlack,
-      }}
-    >
-      {title}{" "}
-      <em
-        className="italic"
-        style={{
-          fontFamily: FONT_ACCENT,
-          fontWeight: 400,
-          letterSpacing: "-0.03em",
-          color: COLORS.brandElectric,
-        }}
-      >
-        {italic}
-      </em>
-    </h2>
-  );
-}
-
 function PainSection() {
   return (
     <section
       id="pains"
       className="w-full scroll-mt-20"
-      style={{ backgroundColor: COLORS.lightCoolGray }}
+      style={{ backgroundColor: COLORS.coolWash }}
     >
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
+      <div className={SECTION_INNER}>
+        <SectionHeading
+          data-reveal
           title="Возможно, вы узнаёте себя"
           italic="в этом"
         />
@@ -823,14 +729,12 @@ function PainSection() {
               <li
                 key={item.text}
                 data-reveal
-                className={`card-rise group flex overflow-hidden ${
+                className={`card-frame group flex overflow-hidden ${
                   wide ? "flex-col lg:col-span-2 lg:flex-row" : "flex-col"
                 }`}
                 style={{
-                  backgroundColor: COLORS.pureWhite,
-                  border: `1px solid ${COLORS.lilacAccent}`,
-                  borderRadius: "16px",
-                  ["--rd" as string]: `${i * 60}ms`,
+                  backgroundColor: COLORS.white,
+                  ["--rd" as string]: `${i * 80}ms`,
                 }}
               >
                 <div
@@ -839,7 +743,7 @@ function PainSection() {
                       ? "aspect-[16/10] lg:aspect-auto lg:w-[44%] lg:self-stretch"
                       : "aspect-[16/10]"
                   }`}
-                  style={{ backgroundColor: COLORS.softOffWhite }}
+                  style={{ backgroundColor: COLORS.paper }}
                 >
                   <Image
                     src={item.image}
@@ -854,28 +758,10 @@ function PainSection() {
                     wide ? "lg:flex-1 lg:justify-center" : ""
                   }`}
                 >
-                  <h3
-                    style={{
-                      fontFamily: FONT_HEADING,
-                      fontWeight: 500,
-                      fontSize: "20px",
-                      lineHeight: 1.2,
-                      letterSpacing: "-0.02em",
-                      color: COLORS.boardroomNavy,
-                    }}
-                  >
+                  <h3 style={{ ...TYPE.cardTitle, color: COLORS.ink }}>
                     {item.title}
                   </h3>
-                  <p
-                    style={{
-                      fontFamily: FONT_BODY,
-                      fontSize: "15px",
-                      lineHeight: 1.6,
-                      color: COLORS.pitchBlack,
-                    }}
-                  >
-                    {item.text}
-                  </p>
+                  <p style={{ ...TYPE.body, color: COLORS.ink }}>{item.text}</p>
                 </div>
               </li>
             );
@@ -889,28 +775,24 @@ function PainSection() {
 function DesireSection() {
   return (
     <section className="w-full">
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
-          title="Но при этом вы"
-          italic="хотите"
-        />
+      <div className={SECTION_INNER}>
+        <SectionHeading data-reveal title="Но при этом вы" italic="хотите" />
 
         <ul className="mt-10 grid gap-3 md:grid-cols-2 md:gap-4">
           {DESIRES.map((item, i) => (
             <li
               key={item.text}
               data-reveal
-              className="relative flex items-start gap-3 overflow-hidden p-4 md:p-5"
+              className="card-frame flex items-start gap-3 overflow-hidden p-4 md:p-5"
               style={{
-                backgroundColor: COLORS.lightCoolGray,
-                borderRadius: "14px",
-                ["--rd" as string]: `${i * 45}ms`,
+                backgroundColor: COLORS.cool,
+                ["--rd" as string]: `${i * 80}ms`,
               }}
             >
               <span
                 aria-hidden
                 className="pointer-events-none absolute -bottom-5 -right-3 z-0 [&_svg]:h-24 [&_svg]:w-24"
-                style={{ color: COLORS.brandElectric, opacity: 0.1 }}
+                style={{ color: COLORS.electric, opacity: 0.1 }}
               >
                 <Icon name={item.icon} />
               </span>
@@ -918,8 +800,8 @@ function DesireSection() {
                 aria-hidden
                 className="relative z-10 mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
                 style={{
-                  backgroundColor: COLORS.brandElectric,
-                  color: COLORS.pureWhite,
+                  backgroundColor: COLORS.electricFill,
+                  color: COLORS.onAccent,
                 }}
               >
                 <svg
@@ -936,12 +818,7 @@ function DesireSection() {
               </span>
               <p
                 className="relative z-10"
-                style={{
-                  fontFamily: FONT_BODY,
-                  fontSize: "16px",
-                  lineHeight: 1.55,
-                  color: COLORS.pitchBlack,
-                }}
+                style={{ ...TYPE.body, color: COLORS.ink }}
               >
                 {item.text}
               </p>
@@ -956,77 +833,54 @@ function DesireSection() {
 function RevealSection() {
   return (
     <section className="w-full">
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
+      <div className={SECTION_INNER}>
         <article
           data-reveal
-          className="relative overflow-hidden p-8 md:p-14"
+          className="card-frame overflow-hidden p-8 md:p-14"
           style={{
-            backgroundColor: COLORS.boardroomNavy,
-            color: COLORS.pureWhite,
-            borderRadius: "16px",
+            backgroundColor: COLORS.navy,
+            color: COLORS.onAccent,
           }}
         >
           <span
             aria-hidden
             className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full animate-[orbit-rotate_60s_linear_infinite]"
-            style={{ border: `1px dashed rgba(217,212,255,0.18)` }}
+            style={{
+              border: `1px dashed color-mix(in srgb, var(--surface-strong) 18%, transparent)`,
+            }}
           />
           <span
             aria-hidden
             className="pointer-events-none absolute -right-6 top-16 h-40 w-40 rounded-full"
-            style={{ border: `1px solid rgba(255,255,255,0.06)` }}
+            style={{ border: `1px solid ${COLORS.onAccentLine}` }}
           />
 
           <div className="relative flex flex-col gap-6 md:max-w-[80%]">
+            {/* Надзаголовок с чертой — тот же приём, что в `Eyebrow`,
+                но жёлтым: на тёмной плашке электрик не читается. */}
             <span
-              className="inline-flex w-fit items-center gap-2"
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "12px",
-                letterSpacing: "0.28em",
-                textTransform: "uppercase",
-                color: COLORS.feedbackYellow,
-              }}
+              className="inline-flex w-fit items-center gap-3"
+              style={{ ...TYPE.eyebrow, color: COLORS.yellow }}
             >
               <span
                 aria-hidden
                 className="inline-block h-px w-8"
-                style={{ backgroundColor: COLORS.feedbackYellow }}
+                style={{ backgroundColor: COLORS.yellow }}
               />
               Приглашение
             </span>
 
-            <h2
-              style={{
-                fontFamily: FONT_HEADING,
-                fontWeight: 500,
-                fontSize: "clamp(28px, 4.5vw, 52px)",
-                lineHeight: 1.08,
-                letterSpacing: "-0.04em",
-                color: COLORS.pureWhite,
-              }}
-            >
+            <h2 style={{ ...TYPE.section, color: COLORS.onAccent }}>
               Тогда я приглашаю вас в новый проект для экспертов —{" "}
               <em
                 className="italic"
-                style={{
-                  fontFamily: FONT_ACCENT,
-                  fontWeight: 400,
-                  color: COLORS.feedbackYellow,
-                }}
+                style={{ ...TYPE.italic, color: COLORS.yellow }}
               >
                 «ПРОРЫВ»
               </em>
             </h2>
 
-            <p
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "18px",
-                lineHeight: 1.65,
-                color: "rgba(255,255,255,0.82)",
-              }}
-            >
+            <p style={{ ...TYPE.lead, color: COLORS.onAccentMuted }}>
               «ПРОРЫВ» — это пространство, где вам больше не придётся идти к
               своим целям в одиночку. Здесь вы получите не только знания, но и
               понятную стратегию, поддержку, окружение сильных единомышленников
@@ -1034,25 +888,12 @@ function RevealSection() {
               результату.
             </p>
 
-            <p
-              style={{
-                fontFamily: FONT_HEADING,
-                fontWeight: 500,
-                fontSize: "clamp(20px, 2.6vw, 30px)",
-                lineHeight: 1.25,
-                letterSpacing: "-0.03em",
-                color: COLORS.pureWhite,
-              }}
-            >
+            <p style={{ ...TYPE.subsection, color: COLORS.onAccent }}>
               Мы будем двигаться вместе — шаг за шагом, превращая идеи в
               действия, а действия — в{" "}
               <em
                 className="italic"
-                style={{
-                  fontFamily: FONT_ACCENT,
-                  fontWeight: 400,
-                  color: COLORS.feedbackYellow,
-                }}
+                style={{ ...TYPE.italic, color: COLORS.yellow }}
               >
                 рост дохода, клиентов и вашего проекта
               </em>
@@ -1069,7 +910,10 @@ function IncludedSection() {
   return (
     <section
       id="included"
-      className="relative isolate w-full scroll-mt-20 overflow-hidden"
+      /* `overflow-clip`, а не `hidden`: цель якоря не должна быть
+         контейнером прокрутки, иначе `scroll-mt` не действует и секция
+         приезжает под липкую шапку впритык. Обрезка та же. */
+      className="relative isolate w-full scroll-mt-20 overflow-clip"
     >
       <Image
         src="/included-bg.png"
@@ -1081,50 +925,28 @@ function IncludedSection() {
       <div
         aria-hidden
         className="absolute inset-0 -z-10"
-        style={{ backgroundColor: "rgba(249,248,246,0.55)" }}
+        style={{ backgroundColor: "var(--photo-scrim)" }}
       />
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
-          title="Что вас ждёт"
-          italic="в проекте"
-        />
+      <div className={SECTION_INNER}>
+        <SectionHeading data-reveal title="Что вас ждёт" italic="в проекте" />
 
         <ul className="mt-10 grid gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-4">
           {INCLUDED.map((item, i) => (
             <li
               key={item.text}
               data-reveal
-              className="card-rise group flex flex-row items-start gap-4 p-6 md:flex-col md:p-7"
+              className="card-frame group flex flex-row items-start gap-4 p-6 md:flex-col md:p-7"
               style={{
-                backgroundColor: "rgba(255,255,255,0.9)",
-                border: `1px solid ${COLORS.lilacAccent}`,
-                borderRadius: "16px",
-                boxShadow: "0 18px 40px -26px rgba(12, 23, 84, 0.4)",
+                backgroundColor:
+                  "color-mix(in srgb, var(--card) 90%, transparent)",
                 backdropFilter: "blur(4px)",
-                ["--rd" as string]: `${i * 60}ms`,
+                ["--rd" as string]: `${i * 80}ms`,
               }}
             >
-              <span
-                aria-hidden
-                className="icon-bubble flex h-12 w-12 shrink-0 items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                style={{
-                  backgroundColor: COLORS.lilacAccent,
-                  color: COLORS.brandElectric,
-                  borderRadius: "100px",
-                }}
-              >
+              <IconBubble>
                 <Icon name={item.icon} />
-              </span>
-              <p
-                style={{
-                  fontFamily: FONT_BODY,
-                  fontSize: "16px",
-                  lineHeight: 1.6,
-                  color: COLORS.pitchBlack,
-                }}
-              >
-                {item.text}
-              </p>
+              </IconBubble>
+              <p style={{ ...TYPE.body, color: COLORS.ink }}>{item.text}</p>
             </li>
           ))}
         </ul>
@@ -1135,12 +957,10 @@ function IncludedSection() {
 
 function ResultSection() {
   return (
-    <section
-      className="w-full"
-      style={{ backgroundColor: COLORS.lightCoolGray }}
-    >
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
+    <section className="w-full" style={{ backgroundColor: COLORS.coolWash }}>
+      <div className={SECTION_INNER}>
+        <SectionHeading
+          data-reveal
           title="Результат, к которому"
           italic="вы придёте"
         />
@@ -1148,43 +968,20 @@ function ResultSection() {
         <div className="mt-10 grid gap-4 md:grid-cols-2 md:gap-5">
           <article
             data-reveal
-            className="flex flex-col gap-4 p-8 md:p-10"
-            style={{
-              backgroundColor: COLORS.pureWhite,
-              border: `1px solid ${COLORS.lilacAccent}`,
-              borderRadius: "16px",
-            }}
+            className="card-frame flex flex-col gap-4 p-8 md:p-10"
+            style={{ backgroundColor: COLORS.white }}
           >
-            <span
-              aria-hidden
-              className="flex h-12 w-12 items-center justify-center"
-              style={{
-                backgroundColor: COLORS.lilacAccent,
-                color: COLORS.brandElectric,
-                borderRadius: "100px",
-              }}
-            >
+            <IconBubble>
               <Icon name="map" />
-            </span>
-            <p
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "17px",
-                lineHeight: 1.65,
-                color: COLORS.pitchBlack,
-              }}
-            >
+            </IconBubble>
+            <p style={{ ...TYPE.body, color: COLORS.ink }}>
               Вы перестанете действовать хаотично и начнёте двигаться по
               понятному плану. Получите поддержку, окружение и инструменты,
               которые помогут привлекать больше клиентов, увеличивать доход,
               запускать новые проекты и развивать свою экспертность —{" "}
               <em
                 className="italic"
-                style={{
-                  fontFamily: FONT_ACCENT,
-                  fontWeight: 400,
-                  color: COLORS.brandElectric,
-                }}
+                style={{ ...TYPE.italic, color: COLORS.electric }}
               >
                 уверенно и с удовольствием
               </em>
@@ -1194,48 +991,31 @@ function ResultSection() {
 
           <article
             data-reveal
-            className="relative flex flex-col justify-center gap-4 overflow-hidden p-8 md:p-10"
+            className="card-frame flex flex-col justify-center gap-4 overflow-hidden p-8 md:p-10"
             style={{
-              backgroundColor: COLORS.brandElectric,
-              color: COLORS.pureWhite,
-              borderRadius: "16px",
-              ["--rd" as string]: "120ms",
+              backgroundColor: COLORS.electricFill,
+              color: COLORS.onAccent,
+              ["--rd" as string]: "80ms",
             }}
           >
             <span
               aria-hidden
               className="pointer-events-none absolute -right-10 -bottom-10 h-40 w-40 rounded-full"
-              style={{ border: `1px solid rgba(255,255,255,0.15)` }}
+              style={{ border: `1px solid ${COLORS.onAccentLine}` }}
             />
-            <span
-              aria-hidden
-              className="flex h-12 w-12 items-center justify-center"
-              style={{
-                backgroundColor: "rgba(255,255,255,0.14)",
-                color: COLORS.feedbackYellow,
-                borderRadius: "100px",
-              }}
-            >
+            <IconBubble tone="glass">
               <Icon name="people" />
-            </span>
-            <p
-              style={{
-                fontFamily: FONT_HEADING,
-                fontWeight: 500,
-                fontSize: "clamp(22px, 2.8vw, 32px)",
-                lineHeight: 1.25,
-                letterSpacing: "-0.03em",
-                color: COLORS.pureWhite,
-              }}
-            >
+            </IconBubble>
+            <p style={{ ...TYPE.subsection, color: COLORS.onAccent }}>
               «ПРОРЫВ» — это не просто обучение. Это{" "}
+              {/* Не жёлтым: единственное место, где бренд-золото ложится на
+                  синюю заливку, и контраста не хватает ни там, ни там —
+                  на светлой 3.84 (а кегль по clamp падает до 22px, где нужно
+                  уже 4.5), на тёмной 2.90. Выделение и без цвета держится
+                  курсивной антиквой. */}
               <em
                 className="italic"
-                style={{
-                  fontFamily: FONT_ACCENT,
-                  fontWeight: 400,
-                  color: COLORS.feedbackYellow,
-                }}
+                style={{ ...TYPE.italic, color: COLORS.onAccent }}
               >
                 сообщество
               </em>
@@ -1252,8 +1032,9 @@ function ResultSection() {
 function WhySection() {
   return (
     <section className="w-full">
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
-        <SectionHeader
+      <div className={SECTION_INNER}>
+        <SectionHeading
+          data-reveal
           title="Почему этот поток"
           italic="особенный"
         />
@@ -1263,15 +1044,16 @@ function WhySection() {
             <li
               key={item.title}
               data-reveal
-              className="card-rise group flex flex-col overflow-hidden"
+              className="card-frame group flex flex-col overflow-hidden"
               style={{
-                backgroundColor: COLORS.pureWhite,
-                border: `1px solid ${COLORS.lilacAccent}`,
-                borderRadius: "16px",
-                ["--rd" as string]: `${i * 70}ms`,
+                backgroundColor: COLORS.white,
+                ["--rd" as string]: `${i * 80}ms`,
               }}
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden" style={{ backgroundColor: COLORS.softOffWhite }}>
+              <div
+                className="relative aspect-[16/10] w-full overflow-hidden"
+                style={{ backgroundColor: COLORS.paper }}
+              >
                 <Image
                   src={item.image}
                   alt=""
@@ -1283,30 +1065,22 @@ function WhySection() {
                   aria-hidden
                   className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5"
                   style={{
-                    background:
-                      "linear-gradient(0deg, rgba(249,248,246,0.96) 0%, rgba(249,248,246,0.7) 34%, rgba(249,248,246,0) 100%)",
+                    /* Через color-mix, а не rgba с фиксированным цветом:
+                       подпись лежит поверх фото, и подложка под ней должна
+                       гаснуть в фон текущей темы. */
+                    background: `linear-gradient(0deg, color-mix(in srgb, ${COLORS.paper} 96%, transparent) 0%, color-mix(in srgb, ${COLORS.paper} 70%, transparent) 34%, transparent 100%)`,
                   }}
                 />
                 <div className="absolute bottom-3 left-5 flex items-baseline gap-2">
-                  <span
-                    style={{
-                      fontFamily: FONT_HEADING,
-                      fontWeight: 600,
-                      fontSize: "clamp(50px, 5.5vw, 70px)",
-                      lineHeight: 1,
-                      letterSpacing: "-0.05em",
-                      color: COLORS.boardroomNavy,
-                    }}
-                  >
+                  <span style={{ ...TYPE.numeral, color: COLORS.ink }}>
                     {item.stat}
                   </span>
                   {item.unit && (
                     <span
                       style={{
-                        fontFamily: FONT_BODY,
-                        fontSize: "14px",
+                        ...TYPE.caption,
+                        color: COLORS.electric,
                         fontWeight: 600,
-                        color: COLORS.brandElectric,
                       }}
                     >
                       {item.unit}
@@ -1315,28 +1089,10 @@ function WhySection() {
                 </div>
               </div>
               <div className="flex flex-col gap-3 p-6 md:p-7">
-                <h3
-                  style={{
-                    fontFamily: FONT_HEADING,
-                    fontWeight: 500,
-                    fontSize: "20px",
-                    lineHeight: 1.2,
-                    letterSpacing: "-0.02em",
-                    color: COLORS.boardroomNavy,
-                  }}
-                >
+                <h3 style={{ ...TYPE.cardTitle, color: COLORS.ink }}>
                   {item.title}
                 </h3>
-                <p
-                  style={{
-                    fontFamily: FONT_BODY,
-                    fontSize: "16px",
-                    lineHeight: 1.6,
-                    color: COLORS.pitchBlack,
-                  }}
-                >
-                  {item.text}
-                </p>
+                <p style={{ ...TYPE.body, color: COLORS.ink }}>{item.text}</p>
               </div>
             </li>
           ))}
@@ -1348,90 +1104,52 @@ function WhySection() {
 
 function PricingSection() {
   return (
-    <section className="mx-auto w-full max-w-[1400px] px-6 py-10 md:px-12 md:py-14">
+    <section className={SECTION_INNER}>
       <article
         data-reveal
-        className="relative overflow-hidden p-8 md:p-14"
+        className="card-frame overflow-hidden p-8 md:p-14"
         style={{
-          backgroundColor: COLORS.boardroomNavy,
-          color: COLORS.pureWhite,
-          borderRadius: "16px",
+          backgroundColor: COLORS.navy,
+          color: COLORS.onAccent,
         }}
       >
         <span
           aria-hidden
           className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full animate-[orbit-rotate_60s_linear_infinite]"
-          style={{ border: `1px dashed rgba(217,212,255,0.18)` }}
+          style={{
+            border: `1px dashed color-mix(in srgb, var(--surface-strong) 18%, transparent)`,
+          }}
         />
         <span
           aria-hidden
           className="pointer-events-none absolute -right-6 top-16 h-40 w-40 rounded-full"
-          style={{ border: `1px solid rgba(255,255,255,0.06)` }}
+          style={{ border: `1px solid ${COLORS.onAccentLine}` }}
         />
 
         <div className="relative grid gap-10 md:grid-cols-12 md:items-center">
           <div className="md:col-span-7 flex flex-col gap-5">
-            <span
-              className="inline-flex w-fit items-center gap-2"
-              style={{
-                backgroundColor: COLORS.feedbackYellow,
-                color: COLORS.boardroomNavy,
-                borderRadius: "999px",
-                padding: "6px 14px",
-                fontFamily: FONT_BODY,
-                fontSize: "11px",
-                fontWeight: 600,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-              }}
-            >
-              <Icon name="flame" />
+            <Badge tone="soft" icon={<Icon name="flame" />}>
               Раннее бронирование
-            </span>
+            </Badge>
 
             {/* <div className="flex items-baseline gap-4">
               <span
-                style={{
-                  fontFamily: FONT_HEADING,
-                  fontWeight: 500,
-                  fontSize: "clamp(56px, 8vw, 104px)",
-                  lineHeight: 0.95,
-                  letterSpacing: "-0.05em",
-                  color: COLORS.pureWhite,
-                }}
+                style={{ ...TYPE.numeralLarge, color: COLORS.onAccent }}
               >
                 175&nbsp;$
               </span>
               <span
-                style={{
-                  fontFamily: FONT_BODY,
-                  fontSize: "clamp(22px, 3vw, 32px)",
-                  color: "rgba(255,255,255,0.55)",
-                  textDecoration: "line-through",
-                }}
+                style={{ ...TYPE.subsection, color: COLORS.onAccentMuted, textDecoration: "line-through" }}
               >
                 350&nbsp;$
               </span>
             </div> */}
 
-            <p
-              style={{
-                fontFamily: FONT_HEADING,
-                fontWeight: 500,
-                fontSize: "clamp(18px, 2.2vw, 24px)",
-                lineHeight: 1.3,
-                letterSpacing: "-0.02em",
-                color: COLORS.pureWhite,
-              }}
-            >
+            <p style={{ ...TYPE.subsection, color: COLORS.onAccent }}>
               Специальная цена{" "}
               <em
                 className="italic"
-                style={{
-                  fontFamily: FONT_ACCENT,
-                  fontWeight: 400,
-                  color: COLORS.feedbackYellow,
-                }}
+                style={{ ...TYPE.italic, color: COLORS.yellow }}
               >
                 до старта
               </em>{" "}
@@ -1440,12 +1158,7 @@ function PricingSection() {
 
             <p
               className="max-w-md"
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "15px",
-                lineHeight: 1.6,
-                color: "rgba(255,255,255,0.78)",
-              }}
+              style={{ ...TYPE.body, color: COLORS.onAccentMuted }}
             >
               Количество мест ограничено — всего 7 участников. После заполнения
               группы регистрация будет закрыта.
@@ -1453,40 +1166,15 @@ function PricingSection() {
           </div>
 
           <div className="md:col-span-5 flex flex-col items-start gap-4 md:items-end md:text-right">
-            <a
+            <Button
               href={FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-16px_rgba(255,193,58,0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                backgroundColor: COLORS.feedbackYellow,
-                color: COLORS.boardroomNavy,
-                borderRadius: "100px",
-                padding: "16px 32px",
-                fontFamily: FONT_BODY,
-                fontWeight: 500,
-                fontSize: "16px",
-                lineHeight: 1.4,
-                ["--tw-ring-color" as string]: COLORS.feedbackYellow,
-                ["--tw-ring-offset-color" as string]: COLORS.boardroomNavy,
-              }}
+              variant="soft"
+              size="lg"
+              icon={<Icon name="doc" />}
             >
-              <Icon name="doc" />
               Забронировать место
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-0.5"
-              >
-                →
-              </span>
-            </a>
-            <span
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: "12px",
-                color: "rgba(255,255,255,0.6)",
-              }}
-            >
+            </Button>
+            <span className="text-xs" style={{ color: COLORS.onAccentMuted }}>
               Регистрация через короткую анкету — займёт пару минут
             </span>
           </div>
