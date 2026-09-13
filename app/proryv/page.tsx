@@ -1,6 +1,8 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+import { getProgram, type Program } from "@/lib/content";
+import { formatPrice, plural, seatsLabel, weeksLabel } from "@/lib/format";
 import { AmbientBackdrop } from "@/components/AmbientBackdrop";
 import HeroVideo from "./HeroVideo";
 import {
@@ -22,7 +24,10 @@ import {
   SiteHeader,
 } from "@/components/ui";
 
-const FORM_URL = "https://forms.gle/4iHzX8ZwvCpiS62h8";
+/* Ссылка на анкету, цифры группы и цена приезжают из базы
+   (`lib/content.ts`). Здесь они лежали литералами, причём одни и те же:
+   «7 мест» стояло в трёх местах, «6 недель» — в двух, и правка на новый
+   поток означала обход всей страницы глазами. */
 
 type IconKey =
   | "growth"
@@ -453,42 +458,66 @@ type Stat = {
   text: string;
 };
 
-const WHY: Stat[] = [
-  {
-    image: "/why-1.png",
-    stat: "7",
-    unit: "участников",
-    title: "Небольшая группа",
-    text: "Всего 7 мест — чтобы каждый получил максимум внимания, обратной связи и реальных результатов.",
-  },
-  {
-    image: "/why-2.png",
-    stat: "6",
-    unit: "недель",
-    title: "Глубокая совместная работа",
-    text: "За это время мы выстроим стратегию, внедрим ключевые изменения и сфокусируемся на действиях, которые приводят к росту.",
-  },
-  {
+/**
+ * Карточки «Почему этот поток особенный».
+ *
+ * Функция, а не константа: число в карточке и число в её тексте — одно
+ * и то же, и разъехаться они не должны. Раньше «7» в показателе и «7» в
+ * предложении под ним были двумя независимыми литералами.
+ *
+ * Карточка без своего числа не рисуется вовсе: пустой показатель хуже,
+ * чем сетка из четырёх карточек вместо пяти.
+ */
+function whyCards(program: Program): Stat[] {
+  const cards: Stat[] = [];
+
+  if (program.seats !== null) {
+    cards.push({
+      image: "/why-1.png",
+      stat: String(program.seats),
+      unit: "участников",
+      title: "Небольшая группа",
+      text: `Всего ${seatsLabel(program.seats)} — чтобы каждый получил максимум внимания, обратной связи и реальных результатов.`,
+    });
+  }
+
+  if (program.durationWeeks !== null) {
+    cards.push({
+      image: "/why-2.png",
+      stat: String(program.durationWeeks),
+      unit: "недель",
+      title: "Глубокая совместная работа",
+      text: "За это время мы выстроим стратегию, внедрим ключевые изменения и сфокусируемся на действиях, которые приводят к росту.",
+    });
+  }
+
+  cards.push({
     image: "/why-3.png",
     stat: "100%",
     title: "Полное погружение в каждого",
     text: "Я лично работаю с каждым участником: помогаю находить решения, даю обратную связь и сопровождаю на всём пути к результату.",
-  },
-  {
-    image: "/why-4.png",
-    stat: "8",
-    unit: "лет опыта",
-    title: "Практический опыт",
-    text: "Передам весь опыт работы с экспертами: продвижение, привлечение клиентов, создание сильного личного бренда и увеличение дохода.",
-  },
-  {
+  });
+
+  if (program.yearsExperience !== null) {
+    cards.push({
+      image: "/why-4.png",
+      stat: String(program.yearsExperience),
+      unit: "лет опыта",
+      title: "Практический опыт",
+      text: "Передам весь опыт работы с экспертами: продвижение, привлечение клиентов, создание сильного личного бренда и увеличение дохода.",
+    });
+  }
+
+  cards.push({
     image: "/why-5.png",
-    stat: "1",
+    stat: String(program.streamNumber ?? 1),
     unit: "поток",
     title: "Этот поток — единственный",
     text: "Повтор программы не планируется — это возможность попасть в проект именно сейчас.",
-  },
-];
+  });
+
+  return cards;
+}
 
 const OG_TITLE = "ПРОРЫВ — проект для экспертов · Дарья Карпук";
 const OG_DESCRIPTION =
@@ -519,7 +548,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProryvPage() {
+export default async function ProryvPage() {
+  const program = await getProgram("proryv");
+
   return (
     <main
       className="relative flex w-full flex-1 flex-col"
@@ -535,15 +566,15 @@ export default function ProryvPage() {
 
       <div className="relative z-10 flex flex-1 flex-col">
         <SiteHeader />
-        <Hero />
-        <QuickFacts />
+        <Hero program={program} />
+        <QuickFacts program={program} />
         <PainSection />
         <DesireSection />
         <RevealSection />
         <IncludedSection />
         <ResultSection />
-        <WhySection />
-        <PricingSection />
+        <WhySection program={program} />
+        <PricingSection program={program} />
         <ScrollReveal />
         <Footer />
       </div>
@@ -551,7 +582,7 @@ export default function ProryvPage() {
   );
 }
 
-function Hero() {
+function Hero({ program }: { program: Program }) {
   return (
     <section
       className="relative w-full min-h-[560px] overflow-hidden md:min-h-[640px]"
@@ -654,7 +685,7 @@ function Hero() {
             className="flex flex-wrap items-center gap-4 pt-2"
             style={{ ["--rd" as string]: "240ms" }}
           >
-            <Button href={FORM_URL} size="lg">
+            <Button href={program.formUrl ?? "#"} size="lg">
               Хочу в «ПРОРЫВ»
             </Button>
             <QuietLink href="#included" direction="down">
@@ -667,19 +698,53 @@ function Hero() {
   );
 }
 
-const QUICK_FACTS: { icon: IconKey; value: string; label: string }[] = [
-  { icon: "clock", value: "6 недель", label: "глубокой работы" },
-  { icon: "people", value: "7 мест", label: "камерная группа" },
-  { icon: "flame", value: "1 поток", label: "повтора не будет" },
-  // { icon: "growth", value: "175 $", label: "цена до старта" },
-];
+type QuickFact = { icon: IconKey; value: string; label: string };
 
-function QuickFacts() {
+/**
+ * Полоса показателей под первым экраном.
+ *
+ * Цена в ней раньше была закомментированной строкой — её то показывали,
+ * то прятали правкой кода. Теперь это флаг `price_visible` в базе, и
+ * плитка появляется вместе с блоком цены внизу страницы.
+ */
+function quickFacts(program: Program): QuickFact[] {
+  const facts: QuickFact[] = [];
+
+  if (program.durationWeeks !== null) {
+    facts.push({ icon: "clock", value: weeksLabel(program.durationWeeks), label: "глубокой работы" });
+  }
+  if (program.seats !== null) {
+    facts.push({ icon: "people", value: seatsLabel(program.seats), label: "камерная группа" });
+  }
+  facts.push({
+    icon: "flame",
+    value: `${program.streamNumber ?? 1} поток`,
+    label: "повтора не будет",
+  });
+
+  const price = program.priceVisible ? formatPrice(program.priceNew, program.currency) : null;
+  if (price) {
+    facts.push({ icon: "growth", value: price, label: "цена до старта" });
+  }
+
+  return facts;
+}
+
+function QuickFacts({ program }: { program: Program }) {
+  const facts = quickFacts(program);
+
   return (
     <section className="relative z-20 -mt-10 w-full md:-mt-12">
       <div className={`${CONTAINER} ${GUTTER} pb-16 md:pb-24`}>
-        <ul className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-          {QUICK_FACTS.map((f, i) => (
+        {/* Число колонок — по числу плиток: их три или четыре, смотря
+            показана ли цена. Жёсткие `md:grid-cols-4` оставляли бы
+            четвёртую клетку пустой, и полоса читалась бы оборванной. */}
+        <ul
+          className={`grid grid-cols-2 gap-3 md:gap-4 ${
+            facts.length >= 4 ? "md:grid-cols-4" : "md:grid-cols-3"
+          }`}
+        >
+          {facts.map((f, i) => (
             <li
               key={f.value}
               data-reveal
@@ -1029,7 +1094,7 @@ function ResultSection() {
   );
 }
 
-function WhySection() {
+function WhySection({ program }: { program: Program }) {
   return (
     <section className="w-full">
       <div className={SECTION_INNER}>
@@ -1040,7 +1105,7 @@ function WhySection() {
         />
 
         <ul className="mt-10 grid gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
-          {WHY.map((item, i) => (
+          {whyCards(program).map((item, i) => (
             <li
               key={item.title}
               data-reveal
@@ -1102,7 +1167,12 @@ function WhySection() {
   );
 }
 
-function PricingSection() {
+function PricingSection({ program }: { program: Program }) {
+  /* Обе цены — только когда флаг поднят. Иначе секция остаётся текстом
+     про «специальную цену до старта»: так она и живёт сейчас. */
+  const price = program.priceVisible ? formatPrice(program.priceNew, program.currency) : null;
+  const oldPrice = program.priceVisible ? formatPrice(program.priceOld, program.currency) : null;
+
   return (
     <section className={SECTION_INNER}>
       <article
@@ -1132,18 +1202,27 @@ function PricingSection() {
               Раннее бронирование
             </Badge>
 
-            {/* <div className="flex items-baseline gap-4">
-              <span
-                style={{ ...TYPE.numeralLarge, color: COLORS.onAccent }}
-              >
-                175&nbsp;$
-              </span>
-              <span
-                style={{ ...TYPE.subsection, color: COLORS.onAccentMuted, textDecoration: "line-through" }}
-              >
-                350&nbsp;$
-              </span>
-            </div> */}
+            {/* Блок цены жил здесь закомментированным: показать её
+                значило раскомментировать вёрстку, спрятать — вернуть
+                слэши. Теперь это галочка «Показывать цену» в админке. */}
+            {price && (
+              <div className="flex items-baseline gap-4">
+                <span style={{ ...TYPE.numeralLarge, color: COLORS.onAccent }}>
+                  {price}
+                </span>
+                {oldPrice && (
+                  <span
+                    style={{
+                      ...TYPE.subsection,
+                      color: COLORS.onAccentMuted,
+                      textDecoration: "line-through",
+                    }}
+                  >
+                    {oldPrice}
+                  </span>
+                )}
+              </div>
+            )}
 
             <p style={{ ...TYPE.subsection, color: COLORS.onAccent }}>
               Специальная цена{" "}
@@ -1160,14 +1239,15 @@ function PricingSection() {
               className="max-w-md"
               style={{ ...TYPE.body, color: COLORS.onAccentMuted }}
             >
-              Количество мест ограничено — всего 7 участников. После заполнения
-              группы регистрация будет закрыта.
+              Количество мест ограничено — всего {program.seats ?? 7}{" "}
+              {plural(program.seats ?? 7, "участник", "участника", "участников")}. После
+              заполнения группы регистрация будет закрыта.
             </p>
           </div>
 
           <div className="md:col-span-5 flex flex-col items-start gap-4 md:items-end md:text-right">
             <Button
-              href={FORM_URL}
+              href={program.formUrl ?? "#"}
               variant="soft"
               size="lg"
               icon={<Icon name="doc" />}

@@ -3,13 +3,8 @@ import { ArrowUpRight } from "lucide-react";
 /* Арт страницы лежит в public/leader — здесь и ниже это обычные URL, а не импорты. */
 const dkGroup = "/leader/photos/dk-group.webp";
 const dkGroup800 = "/leader/photos/dk-group-800.webp";
-import {
-  FORM_URL,
-  CTA_BOOK_DISCOUNT,
-  DISCOUNT_PERCENT,
-  COURSE_NAME,
-  INSTAGRAM_CASES,
-} from "../course";
+import { COURSE_NAME, INSTAGRAM_CASES } from "../course";
+import { useCourse } from "../CourseContext";
 import {
   SpotlightCard,
   LinearButton,
@@ -35,6 +30,9 @@ const getInitial = (label: string): string => {
 
 /** Уникальность программы + кейсы участников. */
 export function UniquenessSection() {
+  /* Номер потока, дата, скидка и адрес анкеты — из базы. */
+  const course = useCourse();
+
   return (
     <Section>
       <Reveal>
@@ -55,10 +53,10 @@ export function UniquenessSection() {
           </div>
           <div className="flex flex-col items-center justify-center gap-4 border-t border-surface-strong p-7 md:border-l md:border-t-0 md:p-9">
             <Badge tone="accentOutline" className="tabular-nums">
-              −{DISCOUNT_PERCENT}%
+              −{course.discountPercent}%
             </Badge>
-            <LinearButton href={FORM_URL} className="text-center">
-              {CTA_BOOK_DISCOUNT}
+            <LinearButton href={course.formUrl} className="text-center">
+              {course.ctaBookDiscount}
             </LinearButton>
           </div>
         </SpotlightCard>

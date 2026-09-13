@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui";
 import { CheckCircle2 } from "lucide-react";
-import { FORM_URL, CTA_PREORDER, DISCOUNT_PERCENT } from "../course";
+import { useCourse } from "../CourseContext";
 import {
   SpotlightCard,
   LinearButton,
@@ -15,6 +15,9 @@ import { preorderBenefits } from "../content";
 
 /** Центральный CTA: анкета предзаписи и что она даёт. */
 export function PreorderSection() {
+  /* Номер потока, дата, скидка и адрес анкеты — из базы. */
+  const course = useCourse();
+
   return (
     <Section>
       <Reveal className="mx-auto max-w-3xl text-center">
@@ -26,20 +29,20 @@ export function PreorderSection() {
 
         <div className="mt-10 flex flex-col items-center gap-4">
           <Badge tone="accentOutline" className="tabular-nums">
-            −{DISCOUNT_PERCENT}%
+            −{course.discountPercent}%
           </Badge>
           <LinearButton
-            href={FORM_URL}
+            href={course.formUrl}
             size="lg"
             icon={<CheckCircle2 className="h-4 w-4" aria-hidden />}
           >
-            {CTA_PREORDER}
+            {course.ctaPreorder}
           </LinearButton>
         </div>
       </Reveal>
 
       <Stagger className="mx-auto mt-12 grid max-w-3xl gap-4 sm:grid-cols-3" as="ul">
-        {preorderBenefits.map(({ icon: Icon, text }) => (
+        {preorderBenefits(course).map(({ icon: Icon, text }) => (
           <StaggerItem key={text} as="li">
             <SpotlightCard
               className="h-full p-6 text-center"

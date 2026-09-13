@@ -27,14 +27,7 @@ import {
   CalendarCheck,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import {
-  DURATION_LABEL,
-  INDIVIDUAL_MEETINGS,
-  GROUP_MEETINGS,
-  DISCOUNT_PERCENT,
-  STREAM_BADGE,
-  GRADUATES_COUNT,
-} from "./course";
+import type { Course } from "./course-data";
 
 /* Арт для bento-сетки «Кому подходит» (Kling, 3:2 / 21:9 / 16:9 — под пролёты карточек).
    WebP, ширина 1200/900 px — это максимальный рендер карточки при DPR 2.
@@ -94,11 +87,19 @@ const modSealSm = "/leader/modules/module-seal-160.webp";
 const modTargetSm = "/leader/modules/module-target-160.webp";
 const modFunnelSm = "/leader/modules/module-funnel-160.webp";
 
-export const heroProof = [
-  { icon: CalendarCheck, label: STREAM_BADGE },
-  { icon: Users, label: `${GRADUATES_COUNT} выпускников` },
-  { icon: Award, label: `${DURATION_LABEL} до результата` },
-];
+/* Четыре набора ниже — функции от данных потока, а не константы: номер
+   потока, длительность, число встреч и скидка теперь приезжают из базы,
+   и собрать строку на этапе импорта модуля больше нельзя. Остальные
+   наборы в этом файле остались константами: в них нет ни одной цифры,
+   которая менялась бы от набора к набору. */
+
+export function heroProof(course: Course) {
+  return [
+    { icon: CalendarCheck, label: course.streamBadge },
+    { icon: Users, label: `${course.graduatesCount} выпускников` },
+    { icon: Award, label: `${course.durationLabel} до результата` },
+  ];
+}
 
 /** `image` необязателен: карточка без арта остаётся чисто типографической. */
 type GoalCard = {
@@ -152,17 +153,19 @@ type ProgramFeature = {
   imageSm?: string;
 };
 
-export const programFeatures: ProgramFeature[] = [
-  { icon: Calendar, title: `${DURATION_LABEL} обучения`, description: `Интенсивное погружение в тему на протяжении ${DURATION_LABEL}.`, image: imgWeeks, imageSm: imgWeeksSm },
-  { icon: Users, title: `${INDIVIDUAL_MEETINGS} индивидуальных встреч`, description: "Работа с бизнес-психологом для достижения ваших целей.", image: imgMeetings, imageSm: imgMeetingsSm },
+export function programFeatures(course: Course): ProgramFeature[] {
+  return [
+  { icon: Calendar, title: `${course.durationLabel} обучения`, description: `Интенсивное погружение в тему на протяжении ${course.durationLabel}.`, image: imgWeeks, imageSm: imgWeeksSm },
+  { icon: Users, title: course.individualMeetingsLabel, description: "Работа с бизнес-психологом для достижения ваших целей.", image: imgMeetings, imageSm: imgMeetingsSm },
   { icon: Mic, title: "Занятие по ораторскому мастерству", description: "Научитесь легко и красиво выступать, и владеть вниманием аудитории", image: imgSpeaking, imageSm: imgSpeakingSm },
-  { icon: Gamepad, title: `${GROUP_MEETINGS} групповых встречи`, description: "Работа в группе, новые возможности и сотрудничество.", image: imgGroup, imageSm: imgGroupSm },
+  { icon: Gamepad, title: course.groupMeetingsLabel, description: "Работа в группе, новые возможности и сотрудничество.", image: imgGroup, imageSm: imgGroupSm },
   { icon: FileText, title: "Домашние задания", description: "Обратная связь на выполненные задания от экспертов.", image: imgHomework, imageSm: imgHomeworkSm },
   { icon: MessageSquare, title: "Чат поддержки и общения", description: "Постоянная связь и обсуждение с группой участников.", image: imgChat, imageSm: imgChatSm },
   { icon: Briefcase, title: "Коллаборации с участниками и с Дарьей Карпук", description: "", image: imgCollab, imageSm: imgCollabSm },
   { icon: UserPlus, title: "Новые клиенты", description: "Получение клиентов через взаимодействие в группе.", image: imgClients, imageSm: imgClientsSm },
   { icon: Target, title: "Полное погружение", description: "Детальный разбор вашей ситуации и работа до результата.", image: imgImmersion, imageSm: imgImmersionSm },
-];
+  ];
+}
 
 export const outcomes = [
   { title: "Продавать не продавая", description: "Научитесь предлагать свои услуги без давления на клиентов.", icon: Target },
@@ -173,11 +176,13 @@ export const outcomes = [
   { title: "Наполниться энергией", description: "Получите мотивацию и вдохновение для новых достижений.", icon: Sparkles },
 ];
 
-export const preorderBenefits = [
-  { icon: Gift, text: "Бесплатная встреча после анкеты" },
-  { icon: CheckCircle2, text: `Скидка ${DISCOUNT_PERCENT}% на участие` },
-  { icon: FileCheck, text: "Узнайте, подходит ли вам формат" },
-];
+export function preorderBenefits(course: Course) {
+  return [
+    { icon: Gift, text: "Бесплатная встреча после анкеты" },
+    { icon: CheckCircle2, text: `Скидка ${course.discountPercent}% на участие` },
+    { icon: FileCheck, text: "Узнайте, подходит ли вам формат" },
+  ];
+}
 
 /** Модуль: квадратная «метка главы» 1:1 слева от заголовка. */
 type CourseModule = {
@@ -241,7 +246,8 @@ export const modules: CourseModule[] = [
   },
 ];
 
-export const includedGroups = [
+export function includedGroups(course: Course) {
+  return [
   {
     label: "Учёба и материалы",
     items: [
@@ -252,8 +258,8 @@ export const includedGroups = [
   {
     label: "Встречи и практика",
     items: [
-      { text: `${INDIVIDUAL_MEETINGS} индивидуальных встреч`, icon: Users },
-      { text: `${GROUP_MEETINGS} групповых встречи`, icon: Users },
+      { text: course.individualMeetingsLabel, icon: Users },
+      { text: course.groupMeetingsLabel, icon: Users },
       { text: "Участие в занятии по ораторскому мастерству", icon: Mic },
     ],
   },
@@ -266,7 +272,8 @@ export const includedGroups = [
       { text: "Сертификат об окончании обучения", icon: Award },
     ],
   },
-];
+  ];
+}
 
 export const navLinks = [
   { href: "#komu", label: "Кому подходит" },

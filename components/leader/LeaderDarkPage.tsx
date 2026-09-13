@@ -1,6 +1,7 @@
 "use client";
 
 import { AmbientBackdrop, SiteHeader } from "./linear";
+import { CourseProvider, type Course } from "./CourseContext";
 import {
   HeroSection,
   GoalsSection,
@@ -28,42 +29,48 @@ import {
  *
  * Это граница клиента для всей страницы: секции держатся на framer-motion,
  * состоянии навигации и обработчиках мыши, поэтому серверными они быть не могут.
- * Заголовок и OG-теги задаёт `app/leader/page.tsx` через `metadata`.
+ * Заголовок и OG-теги задаёт `app/leader/page.tsx` через `generateMetadata`.
+ *
+ * Данные потока приходят пропсом с сервера и раздаются секциям через
+ * `CourseProvider`: их нужно трети секций, и пропсами это была бы
+ * сигнатура из десятка полей, к порядку секций отношения не имеющих.
  */
-export function LeaderDarkPage() {
+export function LeaderDarkPage({ course }: { course: Course }) {
   // `leader-root` — не для стилей самой страницы: по нему globals.css
   // перекрашивает `html` в тёмный, иначе при overscroll видна светлая
   // подложка остального сайта.
   return (
-    <div className="leader-root relative min-h-screen bg-background font-sans text-foreground antialiased">
-      <AmbientBackdrop />
+    <CourseProvider course={course}>
+      <div className="leader-root relative min-h-screen bg-background font-sans text-foreground antialiased">
+        <AmbientBackdrop />
 
-      <div className="relative z-10">
-        {/* Без параметров — тот же набор ссылок и та же кнопка, что на
-            остальных страницах. Своя навигация по секциям здесь была и
-            соблазн оставить её велик: страница длинная, якоря удобны. Но
-            тогда единственная страница, с которой нельзя уйти на соседнюю
-            программу, — самая посещаемая, а шапка меняется от страницы к
-            странице и перестаёт быть общей.
+        <div className="relative z-10">
+          {/* Без параметров — тот же набор ссылок и та же кнопка, что на
+              остальных страницах. Своя навигация по секциям здесь была и
+              соблазн оставить её велик: страница длинная, якоря удобны. Но
+              тогда единственная страница, с которой нельзя уйти на соседнюю
+              программу, — самая посещаемая, а шапка меняется от страницы к
+              странице и перестаёт быть общей.
 
-            Якоря никуда не делись: они в подвале страницы (`LeaderFooter`,
-            «Разделы», тот же `navLinks`), а кнопка записи — в теле, в
-            `PreorderSection` и `PricingSection`. */}
-        <SiteHeader />
+              Якоря никуда не делись: они в подвале страницы (`LeaderFooter`,
+              «Разделы», тот же `navLinks`), а кнопка записи — в теле, в
+              `PreorderSection` и `PricingSection`. */}
+          <SiteHeader />
 
-        <HeroSection />
-        <GoalsSection />
-        <IssuesSection />
-        <NextStepSection />
-        <ProgramSection />
-        <OutcomesSection />
-        <PreorderSection />
-        <ModulesSection />
-        <UniquenessSection />
-        <PricingSection />
-        <GiftSection />
-        <LeaderFooter />
+          <HeroSection />
+          <GoalsSection />
+          <IssuesSection />
+          <NextStepSection />
+          <ProgramSection />
+          <OutcomesSection />
+          <PreorderSection />
+          <ModulesSection />
+          <UniquenessSection />
+          <PricingSection />
+          <GiftSection />
+          <LeaderFooter />
+        </div>
       </div>
-    </div>
+    </CourseProvider>
   );
 }

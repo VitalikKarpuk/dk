@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { themeInitScript } from "@/components/ThemeToggle";
+import { SiteSettingsProvider } from "@/components/SiteSettings";
+import { getContent } from "@/lib/content";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -52,11 +54,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  /* Читается здесь, один раз на дерево: подвал и секция диагностики
+     стоят на каждой странице, и каждая из них внутри клиентской
+     границы — сами до базы они не дотянутся. */
+  const { settings } = await getContent();
+
   return (
     <html
       lang="ru"
@@ -69,7 +76,14 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        {children}
+        <SiteSettingsProvider
+          settings={{
+            copyrightYears: settings.copyright_years,
+            diagnosticFormUrl: settings.diagnostic_form_url,
+          }}
+        >
+          {children}
+        </SiteSettingsProvider>
       </body>
     </html>
   );

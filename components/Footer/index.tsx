@@ -1,11 +1,16 @@
+"use client";
+
+/* Клиентский из-за `useSiteSettings`: годы копирайта приезжают из базы,
+   а подвал на /leader вложен в клиентскую `LeaderFooter` — читать базу
+   сам он всё равно не смог бы. */
 import { LogoLockup } from "../Logo/variants";
+import { useSiteSettings } from "../SiteSettings";
 import { Button } from "@/components/ui";
 import { CONTAINER, GUTTER, TYPE } from "@/lib/design";
 import {
   AUTHOR_BLURB,
   AUTHOR_COMPANY,
   AUTHOR_TAX_ID,
-  COPYRIGHT_YEARS,
   INSTAGRAM_HANDLE,
   LEGAL_NOTE,
   PROGRAM_LINKS,
@@ -51,6 +56,8 @@ export default function Footer({
   /** Колонки ссылок рядом с брендом: разделы страницы, материалы. */
   columns?: { heading: string; links: FooterLink[] }[];
 }) {
+  const { copyrightYears } = useSiteSettings();
+
   /* Программы стоят в подвале каждой страницы — как и в шапке. Со дна
      длинной страницы иначе не выбраться никуда, кроме главной. */
   const allColumns = [
@@ -163,7 +170,7 @@ export default function Footer({
               тёмной теме 4.28:1 — ниже AA. Иерархию держит кегль. */}
           <div className="space-y-2 text-xs leading-relaxed text-muted">
             <p>
-              © {COPYRIGHT_YEARS}{" "}
+              © {copyrightYears}{" "}
               <span className="font-medium text-accent">{INSTAGRAM_HANDLE}</span>{" "}
               · Все права защищены
             </p>

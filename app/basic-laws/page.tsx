@@ -3,6 +3,8 @@ import Image from "next/image";
 import Footer from "@/components/Footer";
 import { AmbientBackdrop } from "@/components/AmbientBackdrop";
 import { COLORS, CONTAINER, FONT_BODY, GUTTER, HERO_Y, SECTION_INNER, TYPE } from "@/lib/design";
+import { getProgram } from "@/lib/content";
+import { lowerFirst, startLabel as formatStart, weeksLabel } from "@/lib/format";
 import {
   Badge,
   Button,
@@ -268,7 +270,15 @@ export const metadata: Metadata = {
     "4-недельный курс для тех, кто хочет навести порядок в жизни, обрести ясность и начать двигаться по пути своего предназначения.",
 };
 
-export default function BasicLawsPage() {
+export default async function BasicLawsPage() {
+  /* Дата старта и длительность приезжают из базы: у этого курса дата
+     назначается позже остальных, и до объявления на странице стоит
+     подпись-заглушка. Раньше и дата, и заглушка были вписаны в вёрстку
+     дважды — в бейдж первого экрана и в карточку «Старт», — и назначение
+     даты означало правку двух мест, которые легко разъезжались. */
+  const program = await getProgram("basic-laws");
+  const start = formatStart(program);
+
   return (
     <main
       className="relative flex w-full flex-1 flex-col"
@@ -284,11 +294,11 @@ export default function BasicLawsPage() {
 
       <div className="relative z-10 flex flex-1 flex-col">
         <SiteHeader />
-        <Hero />
+        <Hero start={start} weeks={program.durationWeeks} />
         <PainSection />
         <BridgeSection />
         <BenefitsSection />
-        <FormatSection />
+        <FormatSection start={start} />
         <AfterSection />
         <VideoSection />
         <ScrollReveal />
@@ -347,7 +357,7 @@ function VideoSection() {
   );
 }
 
-function Hero() {
+function Hero({ start, weeks }: { start: string; weeks: number | null }) {
   return (
     <section
       className="relative w-full min-h-[560px] overflow-hidden md:min-h-[680px] lg:min-h-[760px]"
@@ -433,9 +443,11 @@ function Hero() {
             бейджи, заголовок, лид, кнопки — по 80ms друг за другом. */}
         <div className="flex flex-col gap-7 md:max-w-[58%] lg:max-w-[54%]">
           <div data-reveal className="flex flex-wrap items-center gap-3">
-            <Badge>Курс · 4 недели + 1</Badge>
+            {/* «+ 1» — бонусная неделя сверх основного курса, она не
+                часть срока и в базе не хранится. */}
+            <Badge>Курс · {weeks ? weeksLabel(weeks) : "4 недели"} + 1</Badge>
             <Badge tone="soft" icon={<Icon name="calendar" />}>
-              Старт: дата уточняется
+              Старт: {lowerFirst(start)}
             </Badge>
           </div>
 
@@ -598,7 +610,7 @@ function BenefitsSection() {
   );
 }
 
-function FormatSection() {
+function FormatSection({ start }: { start: string }) {
   return (
     <section
       id="format"
@@ -631,7 +643,7 @@ function FormatSection() {
             <div
               style={{ ...TYPE.display, color: COLORS.onAccent }}
             >
-              Дата уточняется
+              {start}
             </div>
             <p
               style={{ ...TYPE.body, color: COLORS.onAccentMuted }}

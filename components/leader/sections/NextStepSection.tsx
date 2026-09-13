@@ -2,13 +2,8 @@ import { Badge } from "@/components/ui";
 import { Play } from "lucide-react";
 const nextStepPhoto = "/leader/photos/dk-next-step.webp";
 const nextStepPhoto800 = "/leader/photos/dk-next-step-800.webp";
-import {
-  FORM_URL,
-  CTA_PREORDER,
-  DISCOUNT_PERCENT,
-  COURSE_NAME,
-  YOUTUBE_INTRO_VIDEO,
-} from "../course";
+import { COURSE_NAME, YOUTUBE_INTRO_VIDEO } from "../course";
+import { useCourse } from "../CourseContext";
 import {
   SpotlightCard,
   LinearButton,
@@ -23,6 +18,9 @@ import { Section } from "../primitives";
 
 /** Ваш следующий шаг — оффер со скидкой и вводным видео. */
 export function NextStepSection() {
+  /* Номер потока, дата, скидка и адрес анкеты — из базы. */
+  const course = useCourse();
+
   return (
     <Section id="programma">
       <Reveal>
@@ -71,7 +69,7 @@ export function NextStepSection() {
                 то есть на подложке того же тона — акцент на акценте давал
                 4.35. В исходнике здесь и был белый, то есть linear-fg. */}
             <Badge tone="accentOutline" className="self-start tabular-nums">
-              −{DISCOUNT_PERCENT}%
+              −{course.discountPercent}%
             </Badge>
             <Lead className="mt-6 text-foreground">
               Если хотя бы в одном пункте узнали себя, приглашаю на обучение для экспертов{" "}
@@ -79,12 +77,12 @@ export function NextStepSection() {
               задуманное ⬇️
             </Lead>
             <div className="mt-8 flex flex-col items-start gap-3">
-              <LinearButton href={FORM_URL} size="lg" className="w-full sm:w-auto">
-                {CTA_PREORDER}
+              <LinearButton href={course.formUrl} size="lg" className="w-full sm:w-auto">
+                {course.ctaPreorder}
               </LinearButton>
               <p className="text-[13px] text-muted">
                 Скидка{" "}
-                <span className="font-semibold text-accent">{DISCOUNT_PERCENT}%</span>{" "}
+                <span className="font-semibold text-accent">{course.discountPercent}%</span>{" "}
                 на участие
               </p>
             </div>

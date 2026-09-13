@@ -10,9 +10,13 @@ import {
 } from "../linear";
 import { Section } from "../primitives";
 import { programFeatures } from "../content";
+import { useCourse } from "../CourseContext";
 
 /** Состав программы — ровная сетка 3×3 с медиа-полосой над текстом. */
 export function ProgramSection() {
+  /* Номер потока, дата, скидка и адрес анкеты — из базы. */
+  const course = useCourse();
+
   return (
     <Section>
       <Reveal>
@@ -28,7 +32,7 @@ export function ProgramSection() {
           давали секцию 3790 px — почти пять экранов прокрутки. Иконка на
           мобильном не выводится: её роль уже выполняет фотография. */}
       <Stagger className="mt-10 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3" as="ul">
-        {programFeatures.map(({ icon: Icon, title, description, image, imageSm }) => (
+        {programFeatures(course).map(({ icon: Icon, title, description, image, imageSm }) => (
           <StaggerItem key={title} as="li">
             <SpotlightCard
               /* Двигается только арт — сетка 3×3 остаётся ровной. */

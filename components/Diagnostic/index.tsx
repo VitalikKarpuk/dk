@@ -2,7 +2,7 @@
 
 import { Badge, Button, Reveal } from "@/components/ui";
 import { COLORS, CONTAINER, SECTION_PADDING, TYPE } from "@/lib/design";
-import { DIAGNOSTIC_FORM_URL } from "@/lib/site";
+import { useSiteSettings } from "@/components/SiteSettings";
 
 const POINTS = [
   "Поговорим о вашем запросе и ситуации",
@@ -11,6 +11,8 @@ const POINTS = [
 ];
 
 export default function Diagnostic() {
+  const { diagnosticFormUrl } = useSiteSettings();
+
   return (
     <section
       id="diagnostic"
@@ -102,7 +104,7 @@ export default function Diagnostic() {
           className="flex w-full flex-col items-start gap-5 lg:w-auto lg:items-end"
         >
           <Button
-            href={DIAGNOSTIC_FORM_URL}
+            href={diagnosticFormUrl}
             variant="onDark"
             size="lg"
             aria-label="Записаться на бесплатную диагностическую встречу"

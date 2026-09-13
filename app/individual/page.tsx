@@ -24,10 +24,9 @@ import {
   SiteHeader,
 } from "@/components/ui";
 import { KEY_RULES } from "@/lib/rules";
+import { getContent, type Package } from "@/lib/content";
+import { formatPrice } from "@/lib/format";
 
-// TODO: replace with the real questionnaire URL
-const FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSfRdfLMjzVz8-JkYcIDimeecOXU0Gnlr80m8T5VsfBZZP9u0Q/viewform?usp=publish-editor";
 
 const LOYALTY = [
   "На весь период совместной работы вы получаете полное моё сопровождение и погружение в вашу проблематику",
@@ -38,38 +37,11 @@ const LOYALTY = [
   "При покупке любого пакета консультаций в ИЮНЕ вы получаете бесплатно доступ к прохождению мастер-класс «ТРАНСФОРМАЦИЯ САМООЦЕНКИ».",
 ];
 
-type Pkg = {
-  title: string;
-  oldPrice: string;
-  newPrice: string;
-  note?: string;
-  highlight?: boolean;
-};
-
-const PACKAGES: Pkg[] = [
-  {
-    title: "Разовая консультация",
-    oldPrice: "250 BYN",
-    newPrice: "190 BYN",
-    note: "Полуторачасовая встреча + 7 недель сопровождения в чате",
-  },
-  {
-    title: "Пакет из 3 встреч",
-    oldPrice: "500 BYN",
-    newPrice: "450 BYN",
-  },
-  {
-    title: "Пакет из 5 встреч",
-    oldPrice: "850 BYN",
-    newPrice: "700 BYN",
-    highlight: true,
-  },
-  {
-    title: "Пакет из 10 встреч",
-    oldPrice: "1350 BYN",
-    newPrice: "1200 BYN",
-  },
-];
+/* Пакеты и цены приезжают из базы (`lib/content.ts`), а не лежат здесь
+   литералами: суммы меняются вместе с курсом и акциями, и раньше каждая
+   правка была коммитом и деплоем. Состав пакетов при этом фиксирован —
+   якорная карточка и три спутника рисуются разной вёрсткой, и пятый
+   пакет без правки этого файла в сетку не встанет. */
 
 export const metadata: Metadata = {
   title: "Индивидуальные консультации — Дарья Карпук",
@@ -77,7 +49,12 @@ export const metadata: Metadata = {
     "Личная работа один на один: формат, условия лояльности, пакеты встреч и текущие цены.",
 };
 
-export default function IndividualPage() {
+export default async function IndividualPage() {
+  const { packages, settings } = await getContent();
+  /* Адрес анкеты — из настроек: под каждый набор заводится новая форма,
+     и раньше это была правка литерала в этом файле с пометкой TODO. */
+  const formUrl = settings.individual_form_url;
+
   return (
     <main
       className="relative flex w-full flex-1 flex-col"
@@ -93,13 +70,13 @@ export default function IndividualPage() {
 
       <div className="relative z-10 flex flex-1 flex-col">
         <SiteHeader />
-        <Hero />
+        <Hero formUrl={formUrl} />
         <LoyaltySection />
         <FormatSection />
-        <PricingSection />
+        <PricingSection packages={packages} />
         <RulesSection />
         <BonusSection />
-        <CTASection />
+        <CTASection formUrl={formUrl} />
         <ScrollReveal />
         <Footer />
       </div>
@@ -115,7 +92,7 @@ export default function IndividualPage() {
  * тёмной теме первый экран читался плоским чёрным против «луж света» в
  * секции ниже.
  */
-function Hero() {
+function Hero({ formUrl }: { formUrl: string }) {
   return (
     <section className="relative w-full overflow-hidden xl:h-[45.4vw] xl:max-h-[880px]">
       <div
@@ -186,7 +163,7 @@ function Hero() {
             className="flex flex-wrap items-center gap-4 pt-2"
             style={{ ["--rd" as string]: "240ms" }}
           >
-            <Button href={FORM_URL} size="lg">
+            <Button href={formUrl} size="lg">
               Записаться на консультацию
             </Button>
             <QuietLink href="#pricing" direction="down">
@@ -712,9 +689,14 @@ function FormatSection() {
   );
 }
 
-function PricingSection() {
-  const anchor = PACKAGES.find((p) => p.highlight)!;
-  const others = PACKAGES.filter((p) => !p.highlight);
+function PricingSection({ packages }: { packages: Package[] }) {
+  /* Якорный — тот, у кого стоит флаг. Если в базе флаг сняли со всех,
+     берём первый: пустая секция вместо цен была бы хуже, чем не та
+     карточка крупной. */
+  const anchor = packages.find((p) => p.highlight) ?? packages[0];
+  const others = packages.filter((p) => p !== anchor);
+
+  if (!anchor) return null;
 
   return (
     /* Цель якоря из первого экрана. `scroll-mt-20` — общесайтовый отступ
@@ -758,7 +740,7 @@ function PricingSection() {
  * заливкой во всю карточку он больше нигде не встречается. Цена на тёмном
  * набрана жёлтым, а не электриком: электрик на navy почти не читается.
  */
-function PriceAnchor({ pkg }: { pkg: Pkg }) {
+function PriceAnchor({ pkg }: { pkg: Package }) {
   return (
     <article
       data-reveal
@@ -779,17 +761,22 @@ function PriceAnchor({ pkg }: { pkg: Pkg }) {
         <div className="flex flex-col items-start gap-2 md:col-span-5 md:items-end md:text-right">
           <div className="flex items-baseline gap-3">
             <span style={{ ...TYPE.numeral, color: COLORS.yellow }}>
-              {pkg.newPrice}
+              {formatPrice(pkg.priceNew, pkg.currency)}
             </span>
-            <span
-              style={{
-                ...TYPE.lead,
-                color: COLORS.onAccentMuted,
-                textDecoration: "line-through",
-              }}
-            >
-              {pkg.oldPrice}
-            </span>
+            {/* Зачёркнутой цены может не быть вовсе: скидка кончилась, и
+                в базе поле пустое. Тогда рядом с суммой ничего не стоит,
+                а не висит пустой зачёркнутый пробел. */}
+            {pkg.priceOld !== null && (
+              <span
+                style={{
+                  ...TYPE.lead,
+                  color: COLORS.onAccentMuted,
+                  textDecoration: "line-through",
+                }}
+              >
+                {formatPrice(pkg.priceOld, pkg.currency)}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -797,7 +784,7 @@ function PriceAnchor({ pkg }: { pkg: Pkg }) {
   );
 }
 
-function PriceSatellite({ pkg, index }: { pkg: Pkg; index: number }) {
+function PriceSatellite({ pkg, index }: { pkg: Package; index: number }) {
   return (
     <li
       data-reveal
@@ -814,17 +801,19 @@ function PriceSatellite({ pkg, index }: { pkg: Pkg; index: number }) {
           колонке из трёх карточек им переносится на две строки. */}
       <div className="flex items-baseline gap-3">
         <span style={{ ...TYPE.subsection, color: COLORS.electric }}>
-          {pkg.newPrice}
+          {formatPrice(pkg.priceNew, pkg.currency)}
         </span>
-        <span
-          style={{
-            ...TYPE.caption,
-            color: COLORS.inkStrong,
-            textDecoration: "line-through",
-          }}
-        >
-          {pkg.oldPrice}
-        </span>
+        {pkg.priceOld !== null && (
+          <span
+            style={{
+              ...TYPE.caption,
+              color: COLORS.inkStrong,
+              textDecoration: "line-through",
+            }}
+          >
+            {formatPrice(pkg.priceOld, pkg.currency)}
+          </span>
+        )}
       </div>
 
       {pkg.note && (
@@ -978,7 +967,7 @@ function BonusSection() {
   );
 }
 
-function CTASection() {
+function CTASection({ formUrl }: { formUrl: string }) {
   return (
     <section className={`${CONTAINER} ${GUTTER} pb-16 md:pb-24`}>
       <article
@@ -1038,7 +1027,7 @@ function CTASection() {
 
           <div className="md:col-span-5 md:flex md:justify-end">
             <Button
-              href={FORM_URL}
+              href={formUrl}
               variant="soft"
               size="lg"
               icon={<Icon name="doc" />}

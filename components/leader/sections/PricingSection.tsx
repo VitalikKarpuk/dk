@@ -1,5 +1,5 @@
 import { ExternalLink } from "lucide-react";
-import { FORM_URL } from "../course";
+import { useCourse } from "../CourseContext";
 import {
   SpotlightCard,
   LinearButton,
@@ -22,6 +22,9 @@ import { includedGroups } from "../content";
  * сильнее, чем карточка, висящая в пустоте.
  */
 export function PricingSection() {
+  /* Номер потока, дата, скидка и адрес анкеты — из базы. */
+  const course = useCourse();
+
   return (
     <Section id="tarif">
       <Reveal>
@@ -38,7 +41,7 @@ export function PricingSection() {
               CSS columns балансирует колонки по высоте и складывает 2+1,
               а `break-inside-avoid` не даёт разорвать группу между колонками. */}
           <div className="mt-8 gap-x-10 sm:columns-2 lg:columns-3">
-            {includedGroups.map((group) => (
+            {includedGroups(course).map((group) => (
               <div key={group.label} className="mb-9 break-inside-avoid last:mb-0">
                 {/* h4, а не абзац: заголовок группы стоит под h3 карточки,
                     иначе в структуре страницы после h3 идут просто <p>.
@@ -81,7 +84,7 @@ export function PricingSection() {
             </p>
           </div>
           <div className="flex shrink-0 flex-col gap-2.5">
-            <LinearButton href={FORM_URL} size="lg" className="w-full">
+            <LinearButton href={course.formUrl} size="lg" className="w-full">
               Заполнить анкету
             </LinearButton>
             <p className="flex items-center gap-2 text-xs text-muted">

@@ -1,13 +1,10 @@
 import Footer from "@/components/Footer";
 import {
-  FORM_URL,
-  CTA_PREORDER,
-  STREAM_BADGE_WITH_DATE,
-  DISCOUNT_PERCENT,
   INSTAGRAM_URL,
   YOUTUBE_INTRO_VIDEO,
   YOUTUBE_GIFT_VIDEO,
 } from "../course";
+import { useCourse } from "../CourseContext";
 import { navLinks } from "../content";
 
 /**
@@ -19,13 +16,16 @@ import { navLinks } from "../content";
  * своё, — последний призыв и карту разделов.
  */
 export function LeaderFooter() {
+  /* Номер потока, дата, скидка и адрес анкеты — из базы. */
+  const course = useCourse();
+
   return (
     <Footer
       cta={{
         title: "Остались сомнения — начните с анкеты",
-        note: `${STREAM_BADGE_WITH_DATE} · скидка ${DISCOUNT_PERCENT}% и бесплатная встреча`,
-        href: FORM_URL,
-        label: CTA_PREORDER,
+        note: `${course.streamBadgeWithDate} · скидка ${course.discountPercent}% и бесплатная встреча`,
+        href: course.formUrl,
+        label: course.ctaPreorder,
       }}
       columns={[
         { heading: "Разделы", links: navLinks },
@@ -35,7 +35,7 @@ export function LeaderFooter() {
             { href: YOUTUBE_INTRO_VIDEO, label: "О программе — видео" },
             { href: YOUTUBE_GIFT_VIDEO, label: "Подарок — видео" },
             { href: INSTAGRAM_URL, label: "Кейсы участников" },
-            { href: FORM_URL, label: "Анкета предзаписи" },
+            { href: course.formUrl, label: "Анкета предзаписи" },
           ],
         },
       ]}

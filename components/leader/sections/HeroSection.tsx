@@ -1,13 +1,6 @@
 import { ArrowRight } from "lucide-react";
-import {
-  FORM_URL,
-  STREAM_BADGE_WITH_DATE,
-  CTA_DISCOUNT,
-  DURATION_LABEL_ADJ,
-  AUTHOR_NAME,
-  AUTHOR_ROLE,
-  COURSE_NAME,
-} from "../course";
+import { AUTHOR_NAME, AUTHOR_ROLE, COURSE_NAME } from "../course";
+import { useCourse } from "../CourseContext";
 import {
   SpotlightCard,
   LinearButton,
@@ -125,6 +118,9 @@ const HERO_TITLE_SIZE =
  * внутри текста остались на `md`, они от композиции не зависят.
  */
 export function HeroSection() {
+  /* Номер потока, дата, скидка и адрес анкеты — из базы. */
+  const course = useCourse();
+
   return (
     <section
       id="top"
@@ -181,7 +177,7 @@ export function HeroSection() {
                 />
               }
             >
-              {STREAM_BADGE_WITH_DATE}
+              {course.streamBadgeWithDate}
             </Badge>
           </Reveal>
 
@@ -215,7 +211,7 @@ export function HeroSection() {
 
             <Reveal delay={0.16} className="mt-4 md:mt-6">
               <Lead className="max-w-xl">
-                {DURATION_LABEL_ADJ} программа для экспертов, желающих{" "}
+                {course.durationLabelAdj} программа для экспертов, желающих{" "}
                 <ShimmerText className="font-medium">
                   вырасти профессионально и финансово
                 </ShimmerText>
@@ -254,12 +250,12 @@ export function HeroSection() {
                   не влезает, ссылка переносится под кнопку целиком. */}
               <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
                 <LinearButton
-                  href={FORM_URL}
+                  href={course.formUrl}
                   size="lg"
                   className="w-full sm:w-auto sm:shrink-0"
                   icon={<ArrowRight className="h-4 w-4" aria-hidden />}
                 >
-                  {CTA_DISCOUNT}
+                  {course.ctaDiscount}
                 </LinearButton>
                 <QuietLink
                   href="#programma"
@@ -285,7 +281,7 @@ export function HeroSection() {
             className="mt-8 grid grid-cols-3 gap-2.5 md:mt-12 md:gap-3"
             as="ul"
           >
-            {heroProof.map(({ icon: Icon, label }) => (
+            {heroProof(course).map(({ icon: Icon, label }) => (
               <StaggerItem key={label} as="li">
                 <SpotlightCard className="h-full p-3 md:p-4">
                   <Icon className="h-4 w-4 text-accent" aria-hidden />
