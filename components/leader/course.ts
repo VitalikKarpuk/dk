@@ -18,7 +18,7 @@
 export const COURSE_NAME = "Я ЛИДЕР";
 
 // ─── Ссылки ─────────────────────────────────────────────
-export const YOUTUBE_INTRO_VIDEO = "https://youtu.be/HQ0z6Ca4XL8";
+export const YOUTUBE_INTRO_VIDEO = "https://youtu.be/bQepzVPQJ2M?si=gXL1oBRdKChQyu16";
 export const YOUTUBE_GIFT_VIDEO = "https://youtu.be/ZuXCSTLNDT4";
 
 /* Соцсети и реквизиты — общесайтовые: они одинаковы на всех страницах и

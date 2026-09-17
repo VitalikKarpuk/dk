@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui";
 import { Play, Gift } from "lucide-react";
 const giftPortrait = "/leader/photos/gift-portrait.webp";
 const giftPortrait800 = "/leader/photos/gift-portrait-800.webp";
-import { AUTHOR_NAME, COURSE_NAME, YOUTUBE_GIFT_VIDEO } from "../course";
+import { AUTHOR_NAME, COURSE_NAME, YOUTUBE_GIFT_VIDEO, YOUTUBE_INTRO_VIDEO } from "../course";
 import {
   SpotlightCard,
   LinearButton,
@@ -77,7 +77,7 @@ export function GiftSection() {
               </Lead>
               <div className="mt-8 flex justify-center md:justify-start">
                 <LinearButton
-                  href={YOUTUBE_GIFT_VIDEO}
+                  href={YOUTUBE_INTRO_VIDEO}
                   size="lg"
                   icon={<Play className="h-4 w-4 fill-current" aria-hidden />}
                 >
